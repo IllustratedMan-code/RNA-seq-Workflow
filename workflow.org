@@ -17,7 +17,9 @@
 :header-args: :tangle scripts/functions.r
 :end:
 ** txi function
-uses the tximport package to import the quant data
+uses the tximport package to import the quant data. The tximport package is
+used in both deseq and edgeR for data import. It is optional, but saves a lot
+of time on initial data organization
 #+begin_src jupyter-R :session R
 txi <- function(directory, quantdatafoldername, metadata, fishtype){
   library(tximport)
@@ -31,7 +33,7 @@ txi <- function(directory, quantdatafoldername, metadata, fishtype){
 }
 #+end_src
 ** Initial Deseq Function
-Sets up the deseq data set object and returns it
+Sets up the deseq data set object and returns it. Deseq uses a linear model to fit the data. Read more about it here [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#theory-behind-deseq2][Deseq2]].
 #+begin_src jupyter-R :session R
 initialDeseq <- function(txi, metadata, design=~part + pesticides){
   library(DESeq2)
@@ -44,7 +46,8 @@ initialDeseq <- function(txi, metadata, design=~part + pesticides){
 }
 #+end_src
 ** ReDeseq
-sets up the deseq object with a different design criteria
+sets up the deseq object with a different design criteria. The design changes how log2foldchange is expressed.
+It is more difficult to get multifactorial analysis in a single deseq object than with edgeR. Changing the design is necessary for complicated analysis.
 #+begin_src jupyter-R :session R
 reDeseq <- function(dds){
   ddsMF <- dds
@@ -55,7 +58,7 @@ reDeseq <- function(dds){
   }
 #+end_src
 ** initialEdgeR
-Sets up the EdgeR object and returns it.
+Sets up the EdgeR object and returns it. EdgeR uses a different linear model. Read more about it here [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][edgeR]].
 #+begin_src jupyter-R :session R
 initialEdgeR <- function(txi, meta){
   library(edgeR)
@@ -79,7 +82,8 @@ initialEdgeR <- function(txi, meta){
 }
 #+end_src
 ** estEdgeR
-finds the fit of the data and returns it for further analysis
+finds the fit of the data and returns it for further analysis. Uses the edgeR functions to estimate dispersion of
+the genes. It is much faster than deseq2.
 #+begin_src jupyter-R :session R
 estEdgeR <- function(EdgeR, design){
   library(edgeR)
@@ -94,8 +98,9 @@ estEdgeR <- function(EdgeR, design){
 
 #+RESULTS:
 * initial R step
-** Setup Directory
-** Deseq
+EdgeR and Deseq2 are used to find lists of genes that are up-regulated and down-regulated when compared to design criteria. The design is used to curated the value of logfoldchange in Deseq2. They are compared using a pearson correlation in the plotting section.
+** TODO Deseq
+This needs to incorporate the function definitions. Much of it is being restated in an unintuitive way
 :PROPERTIES:
 :header-args: :tangle scripts/Deseq2-analysis.r
 :end:
@@ -201,6 +206,7 @@ fitting model and testing
 #+end_example
 
 *** Do initial data manipulation
+The part design is used to compare the leg to the body in total, disregarding pesticide. This is explained in detail in the pearson correlation section.
 #+begin_src jupyter-R :session R
 ## hello
 dds <- Deseq
@@ -571,7 +577,7 @@ venn.diagram(
 :header-args: :tangle scripts/edgeR-Analysis.r
 :end:
 *** Initial settings
-Directory and function setup, configure this when running the script
+Directory and function setup, configure this when running the script. This is an attempt at simplifying the analysis process in R to a point that is hopefully nonspecific to deseq2 or edgeR. Enter the directory where the RNA-seq data is located, the folder containing the quant data, and the type of quant tool used (fishtype). The script should take care of the rest.
 #+begin_src jupyter-R :session R
 setwd("/home/david/Documents/BenoitLab/RNA-seq/")
 source("scripts/functions.r")
@@ -583,7 +589,7 @@ fishtype <- "sailfish"
 #+RESULTS:
 
 *** Do the initial processing of the data
-Imports the data and runs it through initial edgeR analysis using the functions created above
+Imports the data and runs it through initial edgeR analysis using the functions created above. The functions do the initial manipulation of the data as detailed in the edgeR paper. This outputs the objects we will trim based on expression.
 #+begin_src jupyter-R :session R
 a <- txi(directory, quantdatafoldername, "metadata.csv", fishtype)
 #De <- initialDeseq(a[[1]], a[[2]])
@@ -624,19 +630,18 @@ summarizing length
 #+end_example
 
 *** Partion the data into body and leg tables
+The Table object from the test object is separated into a body and a leg section, where the genes in the leg section are down regulated in the body and vice versa.
 #+begin_src jupyter-R :session R
 
 table <- test$table
 body <- table[table$logFC.partbody > 2, ]
 leg <- table[table$logFC.partbody < -2, ]
 #+end_src
-
 #+RESULTS:
-
 *** Save the data tables to a file
-Configure this to fit your computer
+Configure this to fit your computer.
 #+begin_src jupyter-R :session R
-setwd("/home/david/Documents/BenoitLab/RNA-seq/")
+setwd("/home/david/Documents/BenoitLab/RNA-seq/"). This section saves csv files with the expression data from the tables in the previous section.
 write.table(table, file="edgeR-Genes/TotalExpr.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(leg, file="edgeR-Genes/legExpr.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(body, file="edgeR-Genes/bodyExpr.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
@@ -658,6 +663,7 @@ write.table(body, file="edgeR-Genes/bodyExpr.csv", quote=FALSE, col.names=TRUE, 
 :END:
 
 *** Find the relative expression values when compared to the control
+This is the main comparison with the pesticides done with the edgeR table. The control is subtracted from the pesticide expression to give a relative expression value. This is not necessary in Deseq and is instead done by manipulating the design.
 #+begin_src jupyter-R :session R
 deetvcontrol <- table$logFC.pestdeet - table$logFC.pestcontrol
 permvcontrol <- table$logFC.pestperm - table$logFC.pestcontrol
@@ -674,7 +680,7 @@ leg$deetvcontrol <- deetvcontrolvleg
 leg$permvcontrol <- permvcontrolvleg
 #+end_src
 *** Selection of the data
-Selects only the columns that have an expression value greater than 2(up-regulated) or less than -2(down-regulated)
+Selects only the columns that have an expression value greater than 2(up-regulated) or less than -2(down-regulated). This is the same selection done earlier in the script with the body and leg.
 #+begin_src jupyter-R :session R
 updeet <- table[table$deetvcontrol > 2,]
 downdeet <- table[table$deetvcontrol < -2,]
@@ -694,18 +700,17 @@ downpermbody <- body[body$permvcontrol < -2,]
 uppermleg <- leg[leg$permvcontrol > 2,]
 downpermleg <- leg[leg$permvcontrol < -2,]
 #+end_src
-*** Create a csv for venn diagram plotting
+*** Create a csv for bar plotting
+This is just a simple organization of the number of genes deferentially expressed for each comparison. The csv is saved using the write.table line, so change the path to fit your directory structure.
 #+begin_src jupyter-R :session R
 d <- data.frame(Pest = c(rep(c("DEET", "DEET", "PERM", "PERM"))),
                 Part = c(rep("Body", 4), rep("Leg", 4)),
                 Names = c(rep(c("Up Regulated", "Down Regulated"), 4)),
                 GeneCount = c(nrow(downdeetbody), nrow(updeetbody), nrow(downpermbody), nrow(uppermbody), nrow(downdeetleg), nrow(updeetleg), nrow(downpermleg), nrow(uppermleg)))
-#+end_src
-*** Save the venn diagram csv
-#+begin_src jupyter-R :session R
 write.table(d, file="edgeR-Genes/venn-regulation.csv", quote=FALSE, col.names=TRUE, row.names=FALSE, sep=",")
 #+end_src
 *** Gets the row-names
+This separates the data into just the gene names for each comparison. This is helpful for venn diagrams and other comparison.
 #+begin_src jupyter-R :session R
 upperm <- table[table$permvcontrol > 2,]
 downperm <- table[table$permvcontrol < -2,]
@@ -730,6 +735,7 @@ downdeetbodygenes <- rownames(downdeetbody)
 #+end_src
 
 *** Create a list of dataframes corresponding to the total, leg, and body
+Consolidates the genes into a list of dataframes for easy saving
 #+begin_src jupyter-R :session R
 genelist <- list(upPerm = uppermgenes, downPerm = downpermgenes,
                 upPermBody=uppermbodygenes, downPermBody=downpermbodygenes,
@@ -739,6 +745,7 @@ genelist <- list(upPerm = uppermgenes, downPerm = downpermgenes,
                 upDeetBody = updeetbodygenes, downDeetBody = downdeetbodygenes, table=rownames(table), leg=rownames(leg), body=rownames(body))
 #+end_src
 *** Save the genelist to files
+Saves all of the comparisons to file.
 #+begin_src jupyter-R :session R
 for (i in seq(length(genelist))){
     namelist <- names(genelist)
@@ -747,7 +754,7 @@ for (i in seq(length(genelist))){
 #+end_src
 * Fasta Manipulation
 ** Get Gene names
-This program just pulls the names of the genes out of the fasta file. There are probably less messy ways to do this.
+This program just pulls the names of the genes out of the fasta file. There are probably less messy ways to do this. Online programs exist for this as well, but this is a fairly simple c++ program.
 #+begin_src cpp :tangle scripts/geneextract.cpp
 #include <iostream>
 #include <fstream>
@@ -773,10 +780,11 @@ int main(){
 
 #+RESULTS:
 
-* Blast step
-* Plotting step
+* Blast
+* Plotting
 This uses R and python to plot data.
 ** Required Packages
+These packages are only required for plotting the data
 *** R packages
 + tidyverse (ggplot)
 + ggpubr (correlation methods)
@@ -857,6 +865,7 @@ fig.savefig("VennDiagrams/RevisedDiagrams/DeetnPerm.png", bbox_inxhes="tight", d
 plt.show()
 #+end_src
 *** Venn 3
+This compares the expression of body and legs when compared to the total.
 #+begin_src jupyter-python :session py
 genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
 body = pd.read_csv("GeneReference/Body.csv")
@@ -938,6 +947,7 @@ fig.tight_layout()
 fig.savefig("VennDiagrams/RevisedDiagrams/Perm.png")
 #+end_src
 ** Pearson Correlation
+This correlates the results from edgeR and Deseq2. Using this, the correlation can make the analysis tool interchangeable.
 :PROPERTIES:
 :header-args: :tangle scripts/pearson-correlation.r
 :END:
@@ -1018,20 +1028,20 @@ dotplotdata = pd.read_csv("../GeneReference/dotplotdata.csv")  # infers header e
 
 pesticide = dotplotdata.Category
 pathway = dotplotdata.Pathway
-enrichmentratio = dotplotdata.Enrichment * 3
+enrichmentratio = dotplotdata.Enrichment
 pval = dotplotdata["P-Value"]
 #+end_src
 *** Plot the figure
 #+begin_src jupyter-python :session py
 fig, ax = plt.subplots(1)
 p = ax.scatter(
-    pathway, pesticide, c=pval, s=enrichmentratio, cmap=cmap, vmin=0, vmax=0.05
+    pathway, pesticide, c=pval, s=enrichmentratio * 3, cmap=cmap, vmin=0, vmax=0.05
 )
 plt.legend(loc="lower left", markerscale=2.0, scatterpoints=1, fontsize=10)
 plt.xticks(rotation="vertical")
 
 # Legend:
-handles, labels = p.legend_elements(prop="sizes", alpha=0.6, num=4)
+handles, labels = p.legend_elements(prop="sizes", alpha=0.6, num=4, func=lambda x : x/3)
 legend2 = ax.legend(
     handles,
     labels,
