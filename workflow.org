@@ -1,3 +1,14 @@
+* Introduction
++ The Ticks are sprayed with Permethrin and DEET
++ The Legs are separated from the bodies of the ticks and analyzed separately
++ The Fasta files + assembly are sent to Galaxy
+* Galaxy
++ Import the fasta files + assembly to Galaxy
++ Run FastQC to determine data integrity and quality on each fasta
++ Run Trimmomatic to trim superfluous data from the fasta files
++ Run A fish analysis tool on the data (salmon, sailfish, kallisto quant) on each fasta file from trimmomatic.
+  This requires the assembly as an input
++ Export the quant files for local analysis with R
 * R functions
 :PROPERTIES:
 :header-args: :tangle scripts/functions.r
@@ -79,7 +90,6 @@ estEdgeR <- function(EdgeR, design){
 #+end_src
 
 #+RESULTS:
-
 * initial R step
 ** Setup Directory
 ** Deseq
@@ -103,13 +113,19 @@ library(tximport)
 library(readr)
 library("pheatmap")
 #+end_src
+
+#+RESULTS:
+
 *** Tximport
 #+begin_src jupyter-R :session R
 #change these values to your own situations
-directory <- "/home/david/Dropbox/LegsvBodyPesticide/DESEQ2"
+directory <- "/home/david/Documents/BenoitLab/R/largeRNASEQ"
 quantdatafoldername <- "CorrectedQuantData"
 fishtype <- "sailfish"
 #+end_src
+
+#+RESULTS:
+
 **** Convert quant files to txi object
 #+begin_src jupyter-R :session R
 # imports the genes as a tximport file
@@ -120,6 +136,37 @@ names(files) <- metadata$name
 genes <- read.table("genes2.tabular")
 txi <- tximport(files, type=fishtype, tx2gene=genes)
 #+end_src
+
+#+RESULTS:
+#+begin_example
+reading in files with read_tsv
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+
+
+summarizing abundance
+
+summarizing counts
+
+summarizing length
+#+end_example
+
 *** Create the Deseq Object
 #+begin_src jupyter-R :session R
 library(DESeq2)
@@ -128,6 +175,28 @@ data <- DESeqDataSetFromTximport(txi, colData=metadata, design = ~part + pestici
 Deseq <- DESeq(data)
 results <- results(Deseq)
 #+end_src
+
+#+RESULTS:
+#+begin_example
+Warning message in DESeqDataSet(se, design = design, ignoreRank):
+“some variables in design formula are characters, converting to factors”
+using counts and average transcript lengths from tximport
+
+estimating size factors
+
+using 'avgTxLength' from assays(dds), correcting for library size
+
+estimating dispersions
+
+gene-wise dispersion estimates
+
+mean-dispersion relationship
+
+final dispersion estimates
+
+fitting model and testing
+#+end_example
+
 *** Do initial data manipulation
 #+begin_src jupyter-R :session R
 ## hello
@@ -141,7 +210,50 @@ ddsMF <- dds
 design(ddsMF) <- formula(~pesticides)
 ddsMF <- DESeq(ddsMF)
 Mres <- results(ddsMF)
+design(dds) <- formula(~part)
+part <- DESeq(dds)
+res <- results(part)
 #+end_src
+
+#+RESULTS:
+#+begin_example
+using pre-existing normalization factors
+
+estimating dispersions
+
+found already estimated dispersions, replacing these
+
+gene-wise dispersion estimates
+
+mean-dispersion relationship
+
+final dispersion estimates
+
+fitting model and testing
+
+using pre-existing normalization factors
+
+estimating dispersions
+
+found already estimated dispersions, replacing these
+
+gene-wise dispersion estimates
+
+mean-dispersion relationship
+
+final dispersion estimates
+
+fitting model and testing
+
+-- replacing outliers and refitting for 4107 genes
+-- DESeq argument 'minReplicatesForReplace' = 7
+-- original counts are preserved in counts(dds)
+
+estimating dispersions
+
+fitting model and testing
+#+end_example
+
 *** Initial selection of the data
 + p value of less than 0.01
 + Leg is compared to body, therefore down-regulated are up-regulated in body
@@ -150,11 +262,18 @@ DR <- Mres[ which(Mres$padj < 0.01), ]
 Body <- DR[which(DR$log2FoldChange < -2),]
 Leg <- DR[which(DR$log2FoldChange > 2), ]
 #+end_src
+
+#+RESULTS:
+
 *** Save lists of the respective up-regulated genes
 #+begin_src jupyter-R :session R
-write.table(rownames(Body), file="Genes/Body.csv", quote=FALSE, col.names=FALSE, row.names=FALSE, sep=",")
-write.table(rownames(Leg), file="Genes/Leg.csv", quote=FALSE, col.names=FALSE, row.names=FALSE, sep=",")
+write.table(Body, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Body.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(Leg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Leg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(res, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/total.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 #+end_src
+
+#+RESULTS:
+
 *** Create a new analysis design
 #+begin_src jupyter-R :session R
 newdd <- dds
@@ -475,23 +594,23 @@ test <- glmQLFTest(Eest, coef=1:4)
 #+begin_example
 reading in files with read_tsv
 
-1 
-2 
-3 
-4 
-5 
-6 
-7 
-8 
-9 
-10 
-11 
-12 
-13 
-14 
-15 
-16 
-17 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
 
 
 summarizing abundance
@@ -499,12 +618,11 @@ summarizing abundance
 summarizing counts
 
 summarizing length
-
-Loading required package: limma
 #+end_example
 
 *** Partion the data into body and leg tables
 #+begin_src jupyter-R :session R
+
 table <- test$table
 body <- table[table$logFC.partbody > 2, ]
 leg <- table[table$logFC.partbody < -2, ]
@@ -654,6 +772,16 @@ int main(){
 
 * Blast step
 * Plotting step
+This uses R and python to plot data.
+** Required Packages
+*** R packages
++ tidyverse (ggplot)
++ ggpubr (correlation methods)
+*** Python packages
++ Matplotlib
++ pandas
++ numpy
++ matplotlib_venn
 ** Venn Diagrams
 :PROPERTIES:
 :header-args: :tangle scripts/Venn.py
@@ -805,4 +933,126 @@ v = venn2_unweighted(subsets=(len(upPerm), len(downPerm), len(genes)-len(upPerm)
 axes.set_title("Perm Expression")
 fig.tight_layout()
 fig.savefig("VennDiagrams/RevisedDiagrams/Perm.png")
+#+end_src
+** Pearson Correlation
+:PROPERTIES:
+:header-args: :tangle scripts/pearson-correlation.r
+:END:
+*** Libraries
+#+begin_src jupyter-R :session R
+library("tidyverse")
+library("ggpubr")
+#+end_src
+
+#+RESULTS:
+
+*** Import the data
+#+begin_src jupyter-R :session R
+EdgeR <- read.csv("/home/david/Documents/BenoitLab/RNA-seq/edgeR-Genes/bodyExpr.csv")
+Deseq <- read.csv("/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/total.csv")
+common <- intersect(row.names(Deseq), row.names(EdgeR))
+EdgeR <- EdgeR[common, ]
+Deseq <- Deseq[common, ]
+
+ECol <- EdgeR["logFC.partbody"]
+DCol <- -1*Deseq["log2FoldChange"]
+newD <- data.frame(DCol, ECol)
+#+end_src
+
+#+RESULTS:
+
+*** Plot the data
+#+begin_src jupyter-R :session R
+library("ggpubr")
+pearson <- ggscatter(newD, x = "log2FoldChange", y = "logFC.partbody",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "Deseq", ylab = "EdgeR")
+pearson
+ggsave("/home/david/Documents/BenoitLab/RNA-seq/figures/figure1/pearson.png", pearson, png())
+ggsave("/home/david/Documents/BenoitLab/RNA-seq/figures/figure1/pearson.pdf", pearson, pdf())
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: `geom_smooth()` using formula 'y ~ x'
+:
+: Saving 6.67 x 6.67 in image
+:
+: `geom_smooth()` using formula 'y ~ x'
+:
+: Saving 7 x 7 in image
+:
+: `geom_smooth()` using formula 'y ~ x'
+:
+#+attr_org: :width 420 :height 420
+[[file:./.ob-jupyter/f1067a6954fd040fbf8de1c030201143a06483aa.png]]
+:END:
+** Dotplot
+:PROPERTIES:
+:HEADER-ARGS: :tangle scripts/enrichment-dotplot.py
+:END:
+This figure plots the enrichment of specific genes. Ideal for small amounts of genes.
+*** imports
+#+begin_src jupyter-python :session py
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+import pandas as pd
+#+end_src
+*** Theme settings
+#+begin_src jupyter-python :session py
+plt.rcParams["font.family"] = "Bahnschrift"
+cmap = matplotlib.colors.LinearSegmentedColormap.from_list(
+    "", ["dodgerblue", "lightgrey"]
+)
+
+#+end_src
+*** Import
+Use the pandas package to import the csv file
+#+begin_src jupyter-python :session py
+dotplotdata = pd.read_csv("../GeneReference/dotplotdata.csv")  # infers header existance
+
+pesticide = dotplotdata.Category
+pathway = dotplotdata.Pathway
+enrichmentratio = dotplotdata.Enrichment * 3
+pval = dotplotdata["P-Value"]
+#+end_src
+*** Plot the figure
+#+begin_src jupyter-python :session py
+fig, ax = plt.subplots(1)
+p = ax.scatter(
+    pathway, pesticide, c=pval, s=enrichmentratio, cmap=cmap, vmin=0, vmax=0.05
+)
+plt.legend(loc="lower left", markerscale=2.0, scatterpoints=1, fontsize=10)
+plt.xticks(rotation="vertical")
+
+# Legend:
+handles, labels = p.legend_elements(prop="sizes", alpha=0.6, num=4)
+legend2 = ax.legend(
+    handles,
+    labels,
+    loc="upper right",
+    title="Enrichment Ratio",
+    bbox_to_anchor=(1.4, 1.1),
+)
+
+# Colorbar:
+cbar = fig.colorbar(p, shrink=0.5)
+cbar.ax.set_ylabel("p Value", rotation=270, labelpad=15)
+
+# Title, labels, and visual modifications:
+plt.title("Metabolic Pathway Enrichment")
+plt.xlabel("Metabolic Pathway")
+plt.ylabel("Pesticide")
+ax.grid(axis="x", linestyle="dotted")
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+
+plt.show()
+#+end_src
+*** Save the Figure
+#+begin_src jupyter-python :session py
+plt.savefig('dotplot.pdf', dpi=300, bbox_inches='tight')
+plt.savefig('dotplot.jpg', dpi=300, bbox_inches='tight')
 #+end_src
