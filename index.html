@@ -1,0 +1,2431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <!-- 2021-05-18 Tue 11:34 -->
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=utf-8" />
+  <meta name="viewport" content=
+  "width=device-width, initial-scale=1" />
+  <title>RNA-seq Leg Vs Body workflow</title>
+  <meta name="author" content="David Lewis" />
+  <meta name="generator" content="Org Mode" />
+  <style type="text/css">
+  <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+  </style>
+  <link rel="stylesheet" type="text/css" href=
+  "https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css" />
+  <link rel="stylesheet" type="text/css" href=
+  "https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css" />
+
+  <script src=
+  "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src=
+  "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src=
+  "https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+  <script type="text/javascript" src=
+  "https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+  <script type="text/javascript">
+  // @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+  <!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+  // @license-end
+  </script>
+</head>
+<body>
+  <div id="content">
+    <h1 class="title">RNA-seq Leg Vs Body workflow</h1>
+    <div id="table-of-contents">
+      <h2>Table of Contents</h2>
+      <div id="text-table-of-contents">
+        <ul>
+          <li><a href="#org924f590">1. Introduction</a></li>
+          <li><a href="#org65e6c7f">2. Galaxy</a></li>
+          <li>
+            <a href="#org4bc15c9">3. R functions</a>
+            <ul>
+              <li><a href="#org4942f1e">3.1. txi function</a></li>
+              <li><a href="#orgda6f388">3.2. Initial Deseq
+              Function</a></li>
+              <li><a href="#orgccfbf49">3.3. ReDeseq</a></li>
+              <li><a href="#org10c6694">3.4. initialEdgeR</a></li>
+              <li><a href="#org834c189">3.5. estEdgeR</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#org5a2413b">4. initial R step</a>
+            <ul>
+              <li><a href="#org5ecd415">4.1. Setup
+              Directory</a></li>
+              <li>
+                <a href="#org803f30c">4.2. Deseq</a>
+                <ul>
+                  <li><a href="#org4dab0a6">4.2.1. Package
+                  imports</a></li>
+                  <li><a href="#org16fa532">4.2.2.
+                  Tximport</a></li>
+                  <li><a href="#org49363ad">4.2.3. Create the Deseq
+                  Object</a></li>
+                  <li><a href="#orgb388487">4.2.4. Do initial data
+                  manipulation</a></li>
+                  <li><a href="#org50ec132">4.2.5. Initial
+                  selection of the data</a></li>
+                  <li><a href="#orgdc7fceb">4.2.6. Save lists of
+                  the respective up-regulated genes</a></li>
+                  <li><a href="#org91a5c67">4.2.7. Create a new
+                  analysis design</a></li>
+                  <li><a href="#org1154521">4.2.8. Prepare the data
+                  for pheatmap plotting</a></li>
+                  <li><a href="#org592cbf7">4.2.9. Integrity
+                  plots</a></li>
+                  <li><a href="#orgb001528">4.2.10. Another Deseq
+                  Design</a></li>
+                  <li><a href="#org7a912f0">4.2.11. Altered
+                  Selection of genes</a></li>
+                  <li><a href="#org64cc069">4.2.12. Save new
+                  selection to file</a></li>
+                  <li><a href="#org33de8b0">4.2.13. Extra integrity
+                  plot</a></li>
+                  <li><a href="#orgdde1490">4.2.14. <span class=
+                  "todo TODO">TODO</span> Extra EdgeR for venn
+                  diagrams</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#org6f95271">4.3. EdgeR</a>
+                <ul>
+                  <li><a href="#org7e8a1da">4.3.1. Initial
+                  settings</a></li>
+                  <li><a href="#org6c17215">4.3.2. Do the initial
+                  processing of the data</a></li>
+                  <li><a href="#org69230e2">4.3.3. Partion the data
+                  into body and leg tables</a></li>
+                  <li><a href="#org4fe52bf">4.3.4. Save the data
+                  tables to a file</a></li>
+                  <li><a href="#orgd564d78">4.3.5. Find the
+                  relative expression values when compared to the
+                  control</a></li>
+                  <li><a href="#org6f9305c">4.3.6. Selection of the
+                  data</a></li>
+                  <li><a href="#org0dae18f">4.3.7. Create a csv for
+                  venn diagram plotting</a></li>
+                  <li><a href="#orgf90f405">4.3.8. Save the venn
+                  diagram csv</a></li>
+                  <li><a href="#orgda3151a">4.3.9. Gets the
+                  row-names</a></li>
+                  <li><a href="#org1ccc66d">4.3.10. Create a list
+                  of dataframes corresponding to the total, leg,
+                  and body</a></li>
+                  <li><a href="#org1c65e2b">4.3.11. Save the
+                  genelist to files</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#org931857c">5. Fasta Manipulation</a>
+            <ul>
+              <li><a href="#org8ff039d">5.1. Get Gene
+              names</a></li>
+            </ul>
+          </li>
+          <li><a href="#org8103350">6. Blast step</a></li>
+          <li>
+            <a href="#orgf7e408b">7. Plotting step</a>
+            <ul>
+              <li>
+                <a href="#org45b33de">7.1. Required Packages</a>
+                <ul>
+                  <li><a href="#org8d9ac75">7.1.1. R
+                  packages</a></li>
+                  <li><a href="#orgb3f7af3">7.1.2. Python
+                  packages</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#org3124648">7.2. Venn Diagrams</a>
+                <ul>
+                  <li><a href="#org67e5bb1">7.2.1. Imports</a></li>
+                  <li><a href="#orgc66d525">7.2.2. Venn 1</a></li>
+                  <li><a href="#orgf7b893e">7.2.3. Venn 2</a></li>
+                  <li><a href="#org5612078">7.2.4. Venn 3</a></li>
+                  <li><a href="#orgad1b086">7.2.5. Venn 4</a></li>
+                  <li><a href="#org40d8b9c">7.2.6. Venn 5</a></li>
+                  <li><a href="#orge857fa1">7.2.7. Venn 6</a></li>
+                  <li><a href="#org4583999">7.2.8. Venn 7</a></li>
+                  <li><a href="#org00079e3">7.2.9. Venn 8</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#orgba695e5">7.3. Pearson Correlation</a>
+                <ul>
+                  <li><a href="#org9638d41">7.3.1.
+                  Libraries</a></li>
+                  <li><a href="#org40f6b95">7.3.2. Import the
+                  data</a></li>
+                  <li><a href="#org8ed8c4f">7.3.3. Plot the
+                  data</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#org7495ab2">7.4. Dotplot</a>
+                <ul>
+                  <li><a href="#org9170b1e">7.4.1. imports</a></li>
+                  <li><a href="#org6fa0347">7.4.2. Theme
+                  settings</a></li>
+                  <li><a href="#org48e511c">7.4.3. Import</a></li>
+                  <li><a href="#org423bf69">7.4.4. Plot the
+                  figure</a></li>
+                  <li><a href="#org8f0dbde">7.4.5. Save the
+                  Figure</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="outline-container-org924f590" class="outline-2">
+      <h2 id="org924f590"><span class="section-number-2">1</span>
+      Introduction</h2>
+      <div class="outline-text-2" id="text-1">
+        <ul class="org-ul">
+          <li>The Ticks are sprayed with Permethrin and DEET</li>
+          <li>The Legs are separated from the bodies of the ticks
+          and analyzed separately</li>
+          <li>The Fasta files + assembly are sent to Galaxy</li>
+        </ul>
+      </div>
+    </div>
+    <div id="outline-container-org65e6c7f" class="outline-2">
+      <h2 id="org65e6c7f"><span class="section-number-2">2</span>
+      Galaxy</h2>
+      <div class="outline-text-2" id="text-2">
+        <ul class="org-ul">
+          <li>Import the fasta files + assembly to Galaxy</li>
+          <li>Run FastQC to determine data integrity and quality on
+          each fasta</li>
+          <li>Run Trimmomatic to trim superfluous data from the
+          fasta files</li>
+          <li>Run A fish analysis tool on the data (salmon,
+          sailfish, kallisto quant) on each fasta file from
+          trimmomatic. This requires the assembly as an input</li>
+          <li>Export the quant files for local analysis with R</li>
+        </ul>
+      </div>
+    </div>
+    <div id="outline-container-org4bc15c9" class="outline-2">
+      <h2 id="org4bc15c9"><span class="section-number-2">3</span> R
+      functions</h2>
+      <div class="outline-text-2" id="text-3"></div>
+      <div id="outline-container-org4942f1e" class="outline-3">
+        <h3 id="org4942f1e"><span class=
+        "section-number-3">3.1</span> txi function</h3>
+        <div class="outline-text-3" id="text-3-1">
+          <p>uses the tximport package to import the quant data</p>
+          <div class="org-src-container">
+            <pre class="src src-jupyter-R"><span style=
+            "color: #b8bb26;">txi</span> <span style=
+            "color: #d3869b;">&lt;-</span> <span style=
+            "color: #fb4934;">function</span>(directory, quantdatafoldername, metadata, fishtype){
+  <span style="color: #d3869b;">library</span>(tximport)
+  <span style="color: #d3869b;">setwd</span>(directory)
+  metadata <span style=
+"color: #d3869b;">&lt;-</span> read.csv(metadata, header=<span style="color: #fabd2f;">TRUE</span>)
+  files <span style=
+"color: #d3869b;">&lt;-</span> file.path(directory, quantdatafoldername, metadata$name)
+  names(files) <span style=
+"color: #d3869b;">&lt;-</span> metadata$name
+  genes <span style=
+"color: #d3869b;">&lt;-</span> read.table(<span style=
+"color: #b8bb26;">"genes2.tabular"</span>)
+  txi <span style=
+"color: #d3869b;">&lt;-</span> tximport(files, type=fishtype, tx2gene=genes)
+  <span style="color: #fb4934;">return</span>(list(txi, metadata))
+}
+</pre>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-orgda6f388" class="outline-3">
+        <h3 id="orgda6f388"><span class=
+        "section-number-3">3.2</span> Initial Deseq Function</h3>
+        <div class="outline-text-3" id="text-3-2">
+          <p>Sets up the deseq data set object and returns it</p>
+          <div class="org-src-container">
+            <pre class="src src-jupyter-R"><span style=
+            "color: #b8bb26;">initialDeseq</span> <span style=
+            "color: #d3869b;">&lt;-</span> <span style=
+            "color: #fb4934;">function</span>(txi, metadata, design=~part + pesticides){
+  <span style="color: #d3869b;">library</span>(DESeq2)
+  <span style="color: #928374;"># </span><span style=
+"color: #928374;">Deseq2 dataset from tximport</span>
+  data <span style=
+"color: #d3869b;">&lt;-</span> DESeqDataSetFromTximport(txi, colData=metadata, design = design)
+  Deseq <span style="color: #d3869b;">&lt;-</span> DESeq(data)
+  results <span style="color: #d3869b;">&lt;-</span> results(Deseq)
+  print(summary(results))
+  <span style="color: #fb4934;">return</span>(list(Deseq, results))
+}
+</pre>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-orgccfbf49" class="outline-3">
+        <h3 id="orgccfbf49"><span class=
+        "section-number-3">3.3</span> ReDeseq</h3>
+        <div class="outline-text-3" id="text-3-3">
+          <p>sets up the deseq object with a different design
+          criteria</p>
+          <div class="org-src-container">
+            <pre class="src src-jupyter-R"><span style=
+            "color: #b8bb26;">reDeseq</span> <span style=
+            "color: #d3869b;">&lt;-</span> <span style=
+            "color: #fb4934;">function</span>(dds){
+  ddsMF <span style="color: #d3869b;">&lt;-</span> dds
+  design(ddsMF) <span style=
+"color: #d3869b;">&lt;-</span> formula(~pesticides)
+  ddsMF <span style="color: #d3869b;">&lt;-</span> DESeq(ddsMF)
+  Mres <span style="color: #d3869b;">&lt;-</span> results(ddsMF)
+  <span style="color: #fb4934;">return</span>(list(ddsMf, Mres))
+  }
+</pre>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-org10c6694" class="outline-3">
+        <h3 id="org10c6694"><span class=
+        "section-number-3">3.4</span> initialEdgeR</h3>
+        <div class="outline-text-3" id="text-3-4">
+          <p>Sets up the EdgeR object and returns it.</p>
+          <div class="org-src-container">
+            <pre class="src src-jupyter-R"><span style=
+            "color: #b8bb26;">initialEdgeR</span> <span style=
+            "color: #d3869b;">&lt;-</span> <span style=
+            "color: #fb4934;">function</span>(txi, meta){
+  <span style="color: #d3869b;">library</span>(edgeR)
+  <span style="color: #928374;"># </span><span style=
+"color: #928374;">EdgR dataset from tximport</span>
+  counts <span style="color: #d3869b;">&lt;-</span> txi$counts
+  length <span style="color: #d3869b;">&lt;-</span> txi$length
+  normMat <span style=
+"color: #d3869b;">&lt;-</span> length / exp(rowMeans(log(length)))
+  normCts <span style=
+"color: #d3869b;">&lt;-</span> counts / normMat
+  eff.lib <span style=
+"color: #d3869b;">&lt;-</span> calcNormFactors(normCts) * colSums(normCts)
+  normMat <span style=
+"color: #d3869b;">&lt;-</span> sweep(normMat, <span style=
+"color: #d3869b; font-weight: bold;">2</span>, eff.lib, <span style="color: #b8bb26;">"*"</span>)
+  normMat <span style="color: #d3869b;">&lt;-</span> log(normMat)
+  y <span style="color: #d3869b;">&lt;-</span> DGEList(counts)
+  y <span style=
+"color: #d3869b;">&lt;-</span> scaleOffset(y, normMat)
+  
+  pest <span style=
+"color: #d3869b;">&lt;-</span> factor(meta$pesticides, levels=c(<span style="color: #b8bb26;">"perm"</span>, <span style="color: #b8bb26;">"deet"</span>, <span style="color: #b8bb26;">"control"</span>))
+  part <span style=
+"color: #d3869b;">&lt;-</span> factor(meta$part, levels=c(<span style="color: #b8bb26;">"leg"</span>, <span style="color: #b8bb26;">"body"</span>))
+  design <span style=
+"color: #d3869b;">&lt;-</span> model.matrix(~<span style=
+"color: #d3869b; font-weight: bold;">0</span> + pest + part)
+  keep <span style=
+"color: #d3869b;">&lt;-</span> filterByExpr(y, design)
+  EdgeR <span style="color: #d3869b;">&lt;-</span> y[keep, ]
+  <span style="color: #fb4934;">return</span>(list(EdgeR, design))
+}
+</pre>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-org834c189" class="outline-3">
+        <h3 id="org834c189"><span class=
+        "section-number-3">3.5</span> estEdgeR</h3>
+        <div class="outline-text-3" id="text-3-5">
+          <p>finds the fit of the data and returns it for further
+          analysis</p>
+          <div class="org-src-container">
+            <pre class="src src-jupyter-R"><span style=
+            "color: #b8bb26;">estEdgeR</span> <span style=
+            "color: #d3869b;">&lt;-</span> <span style=
+            "color: #fb4934;">function</span>(EdgeR, design){
+  <span style="color: #d3869b;">library</span>(edgeR)
+  y <span style=
+"color: #d3869b;">&lt;-</span> estimateGLMCommonDisp(EdgeR, design)
+  y <span style=
+"color: #d3869b;">&lt;-</span> estimateGLMTrendedDisp(y, design)
+  y <span style=
+"color: #d3869b;">&lt;-</span> estimateGLMTagwiseDisp(y, design)
+  fit <span style=
+"color: #d3869b;">&lt;-</span> glmQLFit(y, design) 
+  
+  <span style="color: #fb4934;">return</span>(fit)
+}
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="outline-container-org5a2413b" class="outline-2">
+      <h2 id="org5a2413b"><span class="section-number-2">4</span>
+      initial R step</h2>
+      <div class="outline-text-2" id="text-4"></div>
+      <div id="outline-container-org5ecd415" class="outline-3">
+        <h3 id="org5ecd415"><span class=
+        "section-number-3">4.1</span> Setup Directory</h3>
+      </div>
+      <div id="outline-container-org803f30c" class="outline-3">
+        <h3 id="org803f30c"><span class=
+        "section-number-3">4.2</span> Deseq</h3>
+        <div class="outline-text-3" id="text-4-2"></div>
+        <div id="outline-container-org4dab0a6" class="outline-4">
+          <h4 id="org4dab0a6"><span class=
+          "section-number-4">4.2.1</span> Package imports</h4>
+          <div class="outline-text-4" id="text-4-2-1">
+            <div class="org-src-container">
+              <pre class=
+              "src src-jupyter-R">vignette(package=<span style=
+              "color: #b8bb26;">"dplyr"</span>)
+
+rdata <span style=
+"color: #d3869b;">&lt;-</span> list.files(pattern=<span style=
+"color: #b8bb26;">"\\.Rdata"</span>)
+args <span style=
+"color: #d3869b;">&lt;-</span> commandArgs(trailingOnly = <span style="color: #fabd2f;">TRUE</span>)
+<span style=
+"color: #fb4934;">if</span>(length(args) &gt; <span style=
+"color: #d3869b; font-weight: bold;">0</span>){
+    <span style="color: #fb4934;">if</span>(args == <span style=
+"color: #b8bb26;">"rerun"</span>){
+        print(<span style=
+"color: #b8bb26;">"rerunning data"</span>)
+        r
+    }
+}
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">general library imports ----</span>
+<span style="color: #d3869b;">library</span>(tximport)
+<span style="color: #d3869b;">library</span>(readr)
+<span style="color: #d3869b;">library</span>(<span style=
+"color: #b8bb26;">"pheatmap"</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org16fa532" class="outline-4">
+          <h4 id="org16fa532"><span class=
+          "section-number-4">4.2.2</span> Tximport</h4>
+          <div class="outline-text-4" id="text-4-2-2">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R"><span style=
+              "color: #928374;">#</span><span style=
+              "color: #928374;">change these values to your own situations</span>
+directory <span style="color: #d3869b;">&lt;-</span> <span style=
+"color: #b8bb26;">"/home/david/Documents/BenoitLab/R/largeRNASEQ"</span>
+quantdatafoldername <span style=
+"color: #d3869b;">&lt;-</span> <span style=
+"color: #b8bb26;">"CorrectedQuantData"</span>
+fishtype <span style="color: #d3869b;">&lt;-</span> <span style=
+"color: #b8bb26;">"sailfish"</span>
+</pre>
+            </div>
+          </div>
+          <ol class="org-ol">
+            <li>
+              <a id="org9a7b49b" name="org9a7b49b"></a>Convert
+              quant files to txi object<br />
+              <div class="outline-text-5" id="text-4-2-2-1">
+                <div class="org-src-container">
+                  <pre class="src src-jupyter-R"><span style=
+                  "color: #928374;"># </span><span style=
+                  "color: #928374;">imports the genes as a tximport file</span>
+<span style="color: #d3869b;">setwd</span>(directory)
+metadata <span style=
+"color: #d3869b;">&lt;-</span> read.csv(<span style=
+"color: #b8bb26;">"metadata.csv"</span>, header=<span style=
+"color: #fabd2f;">TRUE</span>)
+files <span style=
+"color: #d3869b;">&lt;-</span> file.path(directory, quantdatafoldername, metadata$name)
+names(files) <span style=
+"color: #d3869b;">&lt;-</span> metadata$name
+genes <span style=
+"color: #d3869b;">&lt;-</span> read.table(<span style=
+"color: #b8bb26;">"genes2.tabular"</span>)
+txi <span style=
+"color: #d3869b;">&lt;-</span> tximport(files, type=fishtype, tx2gene=genes)
+</pre>
+                </div>
+                <pre class="example" id="org2d23b90">
+reading in files with read_tsv
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+
+
+summarizing abundance
+
+summarizing counts
+
+summarizing length
+</pre>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div id="outline-container-org49363ad" class="outline-4">
+          <h4 id="org49363ad"><span class=
+          "section-number-4">4.2.3</span> Create the Deseq
+          Object</h4>
+          <div class="outline-text-4" id="text-4-2-3">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R"><span style=
+              "color: #d3869b;">library</span>(DESeq2)
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">Deseq2 dataset from tximport</span>
+data <span style=
+"color: #d3869b;">&lt;-</span> DESeqDataSetFromTximport(txi, colData=metadata, design = ~part + pesticides)
+Deseq <span style="color: #d3869b;">&lt;-</span> DESeq(data)
+results <span style="color: #d3869b;">&lt;-</span> results(Deseq)
+</pre>
+            </div>
+            <pre class="example" id="org2c2cd0e">
+Warning message in DESeqDataSet(se, design = design, ignoreRank):
+“some variables in design formula are characters, converting to factors”
+using counts and average transcript lengths from tximport
+
+estimating size factors
+
+using 'avgTxLength' from assays(dds), correcting for library size
+
+estimating dispersions
+
+gene-wise dispersion estimates
+
+mean-dispersion relationship
+
+final dispersion estimates
+
+fitting model and testing
+</pre>
+          </div>
+        </div>
+        <div id="outline-container-orgb388487" class="outline-4">
+          <h4 id="orgb388487"><span class=
+          "section-number-4">4.2.4</span> Do initial data
+          manipulation</h4>
+          <div class="outline-text-4" id="text-4-2-4">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R"><span style=
+              "color: #928374;">## </span><span style=
+              "color: #928374;">hello</span>
+dds <span style="color: #d3869b;">&lt;-</span> Deseq
+<span style="color: #928374;">#</span><span style=
+"color: #928374;">* vsd ntd rld</span>
+vsd <span style=
+"color: #d3869b;">&lt;-</span> vst(dds, blind=<span style=
+"color: #fabd2f;">FALSE</span>)
+rld <span style=
+"color: #d3869b;">&lt;-</span> rlog(dds, blind=<span style=
+"color: #fabd2f;">FALSE</span>)
+ntd <span style="color: #d3869b;">&lt;-</span> normTransform(dds)
+
+ddsMF <span style="color: #d3869b;">&lt;-</span> dds
+design(ddsMF) <span style=
+"color: #d3869b;">&lt;-</span> formula(~pesticides)
+ddsMF <span style="color: #d3869b;">&lt;-</span> DESeq(ddsMF)
+Mres <span style="color: #d3869b;">&lt;-</span> results(ddsMF)
+design(dds) <span style=
+"color: #d3869b;">&lt;-</span> formula(~part)
+part <span style="color: #d3869b;">&lt;-</span> DESeq(dds)
+res <span style="color: #d3869b;">&lt;-</span> results(part)
+</pre>
+            </div>
+            <pre class="example" id="orgf934faa">
+using pre-existing normalization factors
+
+estimating dispersions
+
+found already estimated dispersions, replacing these
+
+gene-wise dispersion estimates
+
+mean-dispersion relationship
+
+final dispersion estimates
+
+fitting model and testing
+
+using pre-existing normalization factors
+
+estimating dispersions
+
+found already estimated dispersions, replacing these
+
+gene-wise dispersion estimates
+
+mean-dispersion relationship
+
+final dispersion estimates
+
+fitting model and testing
+
+-- replacing outliers and refitting for 4107 genes
+-- DESeq argument 'minReplicatesForReplace' = 7
+-- original counts are preserved in counts(dds)
+
+estimating dispersions
+
+fitting model and testing
+</pre>
+          </div>
+        </div>
+        <div id="outline-container-org50ec132" class="outline-4">
+          <h4 id="org50ec132"><span class=
+          "section-number-4">4.2.5</span> Initial selection of the
+          data</h4>
+          <div class="outline-text-4" id="text-4-2-5">
+            <ul class="org-ul">
+              <li>p value of less than 0.01</li>
+              <li>Leg is compared to body, therefore down-regulated
+              are up-regulated in body</li>
+            </ul>
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">DR <span style=
+              "color: #d3869b;">&lt;-</span> Mres[ which(Mres$padj &lt; <span style="color: #d3869b; font-weight: bold;">0.01</span>), ]
+Body <span style=
+"color: #d3869b;">&lt;-</span> DR[which(DR$log2FoldChange &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>),]
+Leg <span style=
+"color: #d3869b;">&lt;-</span> DR[which(DR$log2FoldChange &gt; <span style="color: #d3869b; font-weight: bold;">2</span>), ]
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-orgdc7fceb" class="outline-4">
+          <h4 id="orgdc7fceb"><span class=
+          "section-number-4">4.2.6</span> Save lists of the
+          respective up-regulated genes</h4>
+          <div class="outline-text-4" id="text-4-2-6">
+            <div class="org-src-container">
+              <pre class=
+              "src src-jupyter-R">write.table(Body, file=<span style=
+              "color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Body.csv"</span>, quote=<span style="color: #fabd2f;">FALSE</span>, col.names=<span style="color: #fabd2f;">TRUE</span>, row.names=<span style="color: #fabd2f;">TRUE</span>, sep=<span style="color: #b8bb26;">","</span>)
+write.table(Leg, file=<span style=
+"color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Leg.csv"</span>, quote=<span style="color: #fabd2f;">FALSE</span>, col.names=<span style="color: #fabd2f;">TRUE</span>, row.names=<span style="color: #fabd2f;">TRUE</span>, sep=<span style="color: #b8bb26;">","</span>)
+write.table(res, file=<span style=
+"color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/total.csv"</span>, quote=<span style="color: #fabd2f;">FALSE</span>, col.names=<span style="color: #fabd2f;">TRUE</span>, row.names=<span style="color: #fabd2f;">TRUE</span>, sep=<span style="color: #b8bb26;">","</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org91a5c67" class="outline-4">
+          <h4 id="org91a5c67"><span class=
+          "section-number-4">4.2.7</span> Create a new analysis
+          design</h4>
+          <div class="outline-text-4" id="text-4-2-7">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">newdd <span style=
+              "color: #d3869b;">&lt;-</span> dds
+design(newdd) <span style=
+"color: #d3869b;">&lt;-</span> formula(~part + part:pesticides)
+newdd <span style="color: #d3869b;">&lt;-</span> DESeq(newdd)
+newres <span style="color: #d3869b;">&lt;-</span> results(newdd)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org1154521" class="outline-4">
+          <h4 id="org1154521"><span class=
+          "section-number-4">4.2.8</span> Prepare the data for
+          pheatmap plotting</h4>
+          <div class="outline-text-4" id="text-4-2-8">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">select <span style=
+              "color: #d3869b;">&lt;-</span> order(rowMeans(counts(dds, normalized=<span style="color: #fabd2f;">FALSE</span>)), decreasing = <span style="color: #fabd2f;">TRUE</span>)[<span style="color: #d3869b; font-weight: bold;">1</span>:<span style="color: #d3869b; font-weight: bold;">20</span>]
+df <span style=
+"color: #d3869b;">&lt;-</span> as.data.frame(colData(dds)[,c(<span style="color: #b8bb26;">"pesticides"</span>,<span style="color: #b8bb26;">"part"</span>)])
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org592cbf7" class="outline-4">
+          <h4 id="org592cbf7"><span class=
+          "section-number-4">4.2.9</span> Integrity plots</h4>
+          <div class="outline-text-4" id="text-4-2-9">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">jpeg(<span style=
+              "color: #b8bb26;">"generalfigures/plotMA_deseq.jpg"</span>)
+plotMA(results)
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/plotcounts_deseq.jpg"</span>)
+plotCounts(data, gene=which.min(results$padj), intgroup = <span style="color: #b8bb26;">"part"</span>)
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/meanSdvsd_deseq.jpg"</span>)
+vsn::meanSdPlot(assay(vsd))
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/meadnSdrld_deseq.jpg"</span>)
+vsn::meanSdPlot(assay(rld))
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/meanSdntd_deseq.jpg"</span>)
+vsn::meanSdPlot(assay(ntd))
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/pcaplot_deseq.jpg"</span>, width = <span style="color: #d3869b; font-weight: bold;">800</span>, height=<span style="color: #d3869b; font-weight: bold;">800</span>)
+plotPCA(vsd, intgroup=c(<span style=
+"color: #b8bb26;">"part"</span>, <span style=
+"color: #b8bb26;">"pesticides"</span>))
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/pheatmapplotntd.jpg"</span>, width=<span style="color: #d3869b; font-weight: bold;">800</span>, height=<span style="color: #d3869b; font-weight: bold;">800</span>)
+pheatmap(assay(ntd)[select,], cluster_rows=<span style=
+"color: #fabd2f;">FALSE</span>, show_rownames=<span style=
+"color: #fabd2f;">TRUE</span>, cluster_cols=<span style=
+"color: #fabd2f;">TRUE</span>, annotation_col=df)
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/pheatmapplotvsd.jpg"</span>, width=<span style="color: #d3869b; font-weight: bold;">800</span>, height=<span style="color: #d3869b; font-weight: bold;">800</span>)
+pheatmap(assay(vsd)[select,], cluster_rows=<span style=
+"color: #fabd2f;">FALSE</span>, show_rownames=<span style=
+"color: #fabd2f;">TRUE</span>, cluster_cols=<span style=
+"color: #fabd2f;">FALSE</span>, annotation_col=df)
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/pheatmapplotrld.jpg"</span>, width=<span style="color: #d3869b; font-weight: bold;">800</span>, height=<span style="color: #d3869b; font-weight: bold;">800</span>)
+pheatmap(assay(rld)[select,], cluster_rows=<span style=
+"color: #fabd2f;">FALSE</span>, show_rownames=<span style=
+"color: #fabd2f;">TRUE</span>, cluster_cols=<span style=
+"color: #fabd2f;">FALSE</span>, annotation_col=df)
+dev.off()
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-orgb001528" class="outline-4">
+          <h4 id="orgb001528"><span class=
+          "section-number-4">4.2.10</span> Another Deseq
+          Design</h4>
+          <div class="outline-text-4" id="text-4-2-10">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">
+<span style="color: #d3869b;">library</span>(tidyverse)
+vstarray <span style="color: #d3869b;">&lt;-</span> assay(vsd)
+
+range <span style="color: #d3869b;">&lt;-</span> vstarray[]
+names <span style="color: #d3869b;">&lt;-</span> rownames(range)
+maxs <span style="color: #d3869b;">&lt;-</span> rowMaxs(range)
+mins <span style="color: #d3869b;">&lt;-</span> rowMins(range)
+
+maxs <span style="color: #d3869b;">&lt;-</span> maxs-mins
+pt <span style="color: #d3869b;">&lt;-</span> tibble(names, maxs)
+pt
+pt <span style="color: #d3869b;">&lt;-</span> pt <span style=
+"color: #d3869b;">%&gt;%</span> filter(maxs &gt; <span style=
+"color: #d3869b; font-weight: bold;">10</span>)
+pt
+ggplot(pt, aes(x=names, y= maxs)) + geom_col()
+descending <span style=
+"color: #d3869b;">&lt;-</span> arrange(pt, desc(maxs))
+descending <span style=
+"color: #d3869b;">&lt;-</span> factor(descending[<span style=
+"color: #b8bb26;">"maxs"</span>])
+descending <span style=
+"color: #d3869b;">&lt;-</span> tibble(row = seq(length(descending)), descending)
+ggplot(descending, aes(x=row, y= descending)) + geom_col()
+
+sum(results$padj &lt; <span style=
+"color: #d3869b; font-weight: bold;">0.05</span>, na.rm=T)
+res <span style="color: #d3869b;">&lt;-</span> results
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org7a912f0" class="outline-4">
+          <h4 id="org7a912f0"><span class=
+          "section-number-4">4.2.11</span> Altered Selection of
+          genes</h4>
+          <div class="outline-text-4" id="text-4-2-11">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">
+Upregulated <span style=
+"color: #d3869b;">&lt;-</span> res[ which(res$padj &lt; <span style="color: #d3869b; font-weight: bold;">0.03</span> &amp; res$log2FoldChange &gt; <span style="color: #d3869b; font-weight: bold;">0</span>), ]
+DownRegulated <span style=
+"color: #d3869b;">&lt;-</span> res[ which(res$padj &lt; <span style="color: #d3869b; font-weight: bold;">0.03</span> &amp; res$log2FoldChange &lt; <span style="color: #d3869b; font-weight: bold;">0</span>), ]
+DownRegulated[order(DownRegulated$padj), ]
+head(DownRegulated$padj)
+D <span style=
+"color: #d3869b;">&lt;-</span> rownames(DownRegulated)
+Up <span style="color: #d3869b;">&lt;-</span> rownames(Upregulated)
+DR <span style=
+"color: #d3869b;">&lt;-</span> res[ which(res$padj &lt; <span style="color: #d3869b; font-weight: bold;">0.03</span>), ]
+DR[order(DR$padj),]
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org64cc069" class="outline-4">
+          <h4 id="org64cc069"><span class=
+          "section-number-4">4.2.12</span> Save new selection to
+          file</h4>
+          <div class="outline-text-4" id="text-4-2-12">
+            <div class="org-src-container">
+              <pre class=
+              "src src-jupyter-R">write.table(D, file=<span style=
+              "color: #b8bb26;">"Genes/DownRegulated.txt"</span>, quote=<span style="color: #fabd2f;">FALSE</span>, col.names=<span style="color: #fabd2f;">FALSE</span>, row.names=<span style="color: #fabd2f;">FALSE</span>, sep=<span style="color: #b8bb26;">","</span>)
+write.table(Up, file=<span style=
+"color: #b8bb26;">"Genes/UpRegulated.txt"</span>, quote=<span style="color: #fabd2f;">FALSE</span>, col.names=<span style="color: #fabd2f;">FALSE</span>, row.names=<span style="color: #fabd2f;">FALSE</span>, sep=<span style="color: #b8bb26;">","</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org33de8b0" class="outline-4">
+          <h4 id="org33de8b0"><span class=
+          "section-number-4">4.2.13</span> Extra integrity
+          plot</h4>
+          <div class="outline-text-4" id="text-4-2-13">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">d <span style=
+              "color: #d3869b;">&lt;-</span> mcols(Deseq,use.names=<span style=
+              "color: #fabd2f;">TRUE</span>)
+a <span style=
+"color: #d3869b;">&lt;-</span> data.frame(rownumb = seq(nrow(d)), d)
+a <span style=
+"color: #d3869b;">&lt;-</span> data.frame(rownumb = seq(nrow(d)), basemean = d[,<span style="color: #d3869b; font-weight: bold;">1</span>])
+<span style="color: #d3869b;">library</span>(ggplot2)
+ggplot(a, aes(x=rownumb, y=dispGeneEst)) + geom_point()
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-orgdde1490" class="outline-4">
+          <h4 id="orgdde1490"><span class=
+          "section-number-4">4.2.14</span> <span class=
+          "todo TODO">TODO</span> Extra EdgeR for venn
+          diagrams</h4>
+          <div class="outline-text-4" id="text-4-2-14">
+            <p>This is mostly contained in the EdgeR section.</p>
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">
+<span style="color: #928374;">#</span><span style=
+"color: #928374;">! EdgeR section ----</span>
+<span style="color: #d3869b;">library</span>(edgeR)
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">EdgR dataset from tximport</span>
+counts <span style="color: #d3869b;">&lt;-</span> txi$counts
+length <span style="color: #d3869b;">&lt;-</span> txi$length
+normMat <span style=
+"color: #d3869b;">&lt;-</span> length / exp(rowMeans(log(length)))
+normCts <span style="color: #d3869b;">&lt;-</span> counts / normMat
+eff.lib <span style=
+"color: #d3869b;">&lt;-</span> calcNormFactors(normCts) * colSums(normCts)
+normMat <span style=
+"color: #d3869b;">&lt;-</span> sweep(normMat, <span style=
+"color: #d3869b; font-weight: bold;">2</span>, eff.lib, <span style="color: #b8bb26;">"*"</span>)
+normMat <span style="color: #d3869b;">&lt;-</span> log(normMat)
+y <span style="color: #d3869b;">&lt;-</span> DGEList(counts)
+y <span style=
+"color: #d3869b;">&lt;-</span> scaleOffset(y, normMat)
+
+
+
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">EdgR heatmap</span>
+logcpm <span style="color: #d3869b;">&lt;-</span> cpm(EdgeR)
+meta <span style=
+"color: #d3869b;">&lt;-</span> read.csv(<span style=
+"color: #b8bb26;">"metadata.csv"</span>, sep= <span style=
+"color: #b8bb26;">","</span>)
+pest <span style=
+"color: #d3869b;">&lt;-</span> factor(meta$pesticides, levels=c(<span style="color: #b8bb26;">"perm"</span>, <span style="color: #b8bb26;">"deet"</span>, <span style="color: #b8bb26;">"control"</span>))
+part <span style=
+"color: #d3869b;">&lt;-</span> factor(meta$part, levels=c(<span style="color: #b8bb26;">"leg"</span>, <span style="color: #b8bb26;">"body"</span>))
+design <span style=
+"color: #d3869b;">&lt;-</span> model.matrix(~<span style=
+"color: #d3869b; font-weight: bold;">0</span> + pest + part)
+design
+keep <span style=
+"color: #d3869b;">&lt;-</span> filterByExpr(y, design)
+EdgeR <span style="color: #d3869b;">&lt;-</span> y[keep, ]
+estimateDisp(EdgeR)
+y <span style=
+"color: #d3869b;">&lt;-</span> estimateGLMCommonDisp(EdgeR, design)
+y <span style=
+"color: #d3869b;">&lt;-</span> estimateGLMTrendedDisp(y, design)
+y <span style=
+"color: #d3869b;">&lt;-</span> estimateGLMTagwiseDisp(y, design)
+est <span style=
+"color: #d3869b;">&lt;-</span> estimateDisp(EdgeR, design, robust=<span style="color: #fabd2f;">TRUE</span>)
+design
+fit <span style="color: #d3869b;">&lt;-</span> glmQLFit(y, design)
+lrt <span style=
+"color: #d3869b;">&lt;-</span> glmLRT(fit, coef=<span style=
+"color: #d3869b; font-weight: bold;">1</span>:<span style=
+"color: #d3869b; font-weight: bold;">4</span>)
+test <span style=
+"color: #d3869b;">&lt;-</span> glmQLFTest(fit, coef=<span style=
+"color: #d3869b; font-weight: bold;">1</span>:<span style=
+"color: #d3869b; font-weight: bold;">4</span>)
+lrc$PValue
+lrt
+
+test$logFC.pestperm - test$logFC.pestdeet
+
+ggplot(test$table, aes(y=logFC.partleg, x=seq(nrow(test)))) + geom_hex()
+<span style="color: #928374;">#</span><span style=
+"color: #928374;">additional analysis----</span>
+table <span style="color: #d3869b;">&lt;-</span> test$table
+body <span style=
+"color: #d3869b;">&lt;-</span> table[table$logFC.partbody &gt; <span style="color: #d3869b; font-weight: bold;">2</span>, ]
+leg <span style=
+"color: #d3869b;">&lt;-</span> table[table$logFC.partbody &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>, ]
+table <span style="color: #d3869b;">&lt;-</span> body
+diff <span style=
+"color: #d3869b;">&lt;-</span> table$logFC.pestcontrol - table$logFC.pestdeet
+<span style="color: #d3869b;">library</span>(tidyverse)
+data <span style=
+"color: #d3869b;">&lt;-</span> tibble(data = diff, rows = seq(length(diff)))
+ggplot(data, aes(x=rows, y=data)) + geom_point()
+table$diff <span style="color: #d3869b;">&lt;-</span> diff
+cont <span style=
+"color: #d3869b;">&lt;-</span> table[table$diff &gt; <span style=
+"color: #d3869b; font-weight: bold;">2</span>, ]
+deet <span style=
+"color: #d3869b;">&lt;-</span> table[table$diff &lt; -<span style=
+"color: #d3869b; font-weight: bold;">2</span>, ]
+diff2 <span style=
+"color: #d3869b;">&lt;-</span> table$logFC.pestcontrol - table$logFC.pestperm
+table$diff2 <span style="color: #d3869b;">&lt;-</span> diff2
+cont2 <span style=
+"color: #d3869b;">&lt;-</span> table[table$diff2 &gt; <span style=
+"color: #d3869b; font-weight: bold;">2</span>, ]
+perm <span style=
+"color: #d3869b;">&lt;-</span> table[table$diff2 &lt; -<span style=
+"color: #d3869b; font-weight: bold;">2</span>, ]
+
+
+
+<span style="color: #d3869b;">library</span>(VennDiagram)
+futile.logger::flog.threshold(futile.logger::ERROR, name = <span style="color: #b8bb26;">"VennDiagramLogger"</span>)
+Legcont1 <span style="color: #d3869b;">&lt;-</span> cont
+Legcont2 <span style="color: #d3869b;">&lt;-</span> cont2
+deet1 <span style="color: #d3869b;">&lt;-</span> deet
+perm1 <span style="color: #d3869b;">&lt;-</span> perm
+d <span style=
+"color: #d3869b;">&lt;-</span> data.frame(Pest = c(rep(c(<span style="color: #b8bb26;">"DEET"</span>, <span style="color: #b8bb26;">"DEET"</span>, <span style="color: #b8bb26;">"PERM"</span>, <span style="color: #b8bb26;">"PERM"</span>))),
+                Part = c(rep(<span style=
+"color: #b8bb26;">"Body"</span>, <span style=
+"color: #d3869b; font-weight: bold;">4</span>), rep(<span style=
+"color: #b8bb26;">"Leg"</span>, <span style=
+"color: #d3869b; font-weight: bold;">4</span>)),
+                Names = c(rep(c(<span style=
+"color: #b8bb26;">"Up Regulated"</span>, <span style=
+"color: #b8bb26;">"Down Regulated"</span>), <span style=
+"color: #d3869b; font-weight: bold;">4</span>)),
+                GeneCount = c(nrow(deet), nrow(cont), nrow(perm), nrow(cont2), nrow(deet1), nrow(Legcont1), nrow(perm1), nrow(Legcont2)))
+
+write.table(d, file=<span style=
+"color: #b8bb26;">"Genes/regulation.csv"</span>, quote=<span style=
+"color: #fabd2f;">FALSE</span>, col.names=<span style=
+"color: #fabd2f;">TRUE</span>, row.names=<span style=
+"color: #fabd2f;">FALSE</span>, sep=<span style=
+"color: #b8bb26;">","</span>)
+write.table(rownames(perm), file=<span style=
+"color: #b8bb26;">"Genes/perm.csv"</span>, quote=<span style=
+"color: #fabd2f;">FALSE</span>, col.names=<span style=
+"color: #fabd2f;">FALSE</span>, row.names=<span style=
+"color: #fabd2f;">FALSE</span>, sep=<span style=
+"color: #b8bb26;">","</span>)
+
+pl ggplot(d, aes(x=Names, y = GeneCount, fill=Names)) + geom_col()
+venn.diagram(
+  x = list(rownames(deet), rownames(cont)),
+  category.names = c(<span style=
+"color: #b8bb26;">"DEET"</span> , <span style=
+"color: #b8bb26;">"Control"</span>),
+  filename = <span style=
+"color: #b8bb26;">"Deetvcontorlvleg.png"</span>,
+  compression = <span style="color: #b8bb26;">"lzw"</span>,
+
+
+  lwd = <span style="color: #d3869b; font-weight: bold;">2</span>,
+  lty = <span style="color: #b8bb26;">'blank'</span>,
+  fill = c(<span style="color: #b8bb26;">"red"</span>, <span style=
+"color: #b8bb26;">"blue"</span>),
+)
+grid.draw(tmp)
+
+write.table(rownames(perm), file=<span style=
+"color: #b8bb26;">"Genes/perm.csv"</span>, quote=<span style=
+"color: #fabd2f;">FALSE</span>, col.names=<span style=
+"color: #fabd2f;">FALSE</span>, row.names=<span style=
+"color: #fabd2f;">FALSE</span>, sep=<span style=
+"color: #b8bb26;">","</span>)
+write.table(rownames(deet), file=<span style=
+"color: #b8bb26;">"Genes/deet.csv"</span>, quote=<span style=
+"color: #fabd2f;">FALSE</span>, col.names=<span style=
+"color: #fabd2f;">FALSE</span>, row.names=<span style=
+"color: #fabd2f;">FALSE</span>, sep=<span style=
+"color: #b8bb26;">","</span>)
+write.table(rownames(cont), file=<span style=
+"color: #b8bb26;">"Genes/deetcont.csv"</span>, quote=<span style=
+"color: #fabd2f;">FALSE</span>, col.names=<span style=
+"color: #fabd2f;">FALSE</span>, row.names=<span style=
+"color: #fabd2f;">FALSE</span>, sep=<span style=
+"color: #b8bb26;">","</span>)
+write.table(rownames(cont2), file=<span style=
+"color: #b8bb26;">"Genes/permcont.csv"</span>, quote=<span style=
+"color: #fabd2f;">FALSE</span>, col.names=<span style=
+"color: #fabd2f;">FALSE</span>, row.names=<span style=
+"color: #fabd2f;">FALSE</span>, sep=<span style=
+"color: #b8bb26;">","</span>)
+
+ggplot(contdata, aes(x=rows, y=data)) + geom_point()
+
+rownames(cont)
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">EdgeR plots ----</span>
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/BCVplot_edgeR.jpg"</span>)
+plotBCV(est)
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/QLDISP_edgeR.jpg"</span>)
+plotQLDisp(fit)
+dev.off()
+
+jpeg(<span style=
+"color: #b8bb26;">"generalfigures/MDS_edgeR.jpg"</span>)
+plotMDS(logcpm)
+dev.off()
+
+
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">jpeg("generalfigur&gt;es/SpliceDGE_edgeR.jpg")</span>
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">plotSpliceDGE(logcpm)</span>
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">dev.off()</span>
+
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">end ----</span>
+<span style="color: #d3869b;">library</span>(matrixStats)
+stats <span style="color: #d3869b;">&lt;-</span> txi$abundance
+tpm <span style=
+"color: #d3869b;">&lt;-</span> transform(stats, sd=rowSds(stats), avg=rowMeans(stats), median = rowMedians(stats))
+
+dge <span style="color: #d3869b;">&lt;-</span> DGEList(txi$counts)
+cpm <span style=
+"color: #d3869b;">&lt;-</span> cpm(dge, log=<span style=
+"color: #fabd2f;">TRUE</span>)
+head(cpm)
+data.frame(cpm)
+cpmtibble <span style=
+"color: #d3869b;">&lt;-</span> as_tibble(cpm, rownames=<span style=
+"color: #b8bb26;">"geneID"</span>)
+cpmpivot <span style=
+"color: #d3869b;">&lt;-</span> pivot_longer(cpmtibble, cols=seq(<span style="color: #d3869b; font-weight: bold;">2</span>, ncol(cpmtibble)), names_to = <span style="color: #b8bb26;">"samples"</span>, values_to = <span style="color: #b8bb26;">"expression"</span>)
+
+
+
+ggplot(tpm) +
+  aes(x = sd, y = median) +
+  geom_hex()
+
+ggplot(tpm) +
+  aes(x = sd, y = avg) +
+  geom_point(shape=<span style=
+"color: #d3869b; font-weight: bold;">16</span>, size=<span style=
+"color: #d3869b; font-weight: bold;">2</span>) +
+  geom_smooth(method=lm) +
+  geom_hex() +
+  labs(y=<span style=
+"color: #b8bb26;">"Median"</span>, x = <span style=
+"color: #b8bb26;">"Standard deviation"</span>, title=<span style=
+"color: #b8bb26;">"Transcripts per million (TPM)"</span>, subtitle=<span style="color: #b8bb26;">"unfiltered, non-normalized data"</span>) +
+  theme_classic() +
+  theme_dark() +
+  theme_bw()
+
+ggplot(cpmpivot) +
+  aes(x=samples, y=expression, fill=samples) +
+  geom_violin(trim = <span style=
+"color: #fabd2f;">FALSE</span>, show.legend = <span style=
+"color: #fabd2f;">FALSE</span>) +
+  stat_summary(fun = <span style=
+"color: #b8bb26;">"median"</span>,geom = <span style=
+"color: #b8bb26;">"point"</span>,shape = <span style=
+"color: #d3869b; font-weight: bold;">95</span>,size = <span style=
+"color: #d3869b; font-weight: bold;">10</span>,color = <span style=
+"color: #b8bb26;">"black"</span>,show.legend = <span style=
+"color: #fabd2f;">FALSE</span>) +
+  labs(y=<span style=
+"color: #b8bb26;">"log2 expression"</span>, x = <span style=
+"color: #b8bb26;">"sample"</span>,title=<span style=
+"color: #b8bb26;">"Log2 Counts per Million (CPM)"</span>,subtitle=<span style="color: #b8bb26;">"unfiltered, non-normalized"</span>,caption=paste0(<span style="color: #b8bb26;">"produced on "</span>, Sys.time())) +
+  theme_bw()
+
+keepers <span style=
+"color: #d3869b;">&lt;-</span> rowSums(cpm &gt; <span style=
+"color: #d3869b; font-weight: bold;">1</span>)&gt;=<span style=
+"color: #d3869b; font-weight: bold;">3</span>
+table(rowSums(dge$counts==<span style=
+"color: #d3869b; font-weight: bold;">0</span>)==<span style=
+"color: #d3869b; font-weight: bold;">10</span>)
+
+
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">venndiagrams ----</span>
+
+<span style="color: #d3869b;">library</span>(VennDiagram)
+
+
+bodygenes <span style="color: #d3869b;">&lt;-</span> names(Deseq)
+bodygenes <span style=
+"color: #d3869b;">&lt;-</span> bodygenes[!bodygenes <span style=
+"color: #d3869b;">%in%</span> rownames(Leg)]
+leggenes <span style="color: #d3869b;">&lt;-</span> names(Deseq)
+leggenes <span style=
+"color: #d3869b;">&lt;-</span> leggenes[!leggenes <span style=
+"color: #d3869b;">%in%</span> rownames(Body)]
+names(Deseq) - rownames(Body)
+
+<span style="color: #928374;">#</span>
+bodyup <span style=
+"color: #d3869b;">&lt;-</span> table[table[<span style=
+"color: #b8bb26;">"partleg"</span>] &gt; <span style=
+"color: #d3869b; font-weight: bold;">0</span>]
+
+
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">Venn Diagram 1----</span>
+futile.logger::flog.threshold(futile.logger::ERROR, name = <span style="color: #b8bb26;">"VennDiagramLogger"</span>)
+venn.diagram(
+  x = list(bodygenes, leggenes),
+  category.names = c(<span style=
+"color: #b8bb26;">"Body"</span> , <span style=
+"color: #b8bb26;">"Leg"</span>),
+
+  filename = <span style=
+"color: #b8bb26;">'14_venn_diagramm.png'</span>,
+  output=<span style="color: #fabd2f;">FALSE</span>,
+  imagetype=<span style="color: #b8bb26;">"png"</span>,
+  compression=<span style="color: #b8bb26;">"lzw"</span>,
+
+
+  lwd = <span style="color: #d3869b; font-weight: bold;">2</span>,
+  lty = <span style="color: #b8bb26;">'blank'</span>,
+  fill = c(<span style="color: #b8bb26;">"red"</span>, <span style=
+"color: #b8bb26;">"blue"</span>),
+)
+
+
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-org6f95271" class="outline-3">
+        <h3 id="org6f95271"><span class=
+        "section-number-3">4.3</span> EdgeR</h3>
+        <div class="outline-text-3" id="text-4-3"></div>
+        <div id="outline-container-org7e8a1da" class="outline-4">
+          <h4 id="org7e8a1da"><span class=
+          "section-number-4">4.3.1</span> Initial settings</h4>
+          <div class="outline-text-4" id="text-4-3-1">
+            <p>Directory and function setup, configure this when
+            running the script</p>
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R"><span style=
+              "color: #d3869b;">setwd</span>(<span style=
+              "color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/"</span>)
+<span style="color: #d3869b;">source</span>(<span style=
+"color: #b8bb26;">"scripts/functions.r"</span>)
+directory <span style="color: #d3869b;">&lt;-</span> <span style=
+"color: #b8bb26;">"/home/david/Documents/BenoitLab/R/largeRNASEQ/"</span>
+quantdatafoldername <span style=
+"color: #d3869b;">&lt;-</span> <span style=
+"color: #b8bb26;">"CorrectedQuantData"</span>
+fishtype <span style="color: #d3869b;">&lt;-</span> <span style=
+"color: #b8bb26;">"sailfish"</span>
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org6c17215" class="outline-4">
+          <h4 id="org6c17215"><span class=
+          "section-number-4">4.3.2</span> Do the initial processing
+          of the data</h4>
+          <div class="outline-text-4" id="text-4-3-2">
+            <p>Imports the data and runs it through initial edgeR
+            analysis using the functions created above</p>
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">a <span style=
+              "color: #d3869b;">&lt;-</span> txi(directory, quantdatafoldername, <span style="color: #b8bb26;">"metadata.csv"</span>, fishtype)
+<span style="color: #928374;">#</span><span style=
+"color: #928374;">De &lt;- initialDeseq(a[[1]], a[[2]])</span>
+Ed <span style=
+"color: #d3869b;">&lt;-</span> initialEdgeR(a[[<span style=
+"color: #d3869b; font-weight: bold;">1</span>]], a[[<span style=
+"color: #d3869b; font-weight: bold;">2</span>]])
+Eest <span style=
+"color: #d3869b;">&lt;-</span> estEdgeR(Ed[[<span style=
+"color: #d3869b; font-weight: bold;">1</span>]], Ed[[<span style=
+"color: #d3869b; font-weight: bold;">2</span>]])
+lrt <span style=
+"color: #d3869b;">&lt;-</span> glmLRT(Eest, coef=<span style=
+"color: #d3869b; font-weight: bold;">1</span>:<span style=
+"color: #d3869b; font-weight: bold;">4</span>)
+test <span style=
+"color: #d3869b;">&lt;-</span> glmQLFTest(Eest, coef=<span style=
+"color: #d3869b; font-weight: bold;">1</span>:<span style=
+"color: #d3869b; font-weight: bold;">4</span>)
+</pre>
+            </div>
+            <pre class="example" id="orga3b49c8">
+reading in files with read_tsv
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+
+
+summarizing abundance
+
+summarizing counts
+
+summarizing length
+</pre>
+          </div>
+        </div>
+        <div id="outline-container-org69230e2" class="outline-4">
+          <h4 id="org69230e2"><span class=
+          "section-number-4">4.3.3</span> Partion the data into
+          body and leg tables</h4>
+          <div class="outline-text-4" id="text-4-3-3">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">
+table <span style="color: #d3869b;">&lt;-</span> test$table
+body <span style=
+"color: #d3869b;">&lt;-</span> table[table$logFC.partbody &gt; <span style="color: #d3869b; font-weight: bold;">2</span>, ]
+leg <span style=
+"color: #d3869b;">&lt;-</span> table[table$logFC.partbody &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>, ]
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org4fe52bf" class="outline-4">
+          <h4 id="org4fe52bf"><span class=
+          "section-number-4">4.3.4</span> Save the data tables to a
+          file</h4>
+          <div class="outline-text-4" id="text-4-3-4">
+            <p>Configure this to fit your computer</p>
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R"><span style=
+              "color: #d3869b;">setwd</span>(<span style=
+              "color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/"</span>)
+write.table(table, file=<span style=
+"color: #b8bb26;">"edgeR-Genes/TotalExpr.csv"</span>, quote=<span style="color: #fabd2f;">FALSE</span>, col.names=<span style="color: #fabd2f;">TRUE</span>, row.names=<span style="color: #fabd2f;">TRUE</span>, sep=<span style="color: #b8bb26;">","</span>)
+write.table(leg, file=<span style=
+"color: #b8bb26;">"edgeR-Genes/legExpr.csv"</span>, quote=<span style="color: #fabd2f;">FALSE</span>, col.names=<span style="color: #fabd2f;">TRUE</span>, row.names=<span style="color: #fabd2f;">TRUE</span>, sep=<span style="color: #b8bb26;">","</span>)
+write.table(body, file=<span style=
+"color: #b8bb26;">"edgeR-Genes/bodyExpr.csv"</span>, quote=<span style="color: #fabd2f;">FALSE</span>, col.names=<span style="color: #fabd2f;">TRUE</span>, row.names=<span style="color: #fabd2f;">TRUE</span>, sep=<span style="color: #b8bb26;">","</span>)
+</pre>
+            </div>
+            <pre class="example">
+Error in as.data.frame.default(x[[i]], optional = TRUE): cannot coerce class ‘"function"’ to a data.frame
+Traceback:
+
+1. write.table(table, file = "edgeR-Genes/TotalExpr.csv", quote = FALSE,
+ .     col.names = TRUE, row.names = TRUE, sep = ",")
+2. data.frame(x)
+3. as.data.frame(x[[i]], optional = TRUE)
+4. as.data.frame.default(x[[i]], optional = TRUE)
+5. stop(gettextf("cannot coerce class %s to a data.frame", sQuote(deparse(class(x))[1L])),
+ .     domain = NA)
+</pre>
+          </div>
+        </div>
+        <div id="outline-container-orgd564d78" class="outline-4">
+          <h4 id="orgd564d78"><span class=
+          "section-number-4">4.3.5</span> Find the relative
+          expression values when compared to the control</h4>
+          <div class="outline-text-4" id="text-4-3-5">
+            <div class="org-src-container">
+              <pre class=
+              "src src-jupyter-R">deetvcontrol <span style=
+              "color: #d3869b;">&lt;-</span> table$logFC.pestdeet - table$logFC.pestcontrol
+permvcontrol <span style=
+"color: #d3869b;">&lt;-</span> table$logFC.pestperm - table$logFC.pestcontrol
+deetvcontrolvbody <span style=
+"color: #d3869b;">&lt;-</span> body$logFC.pestdeet - body$logFC.pestcontrol
+permvcontrolvbody <span style=
+"color: #d3869b;">&lt;-</span> body$logFC.pestperm - body$logFC.pestcontrol
+deetvcontrolvleg <span style=
+"color: #d3869b;">&lt;-</span> leg$logFC.pestdeet - leg$logFC.pestcontrol
+permvcontrolvleg <span style=
+"color: #d3869b;">&lt;-</span> leg$logFC.pestperm - leg$logFC.pestcontrol
+
+table$deetvcontrol <span style=
+"color: #d3869b;">&lt;-</span> deetvcontrol
+table$permvcontrol <span style=
+"color: #d3869b;">&lt;-</span> permvcontrol
+body$deetvcontrol <span style=
+"color: #d3869b;">&lt;-</span> deetvcontrolvbody
+body$permvcontrol <span style=
+"color: #d3869b;">&lt;-</span> permvcontrolvbody
+leg$deetvcontrol <span style=
+"color: #d3869b;">&lt;-</span> deetvcontrolvleg
+leg$permvcontrol <span style=
+"color: #d3869b;">&lt;-</span> permvcontrolvleg
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org6f9305c" class="outline-4">
+          <h4 id="org6f9305c"><span class=
+          "section-number-4">4.3.6</span> Selection of the
+          data</h4>
+          <div class="outline-text-4" id="text-4-3-6">
+            <p>Selects only the columns that have an expression
+            value greater than 2(up-regulated) or less than
+            -2(down-regulated)</p>
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">updeet <span style=
+              "color: #d3869b;">&lt;-</span> table[table$deetvcontrol &gt; <span style="color: #d3869b; font-weight: bold;">2</span>,]
+downdeet <span style=
+"color: #d3869b;">&lt;-</span> table[table$deetvcontrol &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>,]
+
+
+
+updeetbody <span style=
+"color: #d3869b;">&lt;-</span> body[body$deetvcontrol &gt; <span style="color: #d3869b; font-weight: bold;">2</span>,]
+downdeetbody <span style=
+"color: #d3869b;">&lt;-</span> body[body$deetvcontrol &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>,]
+updeetleg <span style=
+"color: #d3869b;">&lt;-</span> leg[leg$deetvcontrol &gt; <span style="color: #d3869b; font-weight: bold;">2</span>,]
+downdeetleg <span style=
+"color: #d3869b;">&lt;-</span> leg[leg$deetvcontrol &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>,]
+
+
+upperm <span style=
+"color: #d3869b;">&lt;-</span> table[table$permvcontrol &gt; <span style="color: #d3869b; font-weight: bold;">2</span>,]
+downperm <span style=
+"color: #d3869b;">&lt;-</span> table[table$permvcontrol &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>,]
+uppermbody <span style=
+"color: #d3869b;">&lt;-</span> body[body$permvcontrol &gt; <span style="color: #d3869b; font-weight: bold;">2</span>,]
+downpermbody <span style=
+"color: #d3869b;">&lt;-</span> body[body$permvcontrol &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>,]
+uppermleg <span style=
+"color: #d3869b;">&lt;-</span> leg[leg$permvcontrol &gt; <span style="color: #d3869b; font-weight: bold;">2</span>,]
+downpermleg <span style=
+"color: #d3869b;">&lt;-</span> leg[leg$permvcontrol &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>,]
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org0dae18f" class="outline-4">
+          <h4 id="org0dae18f"><span class=
+          "section-number-4">4.3.7</span> Create a csv for venn
+          diagram plotting</h4>
+          <div class="outline-text-4" id="text-4-3-7">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">d <span style=
+              "color: #d3869b;">&lt;-</span> data.frame(Pest = c(rep(c(<span style="color: #b8bb26;">"DEET"</span>, <span style="color: #b8bb26;">"DEET"</span>, <span style="color: #b8bb26;">"PERM"</span>, <span style="color: #b8bb26;">"PERM"</span>))),
+                Part = c(rep(<span style=
+"color: #b8bb26;">"Body"</span>, <span style=
+"color: #d3869b; font-weight: bold;">4</span>), rep(<span style=
+"color: #b8bb26;">"Leg"</span>, <span style=
+"color: #d3869b; font-weight: bold;">4</span>)),
+                Names = c(rep(c(<span style=
+"color: #b8bb26;">"Up Regulated"</span>, <span style=
+"color: #b8bb26;">"Down Regulated"</span>), <span style=
+"color: #d3869b; font-weight: bold;">4</span>)),
+                GeneCount = c(nrow(downdeetbody), nrow(updeetbody), nrow(downpermbody), nrow(uppermbody), nrow(downdeetleg), nrow(updeetleg), nrow(downpermleg), nrow(uppermleg)))
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-orgf90f405" class="outline-4">
+          <h4 id="orgf90f405"><span class=
+          "section-number-4">4.3.8</span> Save the venn diagram
+          csv</h4>
+          <div class="outline-text-4" id="text-4-3-8">
+            <div class="org-src-container">
+              <pre class=
+              "src src-jupyter-R">write.table(d, file=<span style=
+              "color: #b8bb26;">"edgeR-Genes/venn-regulation.csv"</span>, quote=<span style="color: #fabd2f;">FALSE</span>, col.names=<span style="color: #fabd2f;">TRUE</span>, row.names=<span style="color: #fabd2f;">FALSE</span>, sep=<span style="color: #b8bb26;">","</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-orgda3151a" class="outline-4">
+          <h4 id="orgda3151a"><span class=
+          "section-number-4">4.3.9</span> Gets the row-names</h4>
+          <div class="outline-text-4" id="text-4-3-9">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">upperm <span style=
+              "color: #d3869b;">&lt;-</span> table[table$permvcontrol &gt; <span style="color: #d3869b; font-weight: bold;">2</span>,]
+downperm <span style=
+"color: #d3869b;">&lt;-</span> table[table$permvcontrol &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>,]
+uppermbody <span style=
+"color: #d3869b;">&lt;-</span> body[body$permvcontrol &gt; <span style="color: #d3869b; font-weight: bold;">2</span>,]
+downpermbody <span style=
+"color: #d3869b;">&lt;-</span> body[body$permvcontrol &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>,]
+uppermleg <span style=
+"color: #d3869b;">&lt;-</span> leg[leg$permvcontrol &gt; <span style="color: #d3869b; font-weight: bold;">2</span>,]
+downpermleg <span style=
+"color: #d3869b;">&lt;-</span> leg[leg$permvcontrol &lt; -<span style="color: #d3869b; font-weight: bold;">2</span>,]
+
+uppermgenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(upperm)
+downpermgenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(downperm)
+uppermleggenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(uppermleg)
+downpermleggenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(downpermleg)
+uppermbodygenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(uppermbody)
+downpermbodygenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(downpermbody)
+
+updeetgenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(updeet)
+downdeetgenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(downdeet)
+updeetleggenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(updeetleg)
+downdeetleggenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(downdeetleg)
+updeetbodygenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(updeetbody)
+downdeetbodygenes <span style=
+"color: #d3869b;">&lt;-</span> rownames(downdeetbody)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org1ccc66d" class="outline-4">
+          <h4 id="org1ccc66d"><span class=
+          "section-number-4">4.3.10</span> Create a list of
+          dataframes corresponding to the total, leg, and body</h4>
+          <div class="outline-text-4" id="text-4-3-10">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">genelist <span style=
+              "color: #d3869b;">&lt;-</span> list(upPerm = uppermgenes, downPerm = downpermgenes,
+                upPermBody=uppermbodygenes, downPermBody=downpermbodygenes,
+                upPermLeg = uppermleggenes, downPermLeg = downpermleggenes,
+                upDeet = updeetgenes, downDeet = downdeetgenes,
+                upDeetLeg = updeetleggenes, downDeetLeg = downdeetleggenes,
+                upDeetBody = updeetbodygenes, downDeetBody = downdeetbodygenes, table=rownames(table), leg=rownames(leg), body=rownames(body))
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org1c65e2b" class="outline-4">
+          <h4 id="org1c65e2b"><span class=
+          "section-number-4">4.3.11</span> Save the genelist to
+          files</h4>
+          <div class="outline-text-4" id="text-4-3-11">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R"><span style=
+              "color: #fb4934;">for</span> (i <span style=
+              "color: #fb4934;">in</span> seq(length(genelist))){
+    namelist <span style=
+"color: #d3869b;">&lt;-</span> names(genelist)
+    write.table(genelist[i], file=paste(<span style=
+"color: #b8bb26;">"edgeR-Genes/Genelists"</span>,<span style=
+"color: #b8bb26;">"/"</span>, namelist[i], <span style=
+"color: #b8bb26;">".csv"</span>, sep=<span style=
+"color: #b8bb26;">""</span>), quote=<span style=
+"color: #fabd2f;">FALSE</span>, col.names=<span style=
+"color: #fabd2f;">FALSE</span>, row.names=<span style=
+"color: #fabd2f;">FALSE</span>, sep=<span style=
+"color: #b8bb26;">","</span>)
+}
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="outline-container-org931857c" class="outline-2">
+      <h2 id="org931857c"><span class="section-number-2">5</span>
+      Fasta Manipulation</h2>
+      <div class="outline-text-2" id="text-5"></div>
+      <div id="outline-container-org8ff039d" class="outline-3">
+        <h3 id="org8ff039d"><span class=
+        "section-number-3">5.1</span> Get Gene names</h3>
+        <div class="outline-text-3" id="text-5-1">
+          <p>This program just pulls the names of the genes out of
+          the fasta file. There are probably less messy ways to do
+          this.</p>
+          <div class="org-src-container">
+            <pre class="src src-cpp"><span style=
+            "color: #ebdbb2; font-weight: bold;">#include</span> <span style=
+            "color: #fe8019;">&lt;</span><span style=
+            "color: #b8bb26;">iostream</span><span style=
+            "color: #fe8019;">&gt;</span>
+<span style=
+"color: #ebdbb2; font-weight: bold;">#include</span> <span style=
+"color: #fe8019;">&lt;</span><span style=
+"color: #b8bb26;">fstream</span><span style=
+"color: #fe8019;">&gt;</span>
+<span style=
+"color: #ebdbb2; font-weight: bold;">#include</span> <span style=
+"color: #fe8019;">&lt;</span><span style=
+"color: #b8bb26;">string</span><span style=
+"color: #fe8019;">&gt;</span>
+<span style=
+"color: #ebdbb2; font-weight: bold;">#include</span> <span style=
+"color: #fe8019;">&lt;</span><span style=
+"color: #b8bb26;">vector</span><span style=
+"color: #fe8019;">&gt;</span>
+
+<span style="color: #fabd2f;">int</span> <span style=
+"color: #b8bb26;">main</span><span style=
+"color: #fe8019;">(){</span>
+    <span style="color: #d3869b;">std</span>::<span style=
+"color: #fabd2f;">ifstream</span> <span style=
+"color: #83a598;">in</span>;
+    in.open<span style="color: #fb4934;">(</span><span style=
+"color: #b8bb26;">"GeneReference/genelist.fasta"</span><span style=
+"color: #fb4934;">)</span>;
+    <span style="color: #d3869b;">std</span>::<span style=
+"color: #fabd2f;">string</span> <span style=
+"color: #83a598;">line</span>;
+    <span style="color: #d3869b;">std</span>::<span style=
+"color: #fabd2f;">ofstream</span> <span style=
+"color: #83a598;">out</span>;
+    out.open<span style="color: #fb4934;">(</span><span style=
+"color: #b8bb26;">"GeneReference/listofgenes.csv"</span><span style="color: #fb4934;">)</span>;
+    <span style="color: #fb4934;">if</span> <span style=
+"color: #fb4934;">(</span>in.is_open<span style=
+"color: #cc241d;">()</span><span style="color: #fb4934;">){</span>
+        <span style="color: #fb4934;">while</span><span style=
+"color: #cc241d;">(</span>getline<span style=
+"color: #fe8019;">(</span>in, line<span style=
+"color: #fe8019;">)</span><span style="color: #cc241d;">){</span>
+            <span style="color: #fb4934;">if</span> <span style=
+"color: #fe8019;">(</span>line<span style=
+"color: #fb4934;">[</span><span style=
+"color: #d3869b; font-weight: bold;">0</span><span style=
+"color: #fb4934;">]</span> == <span style=
+"color: #b8bb26;">'&gt;'</span><span style=
+"color: #fe8019;">){</span>
+                line.erase<span style=
+"color: #fb4934;">(</span><span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span><span style=
+"color: #fb4934;">)</span>;
+                out &lt;&lt; line &lt;&lt; <span style=
+"color: #d3869b;">std</span>::endl;
+            <span style="color: #fe8019;">}</span>
+        <span style="color: #cc241d;">}</span>
+    <span style="color: #fb4934;">}</span>
+<span style="color: #fe8019;">}</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="outline-container-org8103350" class="outline-2">
+      <h2 id="org8103350"><span class="section-number-2">6</span>
+      Blast step</h2>
+    </div>
+    <div id="outline-container-orgf7e408b" class="outline-2">
+      <h2 id="orgf7e408b"><span class="section-number-2">7</span>
+      Plotting step</h2>
+      <div class="outline-text-2" id="text-7">
+        <p>This uses R and python to plot data.</p>
+      </div>
+      <div id="outline-container-org45b33de" class="outline-3">
+        <h3 id="org45b33de"><span class=
+        "section-number-3">7.1</span> Required Packages</h3>
+        <div class="outline-text-3" id="text-7-1"></div>
+        <div id="outline-container-org8d9ac75" class="outline-4">
+          <h4 id="org8d9ac75"><span class=
+          "section-number-4">7.1.1</span> R packages</h4>
+          <div class="outline-text-4" id="text-7-1-1">
+            <ul class="org-ul">
+              <li>tidyverse (ggplot)</li>
+              <li>ggpubr (correlation methods)</li>
+            </ul>
+          </div>
+        </div>
+        <div id="outline-container-orgb3f7af3" class="outline-4">
+          <h4 id="orgb3f7af3"><span class=
+          "section-number-4">7.1.2</span> Python packages</h4>
+          <div class="outline-text-4" id="text-7-1-2">
+            <ul class="org-ul">
+              <li>Matplotlib</li>
+              <li>pandas</li>
+              <li>numpy</li>
+              <li>matplotlib<sub>venn</sub></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-org3124648" class="outline-3">
+        <h3 id="org3124648"><span class=
+        "section-number-3">7.2</span> Venn Diagrams</h3>
+        <div class="outline-text-3" id="text-7-2"></div>
+        <div id="outline-container-org67e5bb1" class="outline-4">
+          <h4 id="org67e5bb1"><span class=
+          "section-number-4">7.2.1</span> Imports</h4>
+          <div class="outline-text-4" id="text-7-2-1">
+            <p>Change directory based on project</p>
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #fb4934;">import</span> matplotlib.pyplot <span style=
+              "color: #fb4934;">as</span> plt
+<span style=
+"color: #fb4934;">from</span> matplotlib_venn <span style=
+"color: #fb4934;">import</span> venn2, venn2_circles, venn2_unweighted
+<span style="color: #fb4934;">import</span> pandas <span style=
+"color: #fb4934;">as</span> pd
+<span style="color: #fb4934;">import</span> numpy <span style=
+"color: #fb4934;">as</span> np
+<span style="color: #fb4934;">import</span> os
+os.chdir(<span style=
+"color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq"</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-orgc66d525" class="outline-4">
+          <h4 id="orgc66d525"><span class=
+          "section-number-4">7.2.2</span> Venn 1</h4>
+          <div class="outline-text-4" id="text-7-2-2">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #83a598;">data</span> = pd.read_csv(<span style=
+              "color: #b8bb26;">"edgeR-Genes/venn-regulation.csv"</span>)
+plt.style.use(<span style="color: #b8bb26;">"ggplot"</span>)
+<span style="color: #83a598;">fig</span>, <span style=
+"color: #83a598;">axes</span> = plt.subplots(<span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">4</span>)
+
+
+<span style="color: #83a598;">i</span> = <span style=
+"color: #d3869b; font-weight: bold;">0</span>
+
+<span style="color: #83a598;">maximum</span> = data[<span style=
+"color: #b8bb26;">"GeneCount"</span>].<span style=
+"color: #fe8019;">max</span>()
+
+<span style="color: #fb4934;">for</span> pest <span style=
+"color: #fb4934;">in</span> data[<span style=
+"color: #b8bb26;">"Part"</span>].unique():
+    <span style=
+"color: #83a598;">pestdata</span> = data[data[<span style=
+"color: #b8bb26;">"Part"</span>] == pest]
+    <span style="color: #fb4934;">for</span> part <span style=
+"color: #fb4934;">in</span> pestdata[<span style=
+"color: #b8bb26;">"Pest"</span>].unique():
+        partdata = pestdata[pestdata[<span style=
+"color: #b8bb26;">"Pest"</span>] == part]
+        x = partdata[<span style="color: #b8bb26;">"Names"</span>]
+        y = partdata[<span style=
+"color: #b8bb26;">"GeneCount"</span>]
+        axes[i].bar(x, y, color=[<span style=
+"color: #b8bb26;">"r"</span>, <span style=
+"color: #b8bb26;">"b"</span>])
+        axes[i].set_xticks(partdata[<span style=
+"color: #b8bb26;">"Names"</span>])
+        axes[i].set_ylim(<span style=
+"color: #d3869b; font-weight: bold;">0</span>, maximum)
+        <span style="color: #fb4934;">if</span> i != <span style=
+"color: #d3869b; font-weight: bold;">0</span>:
+            axes[i].get_yaxis().set_visible(<span style=
+"color: #d3869b;">False</span>)
+        axes[i].set_xlabel(part + <span style=
+"color: #b8bb26;">"\n"</span> + pest)
+        axes[<span style=
+"color: #d3869b; font-weight: bold;">0</span>].set_ylabel(<span style="color: #b8bb26;">"Gene Count"</span>)
+
+        i += <span style=
+"color: #d3869b; font-weight: bold;">1</span>
+fig.suptitle(<span style=
+"color: #b8bb26;">"Gene Regulation"</span>)
+fig.savefig(<span style=
+"color: #b8bb26;">"fig.png"</span>, bbox_inches=<span style=
+"color: #b8bb26;">"tight"</span>, dpi=<span style=
+"color: #d3869b; font-weight: bold;">250</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-orgf7b893e" class="outline-4">
+          <h4 id="orgf7b893e"><span class=
+          "section-number-4">7.2.3</span> Venn 2</h4>
+          <div class="outline-text-4" id="text-7-2-3">
+            <div class="org-src-container">
+              <pre class=
+              "src src-jupyter-python">plt.style.use(<span style=
+              "color: #b8bb26;">"ggplot"</span>)
+
+<span style=
+"color: #fb4934;">from</span> matplotlib_venn <span style=
+"color: #fb4934;">import</span> venn2, venn2_circles, venn2_unweighted
+<span style=
+"color: #fb4934;">from</span> matplotlib_venn <span style=
+"color: #fb4934;">import</span> venn3, venn3_circles
+
+
+<span style=
+"color: #83a598;">deet</span> = pd.read_csv(<span style="color: #b8bb26;">"Genes/deet.csv"</span>, header=<span style="color: #d3869b;">None</span>)
+deetcont = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/deetcont.csv"</span>, header=<span style=
+"color: #d3869b;">None</span>)
+perm = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/perm.csv"</span>, header=<span style=
+"color: #d3869b;">None</span>)
+permcont = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/permcont.csv"</span>, header=<span style=
+"color: #d3869b;">None</span>)
+genes = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/listofgenes.csv"</span>, header=<span style="color: #d3869b;">None</span>)
+<span style="color: #fb4934;">def</span> <span style=
+"color: #b8bb26;">compare</span>(s1, s2):
+    c = <span style="color: #fe8019;">len</span>(<span style=
+"color: #fe8019;">list</span>(<span style=
+"color: #fe8019;">set</span>(s1.iloc[:, <span style=
+"color: #d3869b; font-weight: bold;">0</span>]) &amp; <span style=
+"color: #fe8019;">set</span>(s2.iloc[:, <span style=
+"color: #d3869b; font-weight: bold;">0</span>])))
+    <span style="color: #fb4934;">return</span>(c)
+
+diff = compare(deet, genes)
+<span style="color: #fe8019;">len</span>(deet)
+<span style="color: #83a598;">fig</span>, <span style=
+"color: #83a598;">axes</span> = plt.subplots(<span style=
+"color: #d3869b; font-weight: bold;">2</span>)
+v1 = venn2_unweighted(subsets=(<span style=
+"color: #fe8019;">len</span>(deet), <span style=
+"color: #fe8019;">len</span>(deetcont), <span style=
+"color: #fe8019;">len</span>(genes)-<span style=
+"color: #fe8019;">len</span>(deetcont)-<span style=
+"color: #fe8019;">len</span>(deet)), set_labels=(<span style=
+"color: #b8bb26;">"Up Regulated"</span>, <span style=
+"color: #b8bb26;">"Down Regulated"</span>), ax=axes[<span style=
+"color: #d3869b; font-weight: bold;">0</span>])
+v2 = venn2_unweighted(subsets=(<span style=
+"color: #fe8019;">len</span>(perm), <span style=
+"color: #fe8019;">len</span>(permcont), <span style=
+"color: #fe8019;">len</span>(genes)-<span style=
+"color: #fe8019;">len</span>(permcont)-<span style=
+"color: #fe8019;">len</span>(perm)), set_labels=(<span style=
+"color: #b8bb26;">"Up Regulated"</span>, <span style=
+"color: #b8bb26;">"Down Regulated"</span>), ax=axes[<span style=
+"color: #d3869b; font-weight: bold;">1</span>])
+axes[<span style=
+"color: #d3869b; font-weight: bold;">0</span>].set_title(<span style="color: #b8bb26;">"Deet"</span>)
+axes[<span style=
+"color: #d3869b; font-weight: bold;">1</span>].set_title(<span style="color: #b8bb26;">"Perm"</span>)
+fig.tight_layout()
+fig.savefig(<span style=
+"color: #b8bb26;">"VennDiagrams/RevisedDiagrams/DeetnPerm.png"</span>, bbox_inxhes=<span style="color: #b8bb26;">"tight"</span>, dpi=<span style="color: #d3869b; font-weight: bold;">250</span>)
+plt.show()
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org5612078" class="outline-4">
+          <h4 id="org5612078"><span class=
+          "section-number-4">7.2.4</span> Venn 3</h4>
+          <div class="outline-text-4" id="text-7-2-4">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #83a598;">genes</span> = pd.read_csv(<span style=
+              "color: #b8bb26;">"GeneReference/listofgenes.csv"</span>, header=<span style="color: #d3869b;">None</span>)
+body = pd.read_csv(<span style=
+"color: #b8bb26;">"GeneReference/Body.csv"</span>)
+leg = pd.read_csv(<span style=
+"color: #b8bb26;">"GeneReference/Leg.csv"</span>)
+
+<span style="color: #83a598;">fig</span>, <span style=
+"color: #83a598;">axes</span> = plt.subplots()
+
+v = venn2_unweighted(subsets=(<span style=
+"color: #fe8019;">len</span>(body), <span style=
+"color: #fe8019;">len</span>(leg),<span style=
+"color: #fe8019;">len</span>(genes)-<span style=
+"color: #fe8019;">len</span>(leg) - <span style=
+"color: #fe8019;">len</span>(body)), set_labels=(<span style=
+"color: #b8bb26;">"Body"</span>, <span style=
+"color: #b8bb26;">"Leg"</span>), ax=axes)
+
+axes.set_title(<span style="color: #b8bb26;">"Leg vs Body"</span>)
+fig.tight_layout()
+fig.savefig(<span style=
+"color: #b8bb26;">"figures/BodyvsLeg.png"</span>, bbox_inxhes=<span style="color: #b8bb26;">"tight"</span>, dpi=<span style="color: #d3869b; font-weight: bold;">250</span>)
+fig.savefig(<span style=
+"color: #b8bb26;">"figures/BodyvsLeg.pdf"</span>, bbox_inxhes=<span style="color: #b8bb26;">"tight"</span>, dpi=<span style="color: #d3869b; font-weight: bold;">250</span>)
+
+plt.show()
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-orgad1b086" class="outline-4">
+          <h4 id="orgad1b086"><span class=
+          "section-number-4">7.2.5</span> Venn 4</h4>
+          <div class="outline-text-4" id="text-7-2-5">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #83a598;">genes</span> = pd.read_csv(<span style=
+              "color: #b8bb26;">"Genes/listofgenes.csv"</span>, header=<span style="color: #d3869b;">None</span>)
+body = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Body.csv"</span>)
+upDeetBody = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/upDeetBody.csv"</span>)
+downDeetBody = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/downDeetBody.csv"</span>)
+
+
+<span style="color: #83a598;">fig</span>, <span style=
+"color: #83a598;">axes</span> = plt.subplots()
+
+v = venn2_unweighted(subsets=(<span style=
+"color: #fe8019;">len</span>(upDeetBody), <span style=
+"color: #fe8019;">len</span>(downDeetBody), <span style=
+"color: #fe8019;">len</span>(body)- <span style=
+"color: #fe8019;">len</span>(upDeetBody)-<span style=
+"color: #fe8019;">len</span>(downDeetBody)), set_labels=(<span style="color: #b8bb26;">"Up Regulated"</span>, <span style="color: #b8bb26;">"Down Regulated"</span>), ax=axes)
+axes.set_title(<span style=
+"color: #b8bb26;">"Deet Expression in Body Genes"</span>)
+fig.tight_layout()
+fig.savefig(<span style=
+"color: #b8bb26;">"VennDiagrams/RevisedDiagrams/DeetBody.png"</span>)
+plt.show()
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org40d8b9c" class="outline-4">
+          <h4 id="org40d8b9c"><span class=
+          "section-number-4">7.2.6</span> Venn 5</h4>
+          <div class="outline-text-4" id="text-7-2-6">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #83a598;">leg</span> = pd.read_csv(<span style=
+              "color: #b8bb26;">"Genes/Leg.csv"</span>)
+<span style=
+"color: #83a598;">upDeetLeg</span> = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/upDeetLeg.csv"</span>)
+<span style=
+"color: #83a598;">downDeetLeg</span> = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/downDeetLeg.csv"</span>)
+
+<span style="color: #83a598;">fig</span>, <span style=
+"color: #83a598;">axes</span> = plt.subplots()
+<span style=
+"color: #83a598;">v</span> = venn2_unweighted(subsets=(<span style=
+"color: #fe8019;">len</span>(upDeetLeg), <span style=
+"color: #fe8019;">len</span>(downDeetLeg), <span style=
+"color: #fe8019;">len</span>(leg)-<span style=
+"color: #fe8019;">len</span>(upDeetLeg)-<span style=
+"color: #fe8019;">len</span>(downDeetLeg)), set_labels=(<span style="color: #b8bb26;">"Up Regulated"</span>, <span style="color: #b8bb26;">"Down Regulated"</span>), ax=axes)
+axes.set_title(<span style=
+"color: #b8bb26;">"Deet Expression in Leg Genes"</span>)
+fig.tight_layout()
+fig.savefig(<span style=
+"color: #b8bb26;">"VennDiagrams/RevisedDiagrams/DeetLeg.png"</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-orge857fa1" class="outline-4">
+          <h4 id="orge857fa1"><span class=
+          "section-number-4">7.2.7</span> Venn 6</h4>
+          <div class="outline-text-4" id="text-7-2-7">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #83a598;">leg</span> = pd.read_csv(<span style=
+              "color: #b8bb26;">"Genes/Leg.csv"</span>)
+<span style=
+"color: #83a598;">upPermLeg</span> = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/upPermLeg.csv"</span>)
+<span style=
+"color: #83a598;">downPermLeg</span> = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/downPermLeg.csv"</span>)
+
+<span style="color: #83a598;">fig</span>, <span style=
+"color: #83a598;">axes</span> = plt.subplots()
+<span style=
+"color: #83a598;">v</span> = venn2_unweighted(subsets=(<span style=
+"color: #fe8019;">len</span>(upPermLeg), <span style=
+"color: #fe8019;">len</span>(downPermLeg), <span style=
+"color: #fe8019;">len</span>(leg)-<span style=
+"color: #fe8019;">len</span>(downPermLeg)-<span style=
+"color: #fe8019;">len</span>(upPermLeg)), set_labels=(<span style=
+"color: #b8bb26;">"Up Regulated"</span>, <span style=
+"color: #b8bb26;">"Down Regulated"</span>), ax=axes)
+axes.set_title(<span style=
+"color: #b8bb26;">"Perm Expression in Leg Genes"</span>)
+fig.tight_layout()
+fig.savefig(<span style=
+"color: #b8bb26;">"VennDiagrams/RevisedDiagrams/PermLeg.png"</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org4583999" class="outline-4">
+          <h4 id="org4583999"><span class=
+          "section-number-4">7.2.8</span> Venn 7</h4>
+          <div class="outline-text-4" id="text-7-2-8">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #83a598;">body</span> = pd.read_csv(<span style=
+              "color: #b8bb26;">"Genes/Body.csv"</span>)
+<span style=
+"color: #83a598;">upPermBody</span> = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/upPermBody.csv"</span>)
+<span style=
+"color: #83a598;">downPermBody</span> = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/downPermLeg.csv"</span>)
+
+<span style="color: #83a598;">fig</span>, <span style=
+"color: #83a598;">axes</span> = plt.subplots()
+<span style=
+"color: #83a598;">v</span> = venn2_unweighted(subsets=(<span style=
+"color: #fe8019;">len</span>(upPermBody), <span style=
+"color: #fe8019;">len</span>(downPermBody), <span style=
+"color: #fe8019;">len</span>(body)-<span style=
+"color: #fe8019;">len</span>(upPermBody)-<span style=
+"color: #fe8019;">len</span>(downPermBody)), set_labels=(<span style="color: #b8bb26;">"Up Regulated"</span>, <span style="color: #b8bb26;">"Down Regulated"</span>), ax=axes)
+axes.set_title(<span style=
+"color: #b8bb26;">"Perm Expression in Body Genes"</span>)
+fig.tight_layout()
+fig.savefig(<span style=
+"color: #b8bb26;">"VennDiagrams/RevisedDiagrams/PermBody.png"</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org00079e3" class="outline-4">
+          <h4 id="org00079e3"><span class=
+          "section-number-4">7.2.9</span> Venn 8</h4>
+          <div class="outline-text-4" id="text-7-2-9">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #83a598;">genes</span> = pd.read_csv(<span style=
+              "color: #b8bb26;">"Genes/listofgenes.csv"</span>)
+<span style=
+"color: #83a598;">upPerm</span> = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/upPerm.csv"</span>)
+<span style=
+"color: #83a598;">downPerm</span> = pd.read_csv(<span style=
+"color: #b8bb26;">"Genes/Genelists/downPerm.csv"</span>)
+
+<span style="color: #83a598;">fig</span>, <span style=
+"color: #83a598;">axes</span> = plt.subplots()
+<span style=
+"color: #83a598;">v</span> = venn2_unweighted(subsets=(<span style=
+"color: #fe8019;">len</span>(upPerm), <span style=
+"color: #fe8019;">len</span>(downPerm), <span style=
+"color: #fe8019;">len</span>(genes)-<span style=
+"color: #fe8019;">len</span>(upPerm)-<span style=
+"color: #fe8019;">len</span>(downPerm)), set_labels=(<span style=
+"color: #b8bb26;">"Up Regulated"</span>, <span style=
+"color: #b8bb26;">"Down Regulated"</span>), ax=axes)
+axes.set_title(<span style=
+"color: #b8bb26;">"Perm Expression"</span>)
+fig.tight_layout()
+fig.savefig(<span style=
+"color: #b8bb26;">"VennDiagrams/RevisedDiagrams/Perm.png"</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-orgba695e5" class="outline-3">
+        <h3 id="orgba695e5"><span class=
+        "section-number-3">7.3</span> Pearson Correlation</h3>
+        <div class="outline-text-3" id="text-7-3"></div>
+        <div id="outline-container-org9638d41" class="outline-4">
+          <h4 id="org9638d41"><span class=
+          "section-number-4">7.3.1</span> Libraries</h4>
+          <div class="outline-text-4" id="text-7-3-1">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R"><span style=
+              "color: #d3869b;">library</span>(<span style=
+              "color: #b8bb26;">"tidyverse"</span>)
+<span style="color: #d3869b;">library</span>(<span style=
+"color: #b8bb26;">"ggpubr"</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org40f6b95" class="outline-4">
+          <h4 id="org40f6b95"><span class=
+          "section-number-4">7.3.2</span> Import the data</h4>
+          <div class="outline-text-4" id="text-7-3-2">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">EdgeR <span style=
+              "color: #d3869b;">&lt;-</span> read.csv(<span style=
+              "color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/edgeR-Genes/bodyExpr.csv"</span>)
+Deseq <span style=
+"color: #d3869b;">&lt;-</span> read.csv(<span style=
+"color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/total.csv"</span>)
+common <span style=
+"color: #d3869b;">&lt;-</span> intersect(row.names(Deseq), row.names(EdgeR))
+EdgeR <span style="color: #d3869b;">&lt;-</span> EdgeR[common, ]
+Deseq <span style="color: #d3869b;">&lt;-</span> Deseq[common, ]
+
+ECol <span style="color: #d3869b;">&lt;-</span> EdgeR[<span style=
+"color: #b8bb26;">"logFC.partbody"</span>]
+DCol <span style="color: #d3869b;">&lt;-</span> -<span style=
+"color: #d3869b; font-weight: bold;">1</span>*Deseq[<span style=
+"color: #b8bb26;">"log2FoldChange"</span>]
+newD <span style=
+"color: #d3869b;">&lt;-</span> data.frame(DCol, ECol)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org8ed8c4f" class="outline-4">
+          <h4 id="org8ed8c4f"><span class=
+          "section-number-4">7.3.3</span> Plot the data</h4>
+          <div class="outline-text-4" id="text-7-3-3">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R"><span style=
+              "color: #d3869b;">library</span>(<span style=
+              "color: #b8bb26;">"ggpubr"</span>)
+pearson <span style=
+"color: #d3869b;">&lt;-</span> ggscatter(newD, x = <span style=
+"color: #b8bb26;">"log2FoldChange"</span>, y = <span style=
+"color: #b8bb26;">"logFC.partbody"</span>,
+          add = <span style=
+"color: #b8bb26;">"reg.line"</span>, conf.int = <span style=
+"color: #fabd2f;">TRUE</span>,
+          cor.coef = <span style=
+"color: #fabd2f;">TRUE</span>, cor.method = <span style=
+"color: #b8bb26;">"pearson"</span>,
+          xlab = <span style=
+"color: #b8bb26;">"Deseq"</span>, ylab = <span style=
+"color: #b8bb26;">"EdgeR"</span>)
+pearson
+ggsave(<span style=
+"color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/figures/figure1/pearson.png"</span>, pearson, png())
+ggsave(<span style=
+"color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/figures/figure1/pearson.pdf"</span>, pearson, pdf())
+</pre>
+            </div>
+            <pre class="example">
+`geom_smooth()` using formula 'y ~ x'
+
+Saving 6.67 x 6.67 in image
+
+`geom_smooth()` using formula 'y ~ x'
+
+Saving 7 x 7 in image
+
+`geom_smooth()` using formula 'y ~ x'
+
+</pre>
+            <div id="orgbb7bf0f" class="figure">
+              <p><img src=
+              "./.ob-jupyter/f1067a6954fd040fbf8de1c030201143a06483aa.png"
+              alt=
+              "f1067a6954fd040fbf8de1c030201143a06483aa.png" /></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-org7495ab2" class="outline-3">
+        <h3 id="org7495ab2"><span class=
+        "section-number-3">7.4</span> Dotplot</h3>
+        <div class="outline-text-3" id="text-7-4">
+          <p>This figure plots the enrichment of specific genes.
+          Ideal for small amounts of genes.</p>
+        </div>
+        <div id="outline-container-org9170b1e" class="outline-4">
+          <h4 id="org9170b1e"><span class=
+          "section-number-4">7.4.1</span> imports</h4>
+          <div class="outline-text-4" id="text-7-4-1">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #fb4934;">import</span> numpy <span style=
+              "color: #fb4934;">as</span> np
+<span style=
+"color: #fb4934;">import</span> matplotlib.pyplot <span style=
+"color: #fb4934;">as</span> plt
+<span style="color: #fb4934;">import</span> matplotlib
+<span style="color: #fb4934;">import</span> pandas <span style=
+"color: #fb4934;">as</span> pd
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org6fa0347" class="outline-4">
+          <h4 id="org6fa0347"><span class=
+          "section-number-4">7.4.2</span> Theme settings</h4>
+          <div class="outline-text-4" id="text-7-4-2">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python">plt.<span style=
+              "color: #83a598;">rcParams</span>[<span style=
+              "color: #b8bb26;">"font.family"</span>] = <span style=
+              "color: #b8bb26;">"Bahnschrift"</span>
+<span style=
+"color: #83a598;">cmap</span> = matplotlib.colors.LinearSegmentedColormap.from_list(
+    <span style="color: #b8bb26;">""</span>, [<span style=
+"color: #b8bb26;">"dodgerblue"</span>, <span style=
+"color: #b8bb26;">"lightgrey"</span>]
+)
+
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org48e511c" class="outline-4">
+          <h4 id="org48e511c"><span class=
+          "section-number-4">7.4.3</span> Import</h4>
+          <div class="outline-text-4" id="text-7-4-3">
+            <p>Use the pandas package to import the csv file</p>
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #83a598;">dotplotdata</span> = pd.read_csv(<span style=
+              "color: #b8bb26;">"../GeneReference/dotplotdata.csv"</span>)  <span style="color: #928374;"># </span><span style="color: #928374;">infers header existance</span>
+
+<span style=
+"color: #83a598;">pesticide</span> = dotplotdata.Category
+<span style="color: #83a598;">pathway</span> = dotplotdata.Pathway
+<span style=
+"color: #83a598;">enrichmentratio</span> = dotplotdata.Enrichment * <span style="color: #d3869b; font-weight: bold;">3</span>
+<span style=
+"color: #83a598;">pval</span> = dotplotdata[<span style="color: #b8bb26;">"P-Value"</span>]
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org423bf69" class="outline-4">
+          <h4 id="org423bf69"><span class=
+          "section-number-4">7.4.4</span> Plot the figure</h4>
+          <div class="outline-text-4" id="text-7-4-4">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-python"><span style=
+              "color: #83a598;">fig</span>, <span style=
+              "color: #83a598;">ax</span> = plt.subplots(<span style=
+              "color: #d3869b; font-weight: bold;">1</span>)
+<span style="color: #83a598;">p</span> = ax.scatter(
+    pathway, pesticide, c=pval, s=enrichmentratio, cmap=cmap, vmin=<span style="color: #d3869b; font-weight: bold;">0</span>, vmax=<span style="color: #d3869b; font-weight: bold;">0.05</span>
+)
+plt.legend(loc=<span style=
+"color: #b8bb26;">"lower left"</span>, markerscale=<span style=
+"color: #d3869b; font-weight: bold;">2.0</span>, scatterpoints=<span style="color: #d3869b; font-weight: bold;">1</span>, fontsize=<span style="color: #d3869b; font-weight: bold;">10</span>)
+plt.xticks(rotation=<span style=
+"color: #b8bb26;">"vertical"</span>)
+
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">Legend:</span>
+handles, labels = p.legend_elements(prop=<span style=
+"color: #b8bb26;">"sizes"</span>, alpha=<span style=
+"color: #d3869b; font-weight: bold;">0.6</span>, num=<span style=
+"color: #d3869b; font-weight: bold;">4</span>)
+legend2 = ax.legend(
+    handles,
+    labels,
+    loc=<span style="color: #b8bb26;">"upper right"</span>,
+    title=<span style="color: #b8bb26;">"Enrichment Ratio"</span>,
+    bbox_to_anchor=(<span style=
+"color: #d3869b; font-weight: bold;">1.4</span>, <span style=
+"color: #d3869b; font-weight: bold;">1.1</span>),
+)
+
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">Colorbar:</span>
+cbar = fig.colorbar(p, shrink=<span style=
+"color: #d3869b; font-weight: bold;">0.5</span>)
+cbar.ax.set_ylabel(<span style=
+"color: #b8bb26;">"p Value"</span>, rotation=<span style=
+"color: #d3869b; font-weight: bold;">270</span>, labelpad=<span style="color: #d3869b; font-weight: bold;">15</span>)
+
+<span style="color: #928374;"># </span><span style=
+"color: #928374;">Title, labels, and visual modifications:</span>
+plt.title(<span style=
+"color: #b8bb26;">"Metabolic Pathway Enrichment"</span>)
+plt.xlabel(<span style=
+"color: #b8bb26;">"Metabolic Pathway"</span>)
+plt.ylabel(<span style="color: #b8bb26;">"Pesticide"</span>)
+ax.grid(axis=<span style=
+"color: #b8bb26;">"x"</span>, linestyle=<span style=
+"color: #b8bb26;">"dotted"</span>)
+ax.spines[<span style=
+"color: #b8bb26;">"top"</span>].set_visible(<span style=
+"color: #d3869b;">False</span>)
+ax.spines[<span style=
+"color: #b8bb26;">"right"</span>].set_visible(<span style=
+"color: #d3869b;">False</span>)
+
+plt.show()
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org8f0dbde" class="outline-4">
+          <h4 id="org8f0dbde"><span class=
+          "section-number-4">7.4.5</span> Save the Figure</h4>
+          <div class="outline-text-4" id="text-7-4-5">
+            <div class="org-src-container">
+              <pre class=
+              "src src-jupyter-python">plt.savefig(<span style=
+              "color: #b8bb26;">'dotplot.pdf'</span>, dpi=<span style=
+              "color: #d3869b; font-weight: bold;">300</span>, bbox_inches=<span style="color: #b8bb26;">'tight'</span>)
+plt.savefig(<span style=
+"color: #b8bb26;">'dotplot.jpg'</span>, dpi=<span style=
+"color: #d3869b; font-weight: bold;">300</span>, bbox_inches=<span style="color: #b8bb26;">'tight'</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="postamble" class="status">
+    <p class="author">Author: David Lewis</p>
+    <p class="date">Created: 2021-05-18 Tue 11:34</p>
+  </div>
+</body>
+</html>
