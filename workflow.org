@@ -101,9 +101,6 @@ estEdgeR <- function(EdgeR, design){
 EdgeR and Deseq2 are used to find lists of genes that are up-regulated and down-regulated when compared to design criteria. The design is used to curated the value of logfoldchange in Deseq2. They are compared using a pearson correlation in the plotting section.
 ** TODO Deseq
 This needs to incorporate the function definitions. Much of it is being restated in an unintuitive way
-:PROPERTIES:
-:header-args: :tangle scripts/Deseq2-analysis.r
-:end:
 *** Package imports
 #+begin_src jupyter-R :session R
 vignette(package="dplyr")
@@ -807,6 +804,9 @@ import numpy as np
 import os
 os.chdir("/home/david/Documents/BenoitLab/RNA-seq")
 #+end_src
+
+#+RESULTS:
+
 *** Venn 1
 #+begin_src jupyter-python :session py
 data = pd.read_csv("edgeR-Genes/venn-regulation.csv")
@@ -874,14 +874,21 @@ leg = pd.read_csv("GeneReference/Leg.csv")
 fig, axes = plt.subplots()
 
 v = venn2_unweighted(subsets=(len(body), len(leg),len(genes)-len(leg) - len(body)), set_labels=("Body", "Leg"), ax=axes)
-
+v.get_patch_by_id("10").set_color("blue")
+v.get_patch_by_id("11").set_color("blue")
+v.get_patch_by_id("01").set_color("grey")
+v.get_patch_by_id("01").set_alpha(0.5)
 axes.set_title("Leg vs Body")
 fig.tight_layout()
-fig.savefig("figures/BodyvsLeg.png", bbox_inxhes="tight", dpi=250)
-fig.savefig("figures/BodyvsLeg.pdf", bbox_inxhes="tight", dpi=250)
+fig.savefig("figures/figure2/BodyvsLeg.png", bbox_inches="tight", dpi=250)
+fig.savefig("figures/figure2/BodyvsLeg.pdf", bbox_inches="tight", dpi=250)
 
 plt.show()
 #+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/d0c25b1b83e2445061be8a15a3fc07a21d49fa84.png]]
+
 *** Venn 4
 #+begin_src jupyter-python :session py
 genes = pd.read_csv("Genes/listofgenes.csv", header=None)
@@ -958,17 +965,29 @@ library("ggpubr")
 #+end_src
 
 #+RESULTS:
+#+begin_example
+── [1mAttaching packages[22m ─────────────────────────────────────── tidyverse 1.3.1 ──
+
+[32m✔[39m [34mggplot2[39m 3.3.3     [32m✔[39m [34mpurrr  [39m 0.3.4
+[32m✔[39m [34mtibble [39m 3.1.2     [32m✔[39m [34mdplyr  [39m 1.0.6
+[32m✔[39m [34mtidyr  [39m 1.1.3     [32m✔[39m [34mstringr[39m 1.4.0
+[32m✔[39m [34mreadr  [39m 1.4.0     [32m✔[39m [34mforcats[39m 0.5.1
+
+── [1mConflicts[22m ────────────────────────────────────────── tidyverse_conflicts() ──
+[31m✖[39m [34mdplyr[39m::[32mfilter()[39m masks [34mstats[39m::filter()
+[31m✖[39m [34mdplyr[39m::[32mlag()[39m    masks [34mstats[39m::lag()
+#+end_example
 
 *** Import the data
 #+begin_src jupyter-R :session R
 EdgeR <- read.csv("/home/david/Documents/BenoitLab/RNA-seq/edgeR-Genes/bodyExpr.csv")
 Deseq <- read.csv("/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/total.csv")
 common <- intersect(row.names(Deseq), row.names(EdgeR))
-EdgeR <- EdgeR[common, ]
-Deseq <- Deseq[common, ]
+EdgeRCommon <- EdgeR[common, ]
+DeseqCommon <- Deseq[common, ]
 
-ECol <- EdgeR["logFC.partbody"]
-DCol <- -1*Deseq["log2FoldChange"]
+ECol <- EdgeRCommon["logFC.partbody"]
+DCol <- -1*DeseqCommon["log2FoldChange"]
 newD <- data.frame(DCol, ECol)
 #+end_src
 
@@ -984,6 +1003,7 @@ pearson <- ggscatter(newD, x = "log2FoldChange", y = "logFC.partbody",
 pearson
 ggsave("/home/david/Documents/BenoitLab/RNA-seq/figures/figure1/pearson.png", pearson, png())
 ggsave("/home/david/Documents/BenoitLab/RNA-seq/figures/figure1/pearson.pdf", pearson, pdf())
+
 #+end_src
 
 #+RESULTS:
@@ -1001,6 +1021,19 @@ ggsave("/home/david/Documents/BenoitLab/RNA-seq/figures/figure1/pearson.pdf", pe
 #+attr_org: :width 420 :height 420
 [[file:./.ob-jupyter/f1067a6954fd040fbf8de1c030201143a06483aa.png]]
 :END:
+*** Venn Diagram
+Doesn't do what I wanted
+#+begin_src jupyter-R :session R
+library(VennDiagram)
+ECol <- row.names(EdgeR["logFC.partbody"])
+DCol <- row.names(-1*Deseq["log2FoldChange"])
+venn.diagram(
+  x = list(na.omit(ECol), na.omit(DCol)),
+  category.names = c("EdgeR", "Deseq"),
+  filename = "/home/david/Documents/BenoitLab/RNA-seq/figures/figure1/vennBody.png",
+  output=TRUE
+)
+#+end_src
 ** Dotplot
 :PROPERTIES:
 :HEADER-ARGS: :tangle scripts/enrichment-dotplot.py
@@ -1069,3 +1102,7 @@ plt.show()
 plt.savefig('dotplot.pdf', dpi=300, bbox_inches='tight')
 plt.savefig('dotplot.jpg', dpi=300, bbox_inches='tight')
 #+end_src
+* Local Variables :noexport:
+local variables:
+org-export-babel-evaluate: nil
+end:
