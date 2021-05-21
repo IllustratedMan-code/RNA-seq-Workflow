@@ -32,6 +32,9 @@ txi <- function(directory, quantdatafoldername, metadata, fishtype){
   return(list(txi, metadata))
 }
 #+end_src
+
+#+RESULTS:
+
 ** Initial Deseq Function
 Sets up the deseq data set object and returns it. Deseq uses a linear model to fit the data. Read more about it here [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#theory-behind-deseq2][Deseq2]].
 #+begin_src jupyter-R :session R
