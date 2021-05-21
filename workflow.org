@@ -103,6 +103,9 @@ estEdgeR <- function(EdgeR, design){
 * initial R step
 EdgeR and Deseq2 are used to find lists of genes that are up-regulated and down-regulated when compared to design criteria. The design is used to curated the value of logfoldchange in Deseq2. They are compared using a pearson correlation in the plotting section.
 ** TODO Deseq
+:PROPERTIES:
+:HEADER-ARGS: scripts/Deseq2-analysis.r
+:END:
 This needs to incorporate the function definitions. Much of it is being restated in an unintuitive way
 *** Package imports
 #+begin_src jupyter-R :session R
