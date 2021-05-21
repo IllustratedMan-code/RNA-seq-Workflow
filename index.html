@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <!-- 2021-05-20 Thu 13:36 -->
+  <!-- 2021-05-21 Fri 15:16 -->
   <meta http-equiv="Content-Type" content=
   "text/html; charset=utf-8" />
   <meta name="viewport" content=
@@ -238,144 +238,154 @@
       <h2>Table of Contents</h2>
       <div id="text-table-of-contents">
         <ul>
-          <li><a href="#org30cca0e">1. Introduction</a></li>
-          <li><a href="#orge6b27e9">2. Galaxy</a></li>
+          <li><a href="#org394328c">1. Introduction</a></li>
+          <li><a href="#org460b32e">2. Galaxy</a></li>
           <li>
-            <a href="#org86320d4">3. R functions</a>
+            <a href="#org7438d4d">3. R functions</a>
             <ul>
-              <li><a href="#org03962b2">3.1. txi function</a></li>
-              <li><a href="#org0610e93">3.2. Initial Deseq
+              <li><a href="#orgcb69cf5">3.1. txi function</a></li>
+              <li><a href="#org0dd161e">3.2. Initial Deseq
               Function</a></li>
-              <li><a href="#org9b99dde">3.3. ReDeseq</a></li>
-              <li><a href="#org34de828">3.4. initialEdgeR</a></li>
-              <li><a href="#org3d03b57">3.5. estEdgeR</a></li>
+              <li><a href="#orgf2d98cb">3.3. ReDeseq</a></li>
+              <li><a href="#orged666cb">3.4. initialEdgeR</a></li>
+              <li><a href="#org5fb27e3">3.5. estEdgeR</a></li>
             </ul>
           </li>
           <li>
-            <a href="#org41415ac">4. initial R step</a>
+            <a href="#org9fa15d2">4. initial R step</a>
             <ul>
               <li>
-                <a href="#orgfa0a2ca">4.1. <span class=
+                <a href="#org5263e70">4.1. <span class=
                 "todo TODO">TODO</span> Deseq</a>
                 <ul>
-                  <li><a href="#org6ab4d51">4.1.1. Package
+                  <li><a href="#orgf608699">4.1.1. Package
                   imports</a></li>
-                  <li><a href="#orgfd194bc">4.1.2.
+                  <li><a href="#org28e95ee">4.1.2.
                   Tximport</a></li>
-                  <li><a href="#org675fc44">4.1.3. Create the Deseq
+                  <li><a href="#orgca678e5">4.1.3. Create the Deseq
                   Object</a></li>
-                  <li><a href="#org3f137c4">4.1.4. Do initial data
+                  <li><a href="#orgb72649b">4.1.4. Do initial data
                   manipulation</a></li>
-                  <li><a href="#org4c2e169">4.1.5. Initial
+                  <li><a href="#org16782d4">4.1.5. Initial
                   selection of the data</a></li>
-                  <li><a href="#org94bdf8e">4.1.6. Save lists of
+                  <li><a href="#orgc269d53">4.1.6. Save lists of
                   the respective up-regulated genes</a></li>
-                  <li><a href="#org8c39636">4.1.7. Create a new
+                  <li><a href="#org69196e8">4.1.7. Create a new
                   analysis design</a></li>
-                  <li><a href="#org09da6b5">4.1.8. Prepare the data
+                  <li><a href="#orge9263bf">4.1.8. Prepare the data
                   for pheatmap plotting</a></li>
-                  <li><a href="#orgc1edbbe">4.1.9. Integrity
+                  <li><a href="#orgb2a9aba">4.1.9. Integrity
                   plots</a></li>
-                  <li><a href="#orge9a0f5b">4.1.10. Another Deseq
+                  <li><a href="#org4bee5ce">4.1.10. Another Deseq
                   Design</a></li>
-                  <li><a href="#org8e695ba">4.1.11. Altered
+                  <li><a href="#org5b80317">4.1.11. Altered
                   Selection of genes</a></li>
-                  <li><a href="#orgdc3f0ca">4.1.12. Save new
+                  <li><a href="#orgf898ff0">4.1.12. Save new
                   selection to file</a></li>
-                  <li><a href="#org14576d6">4.1.13. Extra integrity
+                  <li><a href="#orgc4c6fd6">4.1.13. Extra integrity
                   plot</a></li>
-                  <li><a href="#org2d5aa49">4.1.14. <span class=
+                  <li><a href="#orgff910a5">4.1.14. <span class=
                   "todo TODO">TODO</span> Extra EdgeR for venn
                   diagrams</a></li>
                 </ul>
               </li>
               <li>
-                <a href="#org7f122a2">4.2. EdgeR</a>
+                <a href="#orgde80fd8">4.2. EdgeR</a>
                 <ul>
-                  <li><a href="#org3aa73ed">4.2.1. Initial
+                  <li><a href="#org1ba6fdd">4.2.1. Initial
                   settings</a></li>
-                  <li><a href="#org5a72e06">4.2.2. Do the initial
+                  <li><a href="#orgcf9761e">4.2.2. Do the initial
                   processing of the data</a></li>
-                  <li><a href="#org4b6aaee">4.2.3. Partion the data
+                  <li><a href="#org200b7d0">4.2.3. Partion the data
                   into body and leg tables</a></li>
-                  <li><a href="#org0389aee">4.2.4. Save the data
+                  <li><a href="#org051bfcf">4.2.4. Save the data
                   tables to a file</a></li>
-                  <li><a href="#orgeb5ef68">4.2.5. Find the
+                  <li><a href="#orgcbec5e2">4.2.5. Find the
                   relative expression values when compared to the
                   control</a></li>
-                  <li><a href="#orgcf6e500">4.2.6. Selection of the
+                  <li><a href="#org458a94d">4.2.6. Selection of the
                   data</a></li>
-                  <li><a href="#org1745de5">4.2.7. Create a csv for
+                  <li><a href="#org614ce5b">4.2.7. Create a csv for
                   bar plotting</a></li>
-                  <li><a href="#org2780626">4.2.8. Gets the
+                  <li><a href="#org2d7c768">4.2.8. Gets the
                   row-names</a></li>
-                  <li><a href="#orga0d7f45">4.2.9. Create a list of
+                  <li><a href="#orge040315">4.2.9. Create a list of
                   dataframes corresponding to the total, leg, and
                   body</a></li>
-                  <li><a href="#orgfb8f4b4">4.2.10. Save the
+                  <li><a href="#org544dc91">4.2.10. Save the
                   genelist to files</a></li>
                 </ul>
               </li>
+              <li>
+                <a href="#org734717b">4.3. WGCNA</a>
+                <ul>
+                  <li><a href="#org79cf346">4.3.1. Build data file
+                  for WGCNA from quant files</a></li>
+                  <li><a href="#org6a380d6">4.3.2. <span class=
+                  "todo TODO">TODO</span> Build metadata truth
+                  table for WGCNA</a></li>
+                </ul>
+              </li>
             </ul>
           </li>
           <li>
-            <a href="#org0459a36">5. Fasta Manipulation</a>
+            <a href="#orged44836">5. Fasta Manipulation</a>
             <ul>
-              <li><a href="#org742e04d">5.1. Get Gene
+              <li><a href="#org003df6d">5.1. Get Gene
               names</a></li>
             </ul>
           </li>
-          <li><a href="#org599597c">6. Blast</a></li>
+          <li><a href="#org62208e2">6. Blast</a></li>
           <li>
-            <a href="#org123b092">7. Plotting</a>
+            <a href="#orgd9e9669">7. Plotting</a>
             <ul>
               <li>
-                <a href="#org8d905a3">7.1. Required Packages</a>
+                <a href="#org15afbf9">7.1. Required Packages</a>
                 <ul>
-                  <li><a href="#org9e11df1">7.1.1. R
+                  <li><a href="#orgfa5d835">7.1.1. R
                   packages</a></li>
-                  <li><a href="#orge14ce24">7.1.2. Python
+                  <li><a href="#org63a6154">7.1.2. Python
                   packages</a></li>
                 </ul>
               </li>
               <li>
-                <a href="#org1d772e8">7.2. Venn Diagrams</a>
+                <a href="#org0587a41">7.2. Venn Diagrams</a>
                 <ul>
-                  <li><a href="#orge8eb653">7.2.1. Imports</a></li>
-                  <li><a href="#org797d54b">7.2.2. Venn 1</a></li>
-                  <li><a href="#org046c289">7.2.3. Venn 2</a></li>
-                  <li><a href="#org0a5e26e">7.2.4. Venn 3</a></li>
-                  <li><a href="#org8068903">7.2.5. Venn 4</a></li>
-                  <li><a href="#org8a20a05">7.2.6. Venn 5</a></li>
-                  <li><a href="#org2d731c5">7.2.7. Venn 6</a></li>
-                  <li><a href="#orgbbacdd6">7.2.8. Venn 7</a></li>
-                  <li><a href="#org14fa8b8">7.2.9. Venn 8</a></li>
-                  <li><a href="#orgdb0e21d">7.2.10. Venn 9</a></li>
+                  <li><a href="#org129e4a2">7.2.1. Imports</a></li>
+                  <li><a href="#orge4a4add">7.2.2. Venn 1</a></li>
+                  <li><a href="#org679556e">7.2.3. Venn 2</a></li>
+                  <li><a href="#org08f1e15">7.2.4. Venn 3</a></li>
+                  <li><a href="#org06caeca">7.2.5. Venn 4</a></li>
+                  <li><a href="#org4f1fb1a">7.2.6. Venn 5</a></li>
+                  <li><a href="#org676d6ee">7.2.7. Venn 6</a></li>
+                  <li><a href="#org1216700">7.2.8. Venn 7</a></li>
+                  <li><a href="#org5e00af1">7.2.9. Venn 8</a></li>
+                  <li><a href="#org77178e9">7.2.10. Venn 9</a></li>
                 </ul>
               </li>
               <li>
-                <a href="#org7cc63b1">7.3. Pearson Correlation</a>
+                <a href="#org376c734">7.3. Pearson Correlation</a>
                 <ul>
-                  <li><a href="#org4dc927e">7.3.1.
+                  <li><a href="#org3799900">7.3.1.
                   Libraries</a></li>
-                  <li><a href="#org35653b5">7.3.2. Import the
+                  <li><a href="#org8e774f7">7.3.2. Import the
                   data</a></li>
-                  <li><a href="#org639cbe6">7.3.3. Plot the
+                  <li><a href="#orgb8f857d">7.3.3. Plot the
                   data</a></li>
-                  <li><a href="#orgc4cbc9c">7.3.4. Venn
+                  <li><a href="#orge0806ec">7.3.4. Venn
                   Diagram</a></li>
                 </ul>
               </li>
               <li>
-                <a href="#org1c5d647">7.4. Dotplot</a>
+                <a href="#org3f283c4">7.4. Dotplot</a>
                 <ul>
-                  <li><a href="#orgca6a5d7">7.4.1. imports</a></li>
-                  <li><a href="#orgf9fc0bb">7.4.2. Theme
+                  <li><a href="#org8001061">7.4.1. imports</a></li>
+                  <li><a href="#orgc675586">7.4.2. Theme
                   settings</a></li>
-                  <li><a href="#orgd2fbb04">7.4.3. Import</a></li>
-                  <li><a href="#orgdc7fda4">7.4.4. Plot the
+                  <li><a href="#org620a01f">7.4.3. Import</a></li>
+                  <li><a href="#org2eaee80">7.4.4. Plot the
                   figure</a></li>
-                  <li><a href="#orgdb7651d">7.4.5. Save the
+                  <li><a href="#org392f7f1">7.4.5. Save the
                   Figure</a></li>
                 </ul>
               </li>
@@ -384,8 +394,8 @@
         </ul>
       </div>
     </div>
-    <div id="outline-container-org30cca0e" class="outline-2">
-      <h2 id="org30cca0e"><span class="section-number-2">1</span>
+    <div id="outline-container-org394328c" class="outline-2">
+      <h2 id="org394328c"><span class="section-number-2">1</span>
       Introduction</h2>
       <div class="outline-text-2" id="text-1">
         <ul class="org-ul">
@@ -396,8 +406,8 @@
         </ul>
       </div>
     </div>
-    <div id="outline-container-orge6b27e9" class="outline-2">
-      <h2 id="orge6b27e9"><span class="section-number-2">2</span>
+    <div id="outline-container-org460b32e" class="outline-2">
+      <h2 id="org460b32e"><span class="section-number-2">2</span>
       Galaxy</h2>
       <div class="outline-text-2" id="text-2">
         <ul class="org-ul">
@@ -413,12 +423,12 @@
         </ul>
       </div>
     </div>
-    <div id="outline-container-org86320d4" class="outline-2">
-      <h2 id="org86320d4"><span class="section-number-2">3</span> R
+    <div id="outline-container-org7438d4d" class="outline-2">
+      <h2 id="org7438d4d"><span class="section-number-2">3</span> R
       functions</h2>
       <div class="outline-text-2" id="text-3"></div>
-      <div id="outline-container-org03962b2" class="outline-3">
-        <h3 id="org03962b2"><span class=
+      <div id="outline-container-orgcb69cf5" class="outline-3">
+        <h3 id="orgcb69cf5"><span class=
         "section-number-3">3.1</span> txi function</h3>
         <div class="outline-text-3" id="text-3-1">
           <p>uses the tximport package to import the quant data.
@@ -449,8 +459,8 @@
           </div>
         </div>
       </div>
-      <div id="outline-container-org0610e93" class="outline-3">
-        <h3 id="org0610e93"><span class=
+      <div id="outline-container-org0dd161e" class="outline-3">
+        <h3 id="org0dd161e"><span class=
         "section-number-3">3.2</span> Initial Deseq Function</h3>
         <div class="outline-text-3" id="text-3-2">
           <p>Sets up the deseq data set object and returns it.
@@ -477,8 +487,8 @@
           </div>
         </div>
       </div>
-      <div id="outline-container-org9b99dde" class="outline-3">
-        <h3 id="org9b99dde"><span class=
+      <div id="outline-container-orgf2d98cb" class="outline-3">
+        <h3 id="orgf2d98cb"><span class=
         "section-number-3">3.3</span> ReDeseq</h3>
         <div class="outline-text-3" id="text-3-3">
           <p>sets up the deseq object with a different design
@@ -503,8 +513,8 @@
           </div>
         </div>
       </div>
-      <div id="outline-container-org34de828" class="outline-3">
-        <h3 id="org34de828"><span class=
+      <div id="outline-container-orged666cb" class="outline-3">
+        <h3 id="orged666cb"><span class=
         "section-number-3">3.4</span> initialEdgeR</h3>
         <div class="outline-text-3" id="text-3-4">
           <p>Sets up the EdgeR object and returns it. EdgeR uses a
@@ -551,8 +561,8 @@
           </div>
         </div>
       </div>
-      <div id="outline-container-org3d03b57" class="outline-3">
-        <h3 id="org3d03b57"><span class=
+      <div id="outline-container-org5fb27e3" class="outline-3">
+        <h3 id="org5fb27e3"><span class=
         "section-number-3">3.5</span> estEdgeR</h3>
         <div class="outline-text-3" id="text-3-5">
           <p>finds the fit of the data and returns it for further
@@ -580,8 +590,8 @@
         </div>
       </div>
     </div>
-    <div id="outline-container-org41415ac" class="outline-2">
-      <h2 id="org41415ac"><span class="section-number-2">4</span>
+    <div id="outline-container-org9fa15d2" class="outline-2">
+      <h2 id="org9fa15d2"><span class="section-number-2">4</span>
       initial R step</h2>
       <div class="outline-text-2" id="text-4">
         <p>EdgeR and Deseq2 are used to find lists of genes that
@@ -590,16 +600,16 @@
         logfoldchange in Deseq2. They are compared using a pearson
         correlation in the plotting section.</p>
       </div>
-      <div id="outline-container-orgfa0a2ca" class="outline-3">
-        <h3 id="orgfa0a2ca"><span class=
+      <div id="outline-container-org5263e70" class="outline-3">
+        <h3 id="org5263e70"><span class=
         "section-number-3">4.1</span> <span class=
         "todo TODO">TODO</span> Deseq</h3>
         <div class="outline-text-3" id="text-4-1">
           <p>This needs to incorporate the function definitions.
           Much of it is being restated in an unintuitive way</p>
         </div>
-        <div id="outline-container-org6ab4d51" class="outline-4">
-          <h4 id="org6ab4d51"><span class=
+        <div id="outline-container-orgf608699" class="outline-4">
+          <h4 id="orgf608699"><span class=
           "section-number-4">4.1.1</span> Package imports</h4>
           <div class="outline-text-4" id="text-4-1-1">
             <div class="org-src-container">
@@ -632,8 +642,8 @@ args <span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-orgfd194bc" class="outline-4">
-          <h4 id="orgfd194bc"><span class=
+        <div id="outline-container-org28e95ee" class="outline-4">
+          <h4 id="org28e95ee"><span class=
           "section-number-4">4.1.2</span> Tximport</h4>
           <div class="outline-text-4" id="text-4-1-2">
             <div class="org-src-container">
@@ -652,7 +662,7 @@ fishtype <span style="color: #d3869b;">&lt;-</span> <span style=
           </div>
           <ol class="org-ol">
             <li>
-              <a id="org658ec91" name="org658ec91"></a>Convert
+              <a id="org2707910" name="org2707910"></a>Convert
               quant files to txi object<br />
               <div class="outline-text-5" id="text-4-1-2-1">
                 <div class="org-src-container">
@@ -675,7 +685,7 @@ txi <span style=
 "color: #d3869b;">&lt;-</span> tximport(files, type=fishtype, tx2gene=genes)
 </pre>
                 </div>
-                <pre class="example" id="orgdc6b2c0">
+                <pre class="example" id="orgbbff5c7">
 reading in files with read_tsv
 
 1
@@ -707,8 +717,8 @@ summarizing length
             </li>
           </ol>
         </div>
-        <div id="outline-container-org675fc44" class="outline-4">
-          <h4 id="org675fc44"><span class=
+        <div id="outline-container-orgca678e5" class="outline-4">
+          <h4 id="orgca678e5"><span class=
           "section-number-4">4.1.3</span> Create the Deseq
           Object</h4>
           <div class="outline-text-4" id="text-4-1-3">
@@ -723,7 +733,7 @@ Deseq <span style="color: #d3869b;">&lt;-</span> DESeq(data)
 results <span style="color: #d3869b;">&lt;-</span> results(Deseq)
 </pre>
             </div>
-            <pre class="example" id="orga4837b5">
+            <pre class="example" id="org3079ba7">
 Loading required package: S4Vectors
 
 Loading required package: stats4
@@ -850,8 +860,8 @@ fitting model and testing
 </pre>
           </div>
         </div>
-        <div id="outline-container-org3f137c4" class="outline-4">
-          <h4 id="org3f137c4"><span class=
+        <div id="outline-container-orgb72649b" class="outline-4">
+          <h4 id="orgb72649b"><span class=
           "section-number-4">4.1.4</span> Do initial data
           manipulation</h4>
           <div class="outline-text-4" id="text-4-1-4">
@@ -885,7 +895,7 @@ part <span style="color: #d3869b;">&lt;-</span> DESeq(dds)
 res <span style="color: #d3869b;">&lt;-</span> results(part)
 </pre>
             </div>
-            <pre class="example" id="org14e81fa">
+            <pre class="example" id="orgd12bc30">
 using pre-existing normalization factors
 
 estimating dispersions
@@ -924,8 +934,8 @@ fitting model and testing
 </pre>
           </div>
         </div>
-        <div id="outline-container-org4c2e169" class="outline-4">
-          <h4 id="org4c2e169"><span class=
+        <div id="outline-container-org16782d4" class="outline-4">
+          <h4 id="org16782d4"><span class=
           "section-number-4">4.1.5</span> Initial selection of the
           data</h4>
           <div class="outline-text-4" id="text-4-1-5">
@@ -943,7 +953,7 @@ Leg <span style=
 "color: #d3869b;">&lt;-</span> DR[which(DR$log2FoldChange &gt; <span style="color: #d3869b; font-weight: bold;">2</span>), ]
 </pre>
             </div>
-            <pre class="example" id="org2860f68">
+            <pre class="example" id="org57d8620">
 log2 fold change (MLE): pesticides perm vs control
 Wald test p-value: pesticides perm vs control
 DataFrame with 6 rows and 6 columns
@@ -958,8 +968,8 @@ dv.100000    19.8319       0.319016  0.972153  0.3281536  0.742796  0.999996
 </pre>
           </div>
         </div>
-        <div id="outline-container-org94bdf8e" class="outline-4">
-          <h4 id="org94bdf8e"><span class=
+        <div id="outline-container-orgc269d53" class="outline-4">
+          <h4 id="orgc269d53"><span class=
           "section-number-4">4.1.6</span> Save lists of the
           respective up-regulated genes</h4>
           <div class="outline-text-4" id="text-4-1-6">
@@ -975,8 +985,8 @@ write.table(res, file=<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org8c39636" class="outline-4">
-          <h4 id="org8c39636"><span class=
+        <div id="outline-container-org69196e8" class="outline-4">
+          <h4 id="org69196e8"><span class=
           "section-number-4">4.1.7</span> Create a new analysis
           design</h4>
           <div class="outline-text-4" id="text-4-1-7">
@@ -991,8 +1001,8 @@ newres <span style="color: #d3869b;">&lt;-</span> results(newdd)
             </div>
           </div>
         </div>
-        <div id="outline-container-org09da6b5" class="outline-4">
-          <h4 id="org09da6b5"><span class=
+        <div id="outline-container-orge9263bf" class="outline-4">
+          <h4 id="orge9263bf"><span class=
           "section-number-4">4.1.8</span> Prepare the data for
           pheatmap plotting</h4>
           <div class="outline-text-4" id="text-4-1-8">
@@ -1005,8 +1015,8 @@ df <span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-orgc1edbbe" class="outline-4">
-          <h4 id="orgc1edbbe"><span class=
+        <div id="outline-container-orgb2a9aba" class="outline-4">
+          <h4 id="orgb2a9aba"><span class=
           "section-number-4">4.1.9</span> Integrity plots</h4>
           <div class="outline-text-4" id="text-4-1-9">
             <div class="org-src-container">
@@ -1069,8 +1079,8 @@ dev.off()
             </div>
           </div>
         </div>
-        <div id="outline-container-orge9a0f5b" class="outline-4">
-          <h4 id="orge9a0f5b"><span class=
+        <div id="outline-container-org4bee5ce" class="outline-4">
+          <h4 id="org4bee5ce"><span class=
           "section-number-4">4.1.10</span> Another Deseq
           Design</h4>
           <div class="outline-text-4" id="text-4-1-10">
@@ -1108,8 +1118,8 @@ res <span style="color: #d3869b;">&lt;-</span> results
             </div>
           </div>
         </div>
-        <div id="outline-container-org8e695ba" class="outline-4">
-          <h4 id="org8e695ba"><span class=
+        <div id="outline-container-org5b80317" class="outline-4">
+          <h4 id="org5b80317"><span class=
           "section-number-4">4.1.11</span> Altered Selection of
           genes</h4>
           <div class="outline-text-4" id="text-4-1-11">
@@ -1131,8 +1141,8 @@ DR[order(DR$padj),]
             </div>
           </div>
         </div>
-        <div id="outline-container-orgdc3f0ca" class="outline-4">
-          <h4 id="orgdc3f0ca"><span class=
+        <div id="outline-container-orgf898ff0" class="outline-4">
+          <h4 id="orgf898ff0"><span class=
           "section-number-4">4.1.12</span> Save new selection to
           file</h4>
           <div class="outline-text-4" id="text-4-1-12">
@@ -1146,8 +1156,8 @@ write.table(Up, file=<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org14576d6" class="outline-4">
-          <h4 id="org14576d6"><span class=
+        <div id="outline-container-orgc4c6fd6" class="outline-4">
+          <h4 id="orgc4c6fd6"><span class=
           "section-number-4">4.1.13</span> Extra integrity
           plot</h4>
           <div class="outline-text-4" id="text-4-1-13">
@@ -1165,8 +1175,8 @@ ggplot(a, aes(x=rownumb, y=dispGeneEst)) + geom_point()
             </div>
           </div>
         </div>
-        <div id="outline-container-org2d5aa49" class="outline-4">
-          <h4 id="org2d5aa49"><span class=
+        <div id="outline-container-orgff910a5" class="outline-4">
+          <h4 id="orgff910a5"><span class=
           "section-number-4">4.1.14</span> <span class=
           "todo TODO">TODO</span> Extra EdgeR for venn
           diagrams</h4>
@@ -1493,12 +1503,12 @@ venn.diagram(
           </div>
         </div>
       </div>
-      <div id="outline-container-org7f122a2" class="outline-3">
-        <h3 id="org7f122a2"><span class=
+      <div id="outline-container-orgde80fd8" class="outline-3">
+        <h3 id="orgde80fd8"><span class=
         "section-number-3">4.2</span> EdgeR</h3>
         <div class="outline-text-3" id="text-4-2"></div>
-        <div id="outline-container-org3aa73ed" class="outline-4">
-          <h4 id="org3aa73ed"><span class=
+        <div id="outline-container-org1ba6fdd" class="outline-4">
+          <h4 id="org1ba6fdd"><span class=
           "section-number-4">4.2.1</span> Initial settings</h4>
           <div class="outline-text-4" id="text-4-2-1">
             <p>Directory and function setup, configure this when
@@ -1526,8 +1536,8 @@ fishtype <span style="color: #d3869b;">&lt;-</span> <span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org5a72e06" class="outline-4">
-          <h4 id="org5a72e06"><span class=
+        <div id="outline-container-orgcf9761e" class="outline-4">
+          <h4 id="orgcf9761e"><span class=
           "section-number-4">4.2.2</span> Do the initial processing
           of the data</h4>
           <div class="outline-text-4" id="text-4-2-2">
@@ -1559,7 +1569,7 @@ test <span style=
 "color: #d3869b; font-weight: bold;">4</span>)
 </pre>
             </div>
-            <pre class="example" id="orgfd06f95">
+            <pre class="example" id="orgd7eb6d6">
 reading in files with read_tsv
 
 1
@@ -1591,8 +1601,8 @@ Loading required package: limma
 </pre>
           </div>
         </div>
-        <div id="outline-container-org4b6aaee" class="outline-4">
-          <h4 id="org4b6aaee"><span class=
+        <div id="outline-container-org200b7d0" class="outline-4">
+          <h4 id="org200b7d0"><span class=
           "section-number-4">4.2.3</span> Partion the data into
           body and leg tables</h4>
           <div class="outline-text-4" id="text-4-2-3">
@@ -1615,8 +1625,8 @@ head(table)
             </div>
           </div>
         </div>
-        <div id="outline-container-org0389aee" class="outline-4">
-          <h4 id="org0389aee"><span class=
+        <div id="outline-container-org051bfcf" class="outline-4">
+          <h4 id="org051bfcf"><span class=
           "section-number-4">4.2.4</span> Save the data tables to a
           file</h4>
           <div class="outline-text-4" id="text-4-2-4">
@@ -1637,8 +1647,8 @@ write.table(body, file=<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-orgeb5ef68" class="outline-4">
-          <h4 id="orgeb5ef68"><span class=
+        <div id="outline-container-orgcbec5e2" class="outline-4">
+          <h4 id="orgcbec5e2"><span class=
           "section-number-4">4.2.5</span> Find the relative
           expression values when compared to the control</h4>
           <div class="outline-text-4" id="text-4-2-5">
@@ -1678,8 +1688,8 @@ leg$permvcontrol <span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-orgcf6e500" class="outline-4">
-          <h4 id="orgcf6e500"><span class=
+        <div id="outline-container-org458a94d" class="outline-4">
+          <h4 id="org458a94d"><span class=
           "section-number-4">4.2.6</span> Selection of the
           data</h4>
           <div class="outline-text-4" id="text-4-2-6">
@@ -1721,8 +1731,8 @@ downpermleg <span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org1745de5" class="outline-4">
-          <h4 id="org1745de5"><span class=
+        <div id="outline-container-org614ce5b" class="outline-4">
+          <h4 id="org614ce5b"><span class=
           "section-number-4">4.2.7</span> Create a csv for bar
           plotting</h4>
           <div class="outline-text-4" id="text-4-2-7">
@@ -1749,8 +1759,8 @@ write.table(d, file=<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org2780626" class="outline-4">
-          <h4 id="org2780626"><span class=
+        <div id="outline-container-org2d7c768" class="outline-4">
+          <h4 id="org2d7c768"><span class=
           "section-number-4">4.2.8</span> Gets the row-names</h4>
           <div class="outline-text-4" id="text-4-2-8">
             <p>This separates the data into just the gene names for
@@ -1799,8 +1809,8 @@ downdeetbodygenes <span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-orga0d7f45" class="outline-4">
-          <h4 id="orga0d7f45"><span class=
+        <div id="outline-container-orge040315" class="outline-4">
+          <h4 id="orge040315"><span class=
           "section-number-4">4.2.9</span> Create a list of
           dataframes corresponding to the total, leg, and body</h4>
           <div class="outline-text-4" id="text-4-2-9">
@@ -1818,8 +1828,8 @@ downdeetbodygenes <span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-orgfb8f4b4" class="outline-4">
-          <h4 id="orgfb8f4b4"><span class=
+        <div id="outline-container-org544dc91" class="outline-4">
+          <h4 id="org544dc91"><span class=
           "section-number-4">4.2.10</span> Save the genelist to
           files</h4>
           <div class="outline-text-4" id="text-4-2-10">
@@ -1845,13 +1855,179 @@ downdeetbodygenes <span style=
           </div>
         </div>
       </div>
+      <div id="outline-container-org734717b" class="outline-3">
+        <h3 id="org734717b"><span class=
+        "section-number-3">4.3</span> WGCNA</h3>
+        <div class="outline-text-3" id="text-4-3"></div>
+        <div id="outline-container-org79cf346" class="outline-4">
+          <h4 id="org79cf346"><span class=
+          "section-number-4">4.3.1</span> Build data file for WGCNA
+          from quant files</h4>
+          <div class="outline-text-4" id="text-4-3-1">
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R"><span style=
+              "color: #d3869b;">setwd</span>(<span style=
+              "color: #b8bb26;">"/home/david/Documents/BenoitLab/R/largeRNASEQ/CorrectedQuantData/"</span>)
+quantfiles <span style=
+"color: #d3869b;">&lt;-</span> list.files(<span style=
+"color: #b8bb26;">"."</span>, pattern = <span style=
+"color: #b8bb26;">".tabular"</span>)
+df <span style=
+"color: #d3869b;">&lt;-</span> data.frame(row.names = read.delim(quantfiles[<span style="color: #d3869b; font-weight: bold;">1</span>])$Name)
+<span style="color: #fb4934;">for</span> (fileName <span style=
+"color: #fb4934;">in</span> quantfiles) {
+  file <span style=
+"color: #d3869b;">&lt;-</span> read.delim(fileName)
+  df[tools::file_path_sans_ext(fileName)] <span style=
+"color: #d3869b;">&lt;-</span> file$TPM
+}
+write.csv(df, <span style=
+"color: #b8bb26;">"../WGCNACorrectedQuant.csv"</span>, quote = <span style="color: #fabd2f;">FALSE</span>)
+head(df)
+</pre>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org6a380d6" class="outline-4">
+          <h4 id="org6a380d6"><span class=
+          "section-number-4">4.3.2</span> <span class=
+          "todo TODO">TODO</span> Build metadata truth table for
+          WGCNA</h4>
+          <div class="outline-text-4" id="text-4-3-2">
+            <p>This can be automated from existing metadata
+            file.</p>
+            <div class="org-src-container">
+              <pre class="src src-jupyter-R">truthTable <span style=
+              "color: #d3869b;">&lt;-</span> data.frame(sample = colnames(df))
+truthTable$Control <span style="color: #d3869b;">&lt;-</span> c(
+  <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>
+)
+truthTable$DEET <span style="color: #d3869b;">&lt;-</span> c(
+  <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>
+)
+truthTable$Permethrin <span style="color: #d3869b;">&lt;-</span> c(
+  <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>
+)
+truthTable$Body <span style="color: #d3869b;">&lt;-</span> c(
+  <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>
+)
+truthTable$Leg <span style="color: #d3869b;">&lt;-</span> c(
+  <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>,
+  <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">0</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>, <span style=
+"color: #d3869b; font-weight: bold;">1</span>
+)
+write.csv(truthTable, <span style=
+"color: #b8bb26;">"../WGCNATruthTable.csv"</span>, row.names = <span style="color: #fabd2f;">FALSE</span>)
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="outline-container-org0459a36" class="outline-2">
-      <h2 id="org0459a36"><span class="section-number-2">5</span>
+    <div id="outline-container-orged44836" class="outline-2">
+      <h2 id="orged44836"><span class="section-number-2">5</span>
       Fasta Manipulation</h2>
       <div class="outline-text-2" id="text-5"></div>
-      <div id="outline-container-org742e04d" class="outline-3">
-        <h3 id="org742e04d"><span class=
+      <div id="outline-container-org003df6d" class="outline-3">
+        <h3 id="org003df6d"><span class=
         "section-number-3">5.1</span> Get Gene names</h3>
         <div class="outline-text-3" id="text-5-1">
           <p>This program just pulls the names of the genes out of
@@ -1927,25 +2103,25 @@ downdeetbodygenes <span style=
         </div>
       </div>
     </div>
-    <div id="outline-container-org599597c" class="outline-2">
-      <h2 id="org599597c"><span class="section-number-2">6</span>
+    <div id="outline-container-org62208e2" class="outline-2">
+      <h2 id="org62208e2"><span class="section-number-2">6</span>
       Blast</h2>
     </div>
-    <div id="outline-container-org123b092" class="outline-2">
-      <h2 id="org123b092"><span class="section-number-2">7</span>
+    <div id="outline-container-orgd9e9669" class="outline-2">
+      <h2 id="orgd9e9669"><span class="section-number-2">7</span>
       Plotting</h2>
       <div class="outline-text-2" id="text-7">
         <p>This uses R and python to plot data.</p>
       </div>
-      <div id="outline-container-org8d905a3" class="outline-3">
-        <h3 id="org8d905a3"><span class=
+      <div id="outline-container-org15afbf9" class="outline-3">
+        <h3 id="org15afbf9"><span class=
         "section-number-3">7.1</span> Required Packages</h3>
         <div class="outline-text-3" id="text-7-1">
           <p>These packages are only required for plotting the
           data</p>
         </div>
-        <div id="outline-container-org9e11df1" class="outline-4">
-          <h4 id="org9e11df1"><span class=
+        <div id="outline-container-orgfa5d835" class="outline-4">
+          <h4 id="orgfa5d835"><span class=
           "section-number-4">7.1.1</span> R packages</h4>
           <div class="outline-text-4" id="text-7-1-1">
             <ul class="org-ul">
@@ -1954,8 +2130,8 @@ downdeetbodygenes <span style=
             </ul>
           </div>
         </div>
-        <div id="outline-container-orge14ce24" class="outline-4">
-          <h4 id="orge14ce24"><span class=
+        <div id="outline-container-org63a6154" class="outline-4">
+          <h4 id="org63a6154"><span class=
           "section-number-4">7.1.2</span> Python packages</h4>
           <div class="outline-text-4" id="text-7-1-2">
             <ul class="org-ul">
@@ -1967,12 +2143,12 @@ downdeetbodygenes <span style=
           </div>
         </div>
       </div>
-      <div id="outline-container-org1d772e8" class="outline-3">
-        <h3 id="org1d772e8"><span class=
+      <div id="outline-container-org0587a41" class="outline-3">
+        <h3 id="org0587a41"><span class=
         "section-number-3">7.2</span> Venn Diagrams</h3>
         <div class="outline-text-3" id="text-7-2"></div>
-        <div id="outline-container-orge8eb653" class="outline-4">
-          <h4 id="orge8eb653"><span class=
+        <div id="outline-container-org129e4a2" class="outline-4">
+          <h4 id="org129e4a2"><span class=
           "section-number-4">7.2.1</span> Imports</h4>
           <div class="outline-text-4" id="text-7-2-1">
             <p>Change directory based on project</p>
@@ -1995,8 +2171,8 @@ os.chdir(<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org797d54b" class="outline-4">
-          <h4 id="org797d54b"><span class=
+        <div id="outline-container-orge4a4add" class="outline-4">
+          <h4 id="orge4a4add"><span class=
           "section-number-4">7.2.2</span> Venn 1</h4>
           <div class="outline-text-4" id="text-7-2-2">
             <div class="org-src-container">
@@ -2059,8 +2235,8 @@ fig.savefig(<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org046c289" class="outline-4">
-          <h4 id="org046c289"><span class=
+        <div id="outline-container-org679556e" class="outline-4">
+          <h4 id="org679556e"><span class=
           "section-number-4">7.2.3</span> Venn 2</h4>
           <div class="outline-text-4" id="text-7-2-3">
             <div class="org-src-container">
@@ -2134,8 +2310,8 @@ plt.show()
             </div>
           </div>
         </div>
-        <div id="outline-container-org0a5e26e" class="outline-4">
-          <h4 id="org0a5e26e"><span class=
+        <div id="outline-container-org08f1e15" class="outline-4">
+          <h4 id="org08f1e15"><span class=
           "section-number-4">7.2.4</span> Venn 3</h4>
           <div class="outline-text-4" id="text-7-2-4">
             <p>This compares the expression of body and legs when
@@ -2182,7 +2358,7 @@ fig.savefig(<span style=
 plt.show()
 </pre>
             </div>
-            <div id="org4eb5f31" class="figure">
+            <div id="orgfdf02e7" class="figure">
               <p><img src=
               "./.ob-jupyter/2a5270b9b5cd24647389aedd0601cb8de1d7b70d.png"
               alt=
@@ -2190,8 +2366,8 @@ plt.show()
             </div>
           </div>
         </div>
-        <div id="outline-container-org8068903" class="outline-4">
-          <h4 id="org8068903"><span class=
+        <div id="outline-container-org06caeca" class="outline-4">
+          <h4 id="org06caeca"><span class=
           "section-number-4">7.2.5</span> Venn 4</h4>
           <div class="outline-text-4" id="text-7-2-5">
             <div class="org-src-container">
@@ -2225,8 +2401,8 @@ plt.show()
             </div>
           </div>
         </div>
-        <div id="outline-container-org8a20a05" class="outline-4">
-          <h4 id="org8a20a05"><span class=
+        <div id="outline-container-org4f1fb1a" class="outline-4">
+          <h4 id="org4f1fb1a"><span class=
           "section-number-4">7.2.6</span> Venn 5</h4>
           <div class="outline-text-4" id="text-7-2-6">
             <div class="org-src-container">
@@ -2258,8 +2434,8 @@ fig.savefig(<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org2d731c5" class="outline-4">
-          <h4 id="org2d731c5"><span class=
+        <div id="outline-container-org676d6ee" class="outline-4">
+          <h4 id="org676d6ee"><span class=
           "section-number-4">7.2.7</span> Venn 6</h4>
           <div class="outline-text-4" id="text-7-2-7">
             <div class="org-src-container">
@@ -2293,8 +2469,8 @@ fig.savefig(<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-orgbbacdd6" class="outline-4">
-          <h4 id="orgbbacdd6"><span class=
+        <div id="outline-container-org1216700" class="outline-4">
+          <h4 id="org1216700"><span class=
           "section-number-4">7.2.8</span> Venn 7</h4>
           <div class="outline-text-4" id="text-7-2-8">
             <div class="org-src-container">
@@ -2326,8 +2502,8 @@ fig.savefig(<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org14fa8b8" class="outline-4">
-          <h4 id="org14fa8b8"><span class=
+        <div id="outline-container-org5e00af1" class="outline-4">
+          <h4 id="org5e00af1"><span class=
           "section-number-4">7.2.9</span> Venn 8</h4>
           <div class="outline-text-4" id="text-7-2-9">
             <div class="org-src-container">
@@ -2361,8 +2537,8 @@ fig.savefig(<span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-orgdb0e21d" class="outline-4">
-          <h4 id="orgdb0e21d"><span class=
+        <div id="outline-container-org77178e9" class="outline-4">
+          <h4 id="org77178e9"><span class=
           "section-number-4">7.2.10</span> Venn 9</h4>
           <div class="outline-text-4" id="text-7-2-10">
             <p>Body vs leg EdgeR</p>
@@ -2408,7 +2584,7 @@ fig.savefig(<span style=
 plt.show()
 </pre>
             </div>
-            <div id="org162af1f" class="figure">
+            <div id="org057a096" class="figure">
               <p><img src=
               "./.ob-jupyter/38b67feca428f2217e85968601099bf697f1bfd5.png"
               alt=
@@ -2417,18 +2593,16 @@ plt.show()
           </div>
         </div>
       </div>
-      <div id="outline-container-org7cc63b1" class="outline-3">
-        <h3 id="org7cc63b1"><span class=
+      <div id="outline-container-org376c734" class="outline-3">
+        <h3 id="org376c734"><span class=
         "section-number-3">7.3</span> Pearson Correlation</h3>
         <div class="outline-text-3" id="text-7-3">
           <p>This correlates the results from edgeR and Deseq2.
           Using this, the correlation can make the analysis tool
           interchangeable.</p>
-          <p>:header-args: :tangle
-          scripts/pearson-correlation.r</p>
         </div>
-        <div id="outline-container-org4dc927e" class="outline-4">
-          <h4 id="org4dc927e"><span class=
+        <div id="outline-container-org3799900" class="outline-4">
+          <h4 id="org3799900"><span class=
           "section-number-4">7.3.1</span> Libraries</h4>
           <div class="outline-text-4" id="text-7-3-1">
             <div class="org-src-container">
@@ -2439,7 +2613,7 @@ plt.show()
 "color: #b8bb26;">"ggpubr"</span>)
 </pre>
             </div>
-            <pre class="example" id="org290aa56">
+            <pre class="example" id="orgad021dd">
 ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
 
 ✔ ggplot2 3.3.3     ✔ purrr   0.3.4
@@ -2453,8 +2627,8 @@ plt.show()
 </pre>
           </div>
         </div>
-        <div id="outline-container-org35653b5" class="outline-4">
-          <h4 id="org35653b5"><span class=
+        <div id="outline-container-org8e774f7" class="outline-4">
+          <h4 id="org8e774f7"><span class=
           "section-number-4">7.3.2</span> Import the data</h4>
           <div class="outline-text-4" id="text-7-3-2">
             <div class="org-src-container">
@@ -2482,8 +2656,8 @@ newD <span style=
             </div>
           </div>
         </div>
-        <div id="outline-container-org639cbe6" class="outline-4">
-          <h4 id="org639cbe6"><span class=
+        <div id="outline-container-orgb8f857d" class="outline-4">
+          <h4 id="orgb8f857d"><span class=
           "section-number-4">7.3.3</span> Plot the data</h4>
           <div class="outline-text-4" id="text-7-3-3">
             <div class="org-src-container">
@@ -2523,7 +2697,7 @@ Saving 7 x 7 in image
 `geom_smooth()` using formula 'y ~ x'
 
 </pre>
-            <div id="org8949a01" class="figure">
+            <div id="orgd8284e6" class="figure">
               <p><img src=
               "./.ob-jupyter/f1067a6954fd040fbf8de1c030201143a06483aa.png"
               alt=
@@ -2531,8 +2705,8 @@ Saving 7 x 7 in image
             </div>
           </div>
         </div>
-        <div id="outline-container-orgc4cbc9c" class="outline-4">
-          <h4 id="orgc4cbc9c"><span class=
+        <div id="outline-container-orge0806ec" class="outline-4">
+          <h4 id="orge0806ec"><span class=
           "section-number-4">7.3.4</span> Venn Diagram</h4>
           <div class="outline-text-4" id="text-7-3-4">
             <p>Doesn’t do what I wanted</p>
@@ -2560,15 +2734,15 @@ venn.diagram(
           </div>
         </div>
       </div>
-      <div id="outline-container-org1c5d647" class="outline-3">
-        <h3 id="org1c5d647"><span class=
+      <div id="outline-container-org3f283c4" class="outline-3">
+        <h3 id="org3f283c4"><span class=
         "section-number-3">7.4</span> Dotplot</h3>
         <div class="outline-text-3" id="text-7-4">
           <p>This figure plots the enrichment of specific genes.
           Ideal for small amounts of genes.</p>
         </div>
-        <div id="outline-container-orgca6a5d7" class="outline-4">
-          <h4 id="orgca6a5d7"><span class=
+        <div id="outline-container-org8001061" class="outline-4">
+          <h4 id="org8001061"><span class=
           "section-number-4">7.4.1</span> imports</h4>
           <div class="outline-text-4" id="text-7-4-1">
             <div class="org-src-container">
@@ -2585,8 +2759,8 @@ venn.diagram(
             </div>
           </div>
         </div>
-        <div id="outline-container-orgf9fc0bb" class="outline-4">
-          <h4 id="orgf9fc0bb"><span class=
+        <div id="outline-container-orgc675586" class="outline-4">
+          <h4 id="orgc675586"><span class=
           "section-number-4">7.4.2</span> Theme settings</h4>
           <div class="outline-text-4" id="text-7-4-2">
             <div class="org-src-container">
@@ -2605,8 +2779,8 @@ venn.diagram(
             </div>
           </div>
         </div>
-        <div id="outline-container-orgd2fbb04" class="outline-4">
-          <h4 id="orgd2fbb04"><span class=
+        <div id="outline-container-org620a01f" class="outline-4">
+          <h4 id="org620a01f"><span class=
           "section-number-4">7.4.3</span> Import</h4>
           <div class="outline-text-4" id="text-7-4-3">
             <p>Use the pandas package to import the csv file</p>
@@ -2626,8 +2800,8 @@ venn.diagram(
             </div>
           </div>
         </div>
-        <div id="outline-container-orgdc7fda4" class="outline-4">
-          <h4 id="orgdc7fda4"><span class=
+        <div id="outline-container-org2eaee80" class="outline-4">
+          <h4 id="org2eaee80"><span class=
           "section-number-4">7.4.4</span> Plot the figure</h4>
           <div class="outline-text-4" id="text-7-4-4">
             <div class="org-src-container">
@@ -2693,8 +2867,8 @@ plt.show()
             </div>
           </div>
         </div>
-        <div id="outline-container-orgdb7651d" class="outline-4">
-          <h4 id="orgdb7651d"><span class=
+        <div id="outline-container-org392f7f1" class="outline-4">
+          <h4 id="org392f7f1"><span class=
           "section-number-4">7.4.5</span> Save the Figure</h4>
           <div class="outline-text-4" id="text-7-4-5">
             <div class="org-src-container">
@@ -2714,7 +2888,7 @@ plt.savefig(<span style=
   </div>
   <div id="postamble" class="status">
     <p class="author">Author: David Lewis</p>
-    <p class="date">Created: 2021-05-20 Thu 13:36</p>
+    <p class="date">Created: 2021-05-21 Fri 15:16</p>
   </div>
 </body>
 </html>
