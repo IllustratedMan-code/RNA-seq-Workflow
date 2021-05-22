@@ -12,10 +12,12 @@ lrt <- glmLRT(Eest, coef=1:4)
 test <- glmQLFTest(Eest, coef=1:4)
 
 table <- test$table
-body <- table[table$logFC.partbody > 2, ]
-leg <- table[table$logFC.partbody < -2, ]
+pSelectedTable <- table[table$PValue < 0.01, ]
+body <- pSelectedTable[pSelectedTable$logFC.partbody > 2, ]
+leg <- pSelectedTable[pSelectedTable$logFC.partbody < -2, ]
+head(table)
 
-setwd("/home/david/Documents/BenoitLab/RNA-seq/"). This section saves csv files with the expression data from the tables in the previous section.
+setwd("/home/david/Documents/BenoitLab/RNA-seq/")
 write.table(table, file="edgeR-Genes/TotalExpr.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(leg, file="edgeR-Genes/legExpr.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(body, file="edgeR-Genes/bodyExpr.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")

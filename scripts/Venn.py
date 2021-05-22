@@ -3,6 +3,7 @@ from matplotlib_venn import venn2, venn2_circles, venn2_unweighted
 import pandas as pd
 import numpy as np
 import os
+plt.style.use("ggplot")
 os.chdir("/home/david/Documents/BenoitLab/RNA-seq")
 
 data = pd.read_csv("edgeR-Genes/venn-regulation.csv")
@@ -71,8 +72,8 @@ v.get_patch_by_id("01").set_color("grey")
 v.get_patch_by_id("01").set_alpha(0.5)
 axes.set_title("Leg vs Body")
 fig.tight_layout()
-fig.savefig("figures/figure2/BodyvsLeg.png", bbox_inches="tight", dpi=250)
-fig.savefig("figures/figure2/BodyvsLeg.pdf", bbox_inches="tight", dpi=250)
+fig.savefig("figures/figure2/Deseq-BodyvsLeg.png", bbox_inches="tight", dpi=250)
+fig.savefig("figures/figure2/Deseq-BodyvsLeg.pdf", bbox_inches="tight", dpi=250)
 
 plt.show()
 
@@ -129,3 +130,21 @@ v = venn2_unweighted(subsets=(len(upPerm), len(downPerm), len(genes)-len(upPerm)
 axes.set_title("Perm Expression")
 fig.tight_layout()
 fig.savefig("VennDiagrams/RevisedDiagrams/Perm.png")
+
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+body = pd.read_csv("edgeR-Genes/bodyExpr.csv")
+leg = pd.read_csv("edgeR-Genes/legExpr.csv")
+
+fig, axes = plt.subplots()
+
+v = venn2_unweighted(subsets=(len(body), len(leg),len(genes)-len(leg) - len(body)), set_labels=("Body", "Leg"), ax=axes)
+v.get_patch_by_id("10").set_color("blue")
+v.get_patch_by_id("11").set_color("blue")
+v.get_patch_by_id("01").set_color("grey")
+v.get_patch_by_id("01").set_alpha(0.5)
+axes.set_title("Leg vs Body")
+fig.tight_layout()
+fig.savefig("figures/figure2/EdgeR-BodyvsLeg.png", bbox_inches="tight", dpi=250)
+fig.savefig("figures/figure2/EdgeR-BodyvsLeg.pdf", bbox_inches="tight", dpi=250)
+
+plt.show()
