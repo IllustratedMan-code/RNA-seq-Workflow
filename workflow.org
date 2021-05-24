@@ -13,6 +13,27 @@
 + Run A fish analysis tool on the data (salmon, sailfish, kallisto quant) on each fasta file from trimmomatic.
   This requires the assembly as an input
 + Export the quant files for local analysis with R
+
+* Metadata
+| name                | pesticides | part | trial |
+|---------------------+------------+------+-------|
+| Per_Bod_1.tabular   | perm       | body |     1 |
+| Per_Bod_3.tabular   | perm       | body |     3 |
+| Per_Leg_3.tabular   | perm       | leg  |     3 |
+| Per_Leg_2.tabular   | perm       | leg  |     2 |
+| Per_Leg_1.tabular   | perm       | leg  |     1 |
+| Deet_Bod_3.tabular  | deet       | body |     3 |
+| Deet_Bod_2.tabular  | deet       | body |     2 |
+| Deet_Bod_1.tabular  | deet       | body |     1 |
+| Deet_Leg_3.tabular  | deet       | leg  |     3 |
+| Deet_Leg_2.tabular  | deet       | leg  |     2 |
+| Deet_Leg_1.tabular  | deet       | leg  |     1 |
+| Cont_Bod_3.tabular  | control    | body |     3 |
+| Cont_Bod_2.tabular  | control    | body |     2 |
+| Cont_Bod_1.tabular  | control    | body |     1 |
+| Cont_Leg_3.tabular  | control    | leg  |     3 |
+| Cont_Leg_2a.tabular | control    | leg  |     2 |
+| Cont_Leg_1.tabular  | control    | leg  |     1 |
 * R functions
 :PROPERTIES:
 :header-args: :tangle scripts/functions.r
@@ -64,6 +85,7 @@ reDeseq <- function(dds, design=~part){
   return(list(ddsMf, Mres))
   }
 #+end_src
+
 ** initialEdgeR
 Sets up the EdgeR object and returns it. EdgeR uses a different linear model. Read more about it here [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][edgeR]].
 #+begin_src jupyter-R :session R
