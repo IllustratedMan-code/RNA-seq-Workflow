@@ -1,4 +1,5 @@
 #+title: RNA-seq Leg Vs Body workflow
+#+STARTUP: overview
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+EXPORT_FILE_NAME: index.html
 * Introduction
@@ -41,20 +42,23 @@ Sets up the deseq data set object and returns it. Deseq uses a linear model to f
 initialDeseq <- function(txi, metadata, design=~part + pesticides){
   library(DESeq2)
   # Deseq2 dataset from tximport
-  data <- DESeqDataSetFromTximport(txi, colData=metadata, design = design)
+  data <- DESeqDataSetFromTximport(txi, colData=metadata, design =design)
   Deseq <- DESeq(data)
   results <- results(Deseq)
   print(summary(results))
   return(list(Deseq, results))
 }
 #+end_src
+
+#+RESULTS:
+
 ** ReDeseq
 sets up the deseq object with a different design criteria. The design changes how log2foldchange is expressed.
 It is more difficult to get multifactorial analysis in a single deseq object than with edgeR. Changing the design is necessary for complicated analysis.
 #+begin_src jupyter-R :session R
-reDeseq <- function(dds){
+reDeseq <- function(dds, design=~part){
   ddsMF <- dds
-  design(ddsMF) <- formula(~pesticides)
+  design(ddsMF) <- formula(design)
   ddsMF <- DESeq(ddsMF)
   Mres <- results(ddsMF)
   return(list(ddsMf, Mres))
@@ -104,7 +108,7 @@ estEdgeR <- function(EdgeR, design){
 EdgeR and Deseq2 are used to find lists of genes that are up-regulated and down-regulated when compared to design criteria. The design is used to curated the value of logfoldchange in Deseq2. They are compared using a pearson correlation in the plotting section.
 ** TODO Deseq
 :PROPERTIES:
-:HEADER-ARGS: scripts/Deseq2-analysis.r
+:HEADER-ARGS: :tangle scripts/Deseq2-analysis.r
 :END:
 This needs to incorporate the function definitions. Much of it is being restated in an unintuitive way
 *** Package imports
@@ -127,9 +131,10 @@ library("pheatmap")
 
 #+RESULTS:
 
-*** Tximport
+*** Initial Setting
+These values determine what directory the deseq objects are taken from.
 #+begin_src jupyter-R :session R
-#change these values to your own situations
+# change these values to your own situations
 directory <- "/home/david/Documents/BenoitLab/R/largeRNASEQ"
 quantdatafoldername <- "CorrectedQuantData"
 fishtype <- "sailfish"
@@ -137,15 +142,11 @@ fishtype <- "sailfish"
 
 #+RESULTS:
 
-**** Convert quant files to txi object
+*** Run Initial Deseq Functions
 #+begin_src jupyter-R :session R
-# imports the genes as a tximport file
-setwd(directory)
-metadata <- read.csv("metadata.csv", header=TRUE)
-files <- file.path(directory, quantdatafoldername, metadata$name)
-names(files) <- metadata$name
-genes <- read.table("genes2.tabular")
-txi <- tximport(files, type=fishtype, tx2gene=genes)
+source("/home/david/Documents/BenoitLab/RNA-seq/scripts/functions.r")
+txi <- txi(directory, quantdatafoldername, "metadata.csv", fishtype)
+Deseq <- initialDeseq(txi[[1]], txi[[2]])
 #+end_src
 
 #+RESULTS:
@@ -176,124 +177,6 @@ summarizing abundance
 summarizing counts
 
 summarizing length
-#+end_example
-
-*** Create the Deseq Object
-#+begin_src jupyter-R :session R
-library(DESeq2)
-# Deseq2 dataset from tximport
-data <- DESeqDataSetFromTximport(txi, colData=metadata, design = ~part + pesticides)
-Deseq <- DESeq(data)
-results <- results(Deseq)
-#+end_src
-
-#+RESULTS:
-#+begin_example
-Loading required package: S4Vectors
-
-Loading required package: stats4
-
-Loading required package: BiocGenerics
-
-Loading required package: parallel
-
-
-Attaching package: ‘BiocGenerics’
-
-
-The following objects are masked from ‘package:parallel’:
-
-    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-    clusterExport, clusterMap, parApply, parCapply, parLapply,
-    parLapplyLB, parRapply, parSapply, parSapplyLB
-
-
-The following object is masked from ‘package:limma’:
-
-    plotMA
-
-
-The following objects are masked from ‘package:stats’:
-
-    IQR, mad, sd, var, xtabs
-
-
-The following objects are masked from ‘package:base’:
-
-    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
-    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
-    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
-    union, unique, unsplit, which.max, which.min
-
-
-
-Attaching package: ‘S4Vectors’
-
-
-The following object is masked from ‘package:base’:
-
-    expand.grid
-
-
-Loading required package: IRanges
-
-Loading required package: GenomicRanges
-
-Loading required package: GenomeInfoDb
-
-Loading required package: SummarizedExperiment
-
-Loading required package: MatrixGenerics
-
-Loading required package: matrixStats
-
-
-Attaching package: ‘MatrixGenerics’
-
-
-The following objects are masked from ‘package:matrixStats’:
-
-    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
-    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
-    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
-    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
-    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
-    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
-    colWeightedMeans, colWeightedMedians, colWeightedSds,
-    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
-    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
-    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
-    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
-    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
-    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
-    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
-    rowWeightedSds, rowWeightedVars
-
-
-Loading required package: Biobase
-
-Welcome to Bioconductor
-
-    Vignettes contain introductory material; view with
-    'browseVignettes()'. To cite Bioconductor, see
-    'citation("Biobase")', and for packages 'citation("pkgname")'.
-
-
-
-Attaching package: ‘Biobase’
-
-
-The following object is masked from ‘package:MatrixGenerics’:
-
-    rowMedians
-
-
-The following objects are masked from ‘package:matrixStats’:
-
-    anyMissing, rowMedians
-
 
 Warning message in DESeqDataSet(se, design = design, ignoreRank):
 “some variables in design formula are characters, converting to factors”
@@ -312,13 +195,26 @@ mean-dispersion relationship
 final dispersion estimates
 
 fitting model and testing
+
+
+out of 163205 with nonzero total read count
+adjusted p-value < 0.1
+LFC > 0 (up)       : 1790, 1.1%
+LFC < 0 (down)     : 2044, 1.3%
+outliers [1]       : 2298, 1.4%
+low counts [2]     : 18457, 11%
+(mean count < 3)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+NULL
 #+end_example
 
 *** Do initial data manipulation
 The part design is used to compare the leg to the body in total, disregarding pesticide. This is explained in detail in the pearson correlation section.
 #+begin_src jupyter-R :session R
-## hello
-dds <- Deseq
+dds <- Deseq[[1]]
+res <- Deseq[[2]]
 #* vsd ntd rld
 vsd <- vst(dds, blind=FALSE)
 rld <- rlog(dds, blind=FALSE)
@@ -334,7 +230,6 @@ res <- results(part)
 #+end_src
 
 #+RESULTS:
-:results:
 #+begin_example
 using pre-existing normalization factors
 
@@ -372,7 +267,6 @@ estimating dispersions
 
 fitting model and testing
 #+end_example
-:end:
 *** Initial selection of the data
 + p value of less than 0.01
 + Leg is compared to body, therefore down-regulated are up-regulated in body
@@ -1327,8 +1221,10 @@ plt.show()
 plt.savefig('dotplot.pdf', dpi=300, bbox_inches='tight')
 plt.savefig('dotplot.jpg', dpi=300, bbox_inches='tight')
 #+end_src
+
 * Local Variables :noexport:
 local variables:
 org-export-babel-evaluate: nil
 eval: (add-hook 'after-save-hook 'org-html-export-to-html t t)
+eval: (add-hook 'after-save-hook 'org-babel-tangle t t)
 end:

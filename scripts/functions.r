@@ -12,16 +12,16 @@ txi <- function(directory, quantdatafoldername, metadata, fishtype){
 initialDeseq <- function(txi, metadata, design=~part + pesticides){
   library(DESeq2)
   # Deseq2 dataset from tximport
-  data <- DESeqDataSetFromTximport(txi, colData=metadata, design = design)
+  data <- DESeqDataSetFromTximport(txi, colData=metadata, design =design)
   Deseq <- DESeq(data)
   results <- results(Deseq)
   print(summary(results))
   return(list(Deseq, results))
 }
 
-reDeseq <- function(dds){
+reDeseq <- function(dds, design=~part){
   ddsMF <- dds
-  design(ddsMF) <- formula(~pesticides)
+  design(ddsMF) <- formula(design)
   ddsMF <- DESeq(ddsMF)
   Mres <- results(ddsMF)
   return(list(ddsMf, Mres))

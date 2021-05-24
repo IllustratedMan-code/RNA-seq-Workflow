@@ -13,27 +13,17 @@ library(tximport)
 library(readr)
 library("pheatmap")
 
-#change these values to your own situations
-directory <- "/home/david/Dropbox/LegsvBodyPesticide/DESEQ2"
+# change these values to your own situations
+directory <- "/home/david/Documents/BenoitLab/R/largeRNASEQ"
 quantdatafoldername <- "CorrectedQuantData"
 fishtype <- "sailfish"
 
-# imports the genes as a tximport file
-setwd(directory)
-metadata <- read.csv("metadata.csv", header=TRUE)
-files <- file.path(directory, quantdatafoldername, metadata$name)
-names(files) <- metadata$name
-genes <- read.table("genes2.tabular")
-txi <- tximport(files, type=fishtype, tx2gene=genes)
+source("/home/david/Documents/BenoitLab/RNA-seq/scripts/functions.r")
+txi <- txi(directory, quantdatafoldername, "metadata.csv", fishtype)
+Deseq <- initialDeseq(txi[[1]], txi[[2]])
 
-library(DESeq2)
-# Deseq2 dataset from tximport
-data <- DESeqDataSetFromTximport(txi, colData=metadata, design = ~part + pesticides)
-Deseq <- DESeq(data)
-results <- results(Deseq)
-
-## hello
-dds <- Deseq
+dds <- Deseq[[1]]
+res <- Deseq[[2]]
 #* vsd ntd rld
 vsd <- vst(dds, blind=FALSE)
 rld <- rlog(dds, blind=FALSE)
@@ -43,13 +33,17 @@ ddsMF <- dds
 design(ddsMF) <- formula(~pesticides)
 ddsMF <- DESeq(ddsMF)
 Mres <- results(ddsMF)
+design(dds) <- formula(~part)
+part <- DESeq(dds)
+res <- results(part)
 
 DR <- Mres[ which(Mres$padj < 0.01), ]
 Body <- DR[which(DR$log2FoldChange < -2),]
 Leg <- DR[which(DR$log2FoldChange > 2), ]
 
-write.table(rownames(Body), file="Genes/Body.csv", quote=FALSE, col.names=FALSE, row.names=FALSE, sep=",")
-write.table(rownames(Leg), file="Genes/Leg.csv", quote=FALSE, col.names=FALSE, row.names=FALSE, sep=",")
+write.table(Body, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Body.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(Leg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Leg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(res, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/total.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 
 newdd <- dds
 design(newdd) <- formula(~part + part:pesticides)
