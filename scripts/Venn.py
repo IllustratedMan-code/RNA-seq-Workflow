@@ -56,7 +56,7 @@ v2 = venn2_unweighted(subsets=(len(perm), len(permcont), len(genes)-len(permcont
 axes[0].set_title("Deet")
 axes[1].set_title("Perm")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/DeetnPerm.png", bbox_inxhes="tight", dpi=250)
+#fig.savefig("VennDiagrams/RevisedDiagrams/DeetnPerm.png", bbox_inxhes="tight", dpi=250)
 plt.show()
 
 genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)

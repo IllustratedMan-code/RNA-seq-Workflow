@@ -3,6 +3,7 @@
 #+OPTIONS: ^:nil
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+EXPORT_FILE_NAME: index.html
+#+TODO: TODO REFACTOR DEBUG | DONE
 * Introduction
 + The Ticks are sprayed with Permethrin and DEET
 + The Legs are separated from the bodies of the ticks and analyzed separately
@@ -132,7 +133,7 @@ estEdgeR <- function(EdgeR, design){
 #+RESULTS:
 * initial R step
 EdgeR and Deseq2 are used to find lists of genes that are up-regulated and down-regulated when compared to design criteria. The design is used to curated the value of logfoldchange in Deseq2. They are compared using a pearson correlation in the plotting section.
-** TODO Deseq
+** REFACTOR Deseq
 :PROPERTIES:
 :HEADER-ARGS: :tangle scripts/Deseq2-analysis.r
 :END:
@@ -871,8 +872,9 @@ write.csv(truthTable, "WGCNATruthTable.csv", row.names=FALSE)
 truthTable
 #+end_src
 **** From scratch
-It can also be built from scratch
+It can also be built from scratch (=not recommended=)
 #+begin_src jupyter-R :session R
+setwd("/home/david/Documents/BenoitLab/R/largeRNASEQ")
 truthTable <- data.frame(sample = colnames(df))
 truthTable$Control <- c(
   1, 1, 1, 1, 1, 1,
@@ -899,7 +901,7 @@ truthTable$Leg <- c(
   1, 0, 0, 0, 1, 1,
   1, 0, 0, 1, 1, 1
 
-write.csv(truthTable, "../WGCNATruthTable.csv", row.names = FALSE)
+write.csv(truthTable, "./WGCNATruthTable.csv", row.names = FALSE)
 #+end_src
 * Fasta Manipulation
 ** Get Gene names
@@ -946,7 +948,7 @@ The repository has a more detailed README but I will relate it to the rest of th
 + [[http://revigo.irb.hr/][Revigo]]
 + [[http://geneontology.org][geneontology.org]]
 + [[https://biit.cs.ut.ee/gprofiler/gost][G:profiler]]
-** Automation
+** TODO Automation
 I wanted to automate these tools even though they are only available as websites (except for G:profiler) because I have a lot of different csv files to manage in this project, and doing it all by hand seemed like a recipe for disaster.
 + Refer to the FastBlast repository for instructions on how to run these web-scraper scripts
 + The files outputted from the blast step are in the correct format to use with the GO tools
@@ -981,7 +983,7 @@ os.chdir("/home/david/Documents/BenoitLab/RNA-seq")
 #+end_src
 
 
-*** Venn 1
+*** DEBUG Venn 1 (actually a bar plot)
 #+begin_src jupyter-python :session py
 data = pd.read_csv("edgeR-Genes/venn-regulation.csv")
 plt.style.use("ggplot")
@@ -1010,7 +1012,7 @@ for pest in data["Part"].unique():
 fig.suptitle("Gene Regulation")
 fig.savefig("fig.png", bbox_inches="tight", dpi=250)
 #+end_src
-*** Venn 2
+*** DEBUG Venn 2
 #+begin_src jupyter-python :session py
 plt.style.use("ggplot")
 
@@ -1035,7 +1037,7 @@ v2 = venn2_unweighted(subsets=(len(perm), len(permcont), len(genes)-len(permcont
 axes[0].set_title("Deet")
 axes[1].set_title("Perm")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/DeetnPerm.png", bbox_inxhes="tight", dpi=250)
+#fig.savefig("VennDiagrams/RevisedDiagrams/DeetnPerm.png", bbox_inxhes="tight", dpi=250)
 plt.show()
 #+end_src
 *** Venn 3
@@ -1063,7 +1065,7 @@ plt.show()
 #+RESULTS:
 [[file:./.ob-jupyter/2a5270b9b5cd24647389aedd0601cb8de1d7b70d.png]]
 
-*** Venn 4
+*** DEBUG Venn 4
 #+begin_src jupyter-python :session py
 genes = pd.read_csv("Genes/listofgenes.csv", header=None)
 body = pd.read_csv("Genes/Body.csv")
@@ -1079,7 +1081,7 @@ fig.tight_layout()
 fig.savefig("VennDiagrams/RevisedDiagrams/DeetBody.png")
 plt.show()
 #+end_src
-*** Venn 5
+*** DEBUG Venn 5
 #+begin_src jupyter-python :session py
 leg = pd.read_csv("Genes/Leg.csv")
 upDeetLeg = pd.read_csv("Genes/Genelists/upDeetLeg.csv")
@@ -1091,7 +1093,7 @@ axes.set_title("Deet Expression in Leg Genes")
 fig.tight_layout()
 fig.savefig("VennDiagrams/RevisedDiagrams/DeetLeg.png")
 #+end_src
-*** Venn 6
+*** DEBUG Venn 6
 #+begin_src jupyter-python :session py
 leg = pd.read_csv("Genes/Leg.csv")
 upPermLeg = pd.read_csv("Genes/Genelists/upPermLeg.csv")
@@ -1103,7 +1105,7 @@ axes.set_title("Perm Expression in Leg Genes")
 fig.tight_layout()
 fig.savefig("VennDiagrams/RevisedDiagrams/PermLeg.png")
 #+end_src
-*** Venn 7
+*** DEBUG Venn 7
 #+begin_src jupyter-python :session py
 body = pd.read_csv("Genes/Body.csv")
 upPermBody = pd.read_csv("Genes/Genelists/upPermBody.csv")
@@ -1115,7 +1117,7 @@ axes.set_title("Perm Expression in Body Genes")
 fig.tight_layout()
 fig.savefig("VennDiagrams/RevisedDiagrams/PermBody.png")
 #+end_src
-*** Venn 8
+*** DEBUG Venn 8
 #+begin_src jupyter-python :session py
 genes = pd.read_csv("Genes/listofgenes.csv")
 upPerm = pd.read_csv("Genes/Genelists/upPerm.csv")
