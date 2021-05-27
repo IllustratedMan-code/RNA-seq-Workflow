@@ -1,5 +1,6 @@
 #+title: RNA-seq Leg Vs Body workflow
 #+STARTUP: overview
+#+OPTIONS: ^:nil
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+EXPORT_FILE_NAME: index.html
 * Introduction
@@ -15,6 +16,8 @@
 + Export the quant files for local analysis with R
 
 * Metadata
+The metadata for this project describes the treatment, body part, and trial for this project. This metadata is used to interface with the tximport library in R. Tximport uses the metadata to organize the quant data in a way that Deseq2 and EdgeR can understand. An arbitrary number of columns is allowed, but the name column is required. Keep the metadata.csv file in parent directory to the quant files.
+
 | name                | pesticides | part | trial |
 |---------------------+------------+------+-------|
 | Per_Bod_1.tabular   | perm       | body |     1 |
@@ -34,6 +37,7 @@
 | Cont_Leg_3.tabular  | control    | leg  |     3 |
 | Cont_Leg_2a.tabular | control    | leg  |     2 |
 | Cont_Leg_1.tabular  | control    | leg  |     1 |
+
 * R functions
 :PROPERTIES:
 :header-args: :tangle scripts/functions.r
@@ -801,7 +805,6 @@ for (i in seq(length(genelist))){
 :PROPERTIES:
 :HEADER-ARGS: :tangle scripts/WGCNA-BodyVsLeg.r
 :END:
-
 *** Build data file for WGCNA from quant files
 #+begin_src jupyter-R :session R
 setwd("/home/david/Documents/BenoitLab/R/largeRNASEQ/CorrectedQuantData/")
@@ -816,7 +819,7 @@ head(df)
 #+end_src
 
 #+RESULTS:
-#+begin_export markdown
+#+begin_src rst
 
 A data.frame: 6 × 18
 
@@ -828,10 +831,47 @@ A data.frame: 6 × 18
 | dv.4 | 16.5992 | 19.8922 | 23.9323 | 24.027200 | 0.0794267 | 30.721800 | 27.661300 | 24.9121 |  21.8748 | 27.2285 | 29.715900 | 35.491900 | 34.275800 | 23.6021 | 25.1121 | 2.79280e+01 | 31.287200 | 25.525300 |
 | dv.5 |  0.0000 |  0.0000 |  0.0000 |  0.294700 | 0.0834384 |  0.875706 |  0.715919 |  0.0000 |   0.0000 |  0.0000 |  0.320064 |  0.391045 |  0.193081 |  0.0000 |  0.0000 | 2.79643e-05 |  0.671768 |  0.217907 |
 | dv.6 |  0.0000 |  0.0000 |  0.0000 |  0.484270 | 0.0837346 |  0.431047 |  0.759755 |  0.0000 |   0.0000 |  0.0000 |  0.329439 |  0.940694 |  1.231160 |  0.0000 |  0.0000 | 1.37827e+00 |  0.962562 |  0.141731 |
-#+end_export
+#+end_src
 
-*** TODO Build metadata truth table for WGCNA
-This can be automated from existing metadata file.
+*** Build metadata truth table for WGCNA
+This is the format for the WGCNA metadata. This can be generated from the metadata used in the edgeR and Deseq2 sections. It can also be written by hand.
+| sample              | pesticides_perm | pesticides_deet | pesticides_control | part_body | part_leg | trial_1 | trial_3 | trial_2 |
+| Per_Bod_1.tabular   |               1 |               0 |                  0 |         1 |        0 |       1 |       0 |       0 |
+| Per_Bod_3.tabular   |               1 |               0 |                  0 |         1 |        0 |       0 |       1 |       0 |
+| Per_Leg_3.tabular   |               1 |               0 |                  0 |         0 |        1 |       0 |       1 |       0 |
+| Per_Leg_2.tabular   |               1 |               0 |                  0 |         0 |        1 |       0 |       0 |       1 |
+| Per_Leg_1.tabular   |               1 |               0 |                  0 |         0 |        1 |       1 |       0 |       0 |
+| Deet_Bod_3.tabular  |               0 |               1 |                  0 |         1 |        0 |       0 |       1 |       0 |
+| Deet_Bod_2.tabular  |               0 |               1 |                  0 |         1 |        0 |       0 |       0 |       1 |
+| Deet_Bod_1.tabular  |               0 |               1 |                  0 |         1 |        0 |       1 |       0 |       0 |
+| Deet_Leg_3.tabular  |               0 |               1 |                  0 |         0 |        1 |       0 |       1 |       0 |
+| Deet_Leg_2.tabular  |               0 |               1 |                  0 |         0 |        1 |       0 |       0 |       1 |
+| Deet_Leg_1.tabular  |               0 |               1 |                  0 |         0 |        1 |       1 |       0 |       0 |
+| Cont_Bod_3.tabular  |               0 |               0 |                  1 |         1 |        0 |       0 |       1 |       0 |
+| Cont_Bod_2.tabular  |               0 |               0 |                  1 |         1 |        0 |       0 |       0 |       1 |
+| Cont_Bod_1.tabular  |               0 |               0 |                  1 |         1 |        0 |       1 |       0 |       0 |
+| Cont_Leg_3.tabular  |               0 |               0 |                  1 |         0 |        1 |       0 |       1 |       0 |
+| Cont_Leg_2a.tabular |               0 |               0 |                  1 |         0 |        1 |       0 |       0 |       1 |
+| Cont_Leg_1.tabular  |               0 |               0 |                  1 |         0 |        1 |       1 |       0 |       0 |
+**** From existing metadata file
+This can be automated from existing metadata file in the deseq section.
+#+begin_src jupyter-R :session R
+setwd("/home/david/Documents/BenoitLab/R/largeRNASEQ")
+metadata <- read.csv("metadata.csv", row.names = 1)
+truthTable <- data.frame(row.names = row.names(metadata))
+for (column in colnames(metadata)) {
+  for (row in unique(metadata[column])) {
+    for (item in row) {
+      truthTable[, paste(column, item, sep = "_")] <- as.integer(item == metadata[[column]])
+    }
+  }
+}
+truthTable <- data.frame(sample = row.names(truthTable), truthTable)
+write.csv(truthTable, "WGCNATruthTable.csv", row.names=FALSE)
+truthTable
+#+end_src
+**** From scratch
+It can also be built from scratch
 #+begin_src jupyter-R :session R
 truthTable <- data.frame(sample = colnames(df))
 truthTable$Control <- c(
@@ -858,12 +898,9 @@ truthTable$Leg <- c(
   0, 0, 0, 1, 1, 1,
   1, 0, 0, 0, 1, 1,
   1, 0, 0, 1, 1, 1
-)
+
 write.csv(truthTable, "../WGCNATruthTable.csv", row.names = FALSE)
 #+end_src
-
-#+RESULTS:
-
 * Fasta Manipulation
 ** Get Gene names
 This program just pulls the names of the genes out of the fasta file. There are probably less messy ways to do this. Online programs exist for this as well, but this is a fairly simple c++ program.
@@ -893,6 +930,28 @@ int main(){
 #+RESULTS:
 
 * Blast
+You have 2 choices for this step.
++ If you are familiar with [[https://digitalinsights.qiagen.com/products-overview/discovery-insights-portfolio/analysis-and-visualization/qiagen-clc-main-workbench/][CLC main workbench]] then you can use that to interface with [[https://blast.ncbi.nlm.nih.gov/Blast.cgi][NCBI blast]] to compare the genes to another organism with annotations (Ixodes Scapularius in my case).
++ The other option is to use [[https://github.com/IllustratedMan-code/FastBlast][This Repository]] that I wrote called FastBlast.
+** Fastblast
+The repository has a more detailed README but I will relate it to the rest of the code here
++ The files that have been generated from Deseq and EdgeR need to be compared to another genome that has annotations, so to do that I am going to compare my organism (Dermacentor Variablis) to Ixodes Scapularis using blast.
++ FastBlast automates the blast analysis with the blast command line tool
++ A c++ file parses the csv files that were generated previously and creates .fasta files using the DV assembly.
++ Blast compares the new fasta files with a blast database created with the Ixodes to give gene-ontology terms in a .blastout file.
++ A c++ file parses the blast output and extracts only the genes that were most similar in the blast output and exports the new list as a .csv
+
+* Gene Ontology analysis
+** Tools
++ [[http://revigo.irb.hr/][Revigo]]
++ [[http://geneontology.org][geneontology.org]]
++ [[https://biit.cs.ut.ee/gprofiler/gost][G:profiler]]
+** Automation
+I wanted to automate these tools even though they are only available as websites (except for G:profiler) because I have a lot of different csv files to manage in this project, and doing it all by hand seemed like a recipe for disaster.
++ Refer to the FastBlast repository for instructions on how to run these web-scraper scripts
++ The files outputted from the blast step are in the correct format to use with the GO tools
++ Using the web scraper scripts, the data is transformed into a format that is plottable as treemaps and dotplots (plotting section)
+
 * Plotting
 This uses R and python to plot data.
 ** Required Packages
@@ -921,7 +980,6 @@ plt.style.use("ggplot")
 os.chdir("/home/david/Documents/BenoitLab/RNA-seq")
 #+end_src
 
-#+RESULTS:
 
 *** Venn 1
 #+begin_src jupyter-python :session py
