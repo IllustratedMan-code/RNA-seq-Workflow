@@ -10,6 +10,7 @@ DeseqCommon <- Deseq[common, ]
 ECol <- EdgeRCommon["logFC.partbody"]
 DCol <- -1*DeseqCommon["log2FoldChange"]
 newD <- data.frame(DCol, ECol)
+head(newD)
 
 library("ggpubr")
 pearson <- ggscatter(newD, x = "log2FoldChange", y = "logFC.partbody",

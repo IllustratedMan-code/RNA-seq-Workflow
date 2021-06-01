@@ -3,7 +3,10 @@
 #+OPTIONS: ^:nil
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+EXPORT_FILE_NAME: index.html
-#+TODO: TODO REFACTOR DEBUG | DONE
+#+TODO: TODO(t) REFACTOR(r) DEBUG(d) | DONE
+:PROPERTIES:
+:header-args: :pandoc t
+:end:
 * Introduction
 + The Ticks are sprayed with Permethrin and DEET
 + The Legs are separated from the bodies of the ticks and analyzed separately
@@ -131,13 +134,13 @@ estEdgeR <- function(EdgeR, design){
 #+end_src
 
 #+RESULTS:
-* initial R step
+* Expression analyis with R
 EdgeR and Deseq2 are used to find lists of genes that are up-regulated and down-regulated when compared to design criteria. The design is used to curated the value of logfoldchange in Deseq2. They are compared using a pearson correlation in the plotting section.
 ** REFACTOR Deseq
 :PROPERTIES:
 :HEADER-ARGS: :tangle scripts/Deseq2-analysis.r
 :END:
-This needs to incorporate the function definitions. Much of it is being restated in an unintuitive way
+This needs to incorporate the function definitions. Much of it is restated in an unintuitive way
 *** Package imports
 #+begin_src jupyter-R :session R
 vignette(package="dplyr")
@@ -688,7 +691,6 @@ head(table)
 #+end_src
 #+RESULTS:
 :results:
-#+begin_export markdown
 A data.frame: 6 × 7
 | <!--/--> | logFC.pestperm &lt;dbl&gt; | logFC.pestdeet &lt;dbl&gt; | logFC.pestcontrol &lt;dbl&gt; | logFC.partbody &lt;dbl&gt; | logCPM &lt;dbl&gt; | F &lt;dbl&gt; | PValue &lt;dbl&gt; |
 |---|---|---|---|---|---|---|---|
@@ -698,7 +700,6 @@ A data.frame: 6 × 7
 | dv.1000 | -18.190167 | -17.987386 | -19.298126 |  1.9126410 |  2.9009374 |  179.68487 | 3.011590e-14 |
 | dv.10000 | -19.661420 | -19.161442 | -18.125313 | -1.2488839 |  0.6230704 |   72.51806 | 7.480800e-11 |
 | dv.100000 | -20.483853 | -20.237145 | -20.670230 | -0.9576869 | -0.8094184 |  122.00872 | 8.769197e-13 |
-#+end_export
 :end:
 *** Save the data tables to a file
 Configure this to fit your computer. This section saves csv files with the expression data from the tables in the previous section.
@@ -982,8 +983,10 @@ plt.style.use("ggplot")
 os.chdir("/home/david/Documents/BenoitLab/RNA-seq")
 #+end_src
 
+#+RESULTS:
 
-*** DEBUG Venn 1 (actually a bar plot)
+
+*** REFACTOR Venn 1 (actually a bar plot)
 #+begin_src jupyter-python :session py
 data = pd.read_csv("edgeR-Genes/venn-regulation.csv")
 plt.style.use("ggplot")
@@ -1010,9 +1013,14 @@ for pest in data["Part"].unique():
 
         i += 1
 fig.suptitle("Gene Regulation")
-fig.savefig("fig.png", bbox_inches="tight", dpi=250)
+fig.savefig("figures/EdgeR/gene-regulation-bar-plot.png", bbox_inches="tight", dpi=250)
+plt.show()
 #+end_src
-*** DEBUG Venn 2
+
+#+RESULTS:
+[[file:./.ob-jupyter/945c7a525c6170d2e34d77d706d31725275d2d3b.png]]
+
+*** REFACTOR Deet and Perm regulation Venn 2
 #+begin_src jupyter-python :session py
 plt.style.use("ggplot")
 
@@ -1020,11 +1028,11 @@ from matplotlib_venn import venn2, venn2_circles, venn2_unweighted
 from matplotlib_venn import venn3, venn3_circles
 
 
-deet = pd.read_csv("Genes/deet.csv", header=None)
-deetcont = pd.read_csv("Genes/deetcont.csv", header=None)
-perm = pd.read_csv("Genes/perm.csv", header=None)
-permcont = pd.read_csv("Genes/permcont.csv", header=None)
-genes = pd.read_csv("Genes/listofgenes.csv", header=None)
+deet = pd.read_csv("edgeR-Genes/genelists/upDeet.csv", header=None)
+deetcont = pd.read_csv("edgeR-Genes/genelists/downDeet.csv", header=None)
+perm = pd.read_csv("edgeR-Genes/genelists/upPerm.csv", header=None)
+permcont = pd.read_csv("edgeR-Genes/genelists/downPerm.csv", header=None)
+genes = pd.read_csv("edgeR-Genes/genelists/listofgenes.csv", header=None)
 def compare(s1, s2):
     c = len(list(set(s1.iloc[:, 0]) & set(s2.iloc[:, 0])))
     return(c)
@@ -1037,9 +1045,13 @@ v2 = venn2_unweighted(subsets=(len(perm), len(permcont), len(genes)-len(permcont
 axes[0].set_title("Deet")
 axes[1].set_title("Perm")
 fig.tight_layout()
-#fig.savefig("VennDiagrams/RevisedDiagrams/DeetnPerm.png", bbox_inxhes="tight", dpi=250)
+fig.savefig("figures/EdgeR/DeetAndPermRegulation.png", bbox_inches="tight", dpi=250)
 plt.show()
 #+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/e1032e4823ae652e92d618018b0a64b651fc0991.png]]
+
 *** Venn 3
 This compares the expression of body and legs when compared to the total.
 #+begin_src jupyter-python :session py
@@ -1065,77 +1077,79 @@ plt.show()
 #+RESULTS:
 [[file:./.ob-jupyter/2a5270b9b5cd24647389aedd0601cb8de1d7b70d.png]]
 
-*** DEBUG Venn 4
+*** REFACTOR Venn 4
 #+begin_src jupyter-python :session py
-genes = pd.read_csv("Genes/listofgenes.csv", header=None)
-body = pd.read_csv("Genes/Body.csv")
-upDeetBody = pd.read_csv("Genes/Genelists/upDeetBody.csv")
-downDeetBody = pd.read_csv("Genes/Genelists/downDeetBody.csv")
-
+genes = pd.read_csv("edgeR-Genes/genelists/listofgenes.csv", header=None)
+body = pd.read_csv("edgeR-Genes/bodyExpr.csv")
+upDeetBody = pd.read_csv("edgeR-Genes/genelists/upDeetBody.csv")
+downDeetBody = pd.read_csv("edgeR-Genes/genelists/downDeetBody.csv")
 
 fig, axes = plt.subplots()
 
 v = venn2_unweighted(subsets=(len(upDeetBody), len(downDeetBody), len(body)- len(upDeetBody)-len(downDeetBody)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
 axes.set_title("Deet Expression in Body Genes")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/DeetBody.png")
+fig.savefig("figures/figure3/DeetBody.png")
 plt.show()
 #+end_src
-*** DEBUG Venn 5
+
+#+RESULTS:
+[[file:./.ob-jupyter/77222a96324bfe62705fac3385f0ce24170d7b73.png]]
+
+*** REFACTOR Venn 5
 #+begin_src jupyter-python :session py
-leg = pd.read_csv("Genes/Leg.csv")
-upDeetLeg = pd.read_csv("Genes/Genelists/upDeetLeg.csv")
-downDeetLeg = pd.read_csv("Genes/Genelists/downDeetLeg.csv")
+leg = pd.read_csv("edgeR-Genes/legExpr.csv")
+upDeetLeg = pd.read_csv("edgeR-Genes/genelists/upDeetLeg.csv")
+downDeetLeg = pd.read_csv("edgeR-Genes/genelists/downDeetLeg.csv")
 
 fig, axes = plt.subplots()
 v = venn2_unweighted(subsets=(len(upDeetLeg), len(downDeetLeg), len(leg)-len(upDeetLeg)-len(downDeetLeg)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
 axes.set_title("Deet Expression in Leg Genes")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/DeetLeg.png")
+fig.savefig("figures/figure3/DeetLeg.png")
 #+end_src
-*** DEBUG Venn 6
+
+#+RESULTS:
+[[file:./.ob-jupyter/8079451bcb486c2b61f068c6ce5a55d53b60e38f.png]]
+
+*** REFACTOR Venn 6
 #+begin_src jupyter-python :session py
-leg = pd.read_csv("Genes/Leg.csv")
-upPermLeg = pd.read_csv("Genes/Genelists/upPermLeg.csv")
-downPermLeg = pd.read_csv("Genes/Genelists/downPermLeg.csv")
+leg = pd.read_csv("edgeR-Genes/legExpr.csv")
+upPermLeg = pd.read_csv("edgeR-Genes/genelists/upPermLeg.csv")
+downPermLeg = pd.read_csv("edgeR-Genes/genelists/downPermLeg.csv")
 
 fig, axes = plt.subplots()
 v = venn2_unweighted(subsets=(len(upPermLeg), len(downPermLeg), len(leg)-len(downPermLeg)-len(upPermLeg)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
 axes.set_title("Perm Expression in Leg Genes")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/PermLeg.png")
+fig.savefig("figures/EdgeR/PermLeg.png")
 #+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/e9101058ea8df9f3dc753df4a98fd1cc9e48d29f.png]]
+
 *** DEBUG Venn 7
 #+begin_src jupyter-python :session py
-body = pd.read_csv("Genes/Body.csv")
-upPermBody = pd.read_csv("Genes/Genelists/upPermBody.csv")
-downPermBody = pd.read_csv("Genes/Genelists/downPermLeg.csv")
+body = pd.read_csv("edgeR-Genes/bodyExpr.csv")
+upPermBody = pd.read_csv("edgeR-Genes/genelists/upPermBody.csv")
+downPermBody = pd.read_csv("edgeR-Genes/genelists/downPermLeg.csv")
 
 fig, axes = plt.subplots()
 v = venn2_unweighted(subsets=(len(upPermBody), len(downPermBody), len(body)-len(upPermBody)-len(downPermBody)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
 axes.set_title("Perm Expression in Body Genes")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/PermBody.png")
+fig.savefig("figures/EdgeR/PermBody.png")
 #+end_src
-*** DEBUG Venn 8
-#+begin_src jupyter-python :session py
-genes = pd.read_csv("Genes/listofgenes.csv")
-upPerm = pd.read_csv("Genes/Genelists/upPerm.csv")
-downPerm = pd.read_csv("Genes/Genelists/downPerm.csv")
 
-fig, axes = plt.subplots()
-v = venn2_unweighted(subsets=(len(upPerm), len(downPerm), len(genes)-len(upPerm)-len(downPerm)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
-axes.set_title("Perm Expression")
-fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/Perm.png")
-#+end_src
+#+RESULTS:
+[[file:./.ob-jupyter/5fe93b3617ee9f3f4a883ff3abe5fea31b00da79.png]]
+
 *** Venn 9
 Body vs leg EdgeR
 #+begin_src jupyter-python :session py
 genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
 body = pd.read_csv("edgeR-Genes/bodyExpr.csv")
 leg = pd.read_csv("edgeR-Genes/legExpr.csv")
-
 fig, axes = plt.subplots()
 
 v = venn2_unweighted(subsets=(len(body), len(leg),len(genes)-len(leg) - len(body)), set_labels=("Body", "Leg"), ax=axes)
@@ -1153,6 +1167,22 @@ plt.show()
 
 #+RESULTS:
 [[file:./.ob-jupyter/38b67feca428f2217e85968601099bf697f1bfd5.png]]
+
+*** REFACTOR Venn 8
+#+begin_src jupyter-python :session py
+genes = pd.read_csv("GeneReference/listofgenes.csv")
+upPerm = pd.read_csv("edgeR-Genes/genelists/upPerm.csv")
+downPerm = pd.read_csv("edgeR-Genes/genelists/downPerm.csv")
+
+fig, axes = plt.subplots()
+v = venn2_unweighted(subsets=(len(upPerm), len(downPerm), len(genes)-len(upPerm)-len(downPerm)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Perm Expression")
+fig.tight_layout()
+fig.savefig("figures/EdgeR/Perm.png")
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/6d2e3137346f0936f7c1edcd4c2a65671bed165a.png]]
 
 ** Pearson Correlation
 :PROPERTIES:
@@ -1190,9 +1220,22 @@ DeseqCommon <- Deseq[common, ]
 ECol <- EdgeRCommon["logFC.partbody"]
 DCol <- -1*DeseqCommon["log2FoldChange"]
 newD <- data.frame(DCol, ECol)
+head(newD)
 #+end_src
 
 #+RESULTS:
+:RESULTS:
+A data.frame: 6 × 2
+
+|           | log2FoldChange <dbl> | logFC.partbody <dbl> |
+|-----------+----------------------+----------------------|
+| dv.10     | 4.460319             | 4.601874             |
+| dv.100006 | 2.409308             | 2.510430             |
+| dv.10002  | 2.489758             | 2.567744             |
+| dv.10003  | 4.760398             | 4.965640             |
+| dv.100030 | 1.801994             | 2.086273             |
+| dv.100031 | 4.980622             | 4.975215             |
+:END:
 
 *** Plot the data
 #+begin_src jupyter-R :session R

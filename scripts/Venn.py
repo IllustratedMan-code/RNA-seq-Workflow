@@ -31,7 +31,8 @@ for pest in data["Part"].unique():
 
         i += 1
 fig.suptitle("Gene Regulation")
-fig.savefig("fig.png", bbox_inches="tight", dpi=250)
+fig.savefig("figures/EdgeR/gene-regulation-bar-plot.png", bbox_inches="tight", dpi=250)
+plt.show()
 
 plt.style.use("ggplot")
 
@@ -39,11 +40,11 @@ from matplotlib_venn import venn2, venn2_circles, venn2_unweighted
 from matplotlib_venn import venn3, venn3_circles
 
 
-deet = pd.read_csv("Genes/deet.csv", header=None)
-deetcont = pd.read_csv("Genes/deetcont.csv", header=None)
-perm = pd.read_csv("Genes/perm.csv", header=None)
-permcont = pd.read_csv("Genes/permcont.csv", header=None)
-genes = pd.read_csv("Genes/listofgenes.csv", header=None)
+deet = pd.read_csv("edgeR-Genes/genelists/upDeet.csv", header=None)
+deetcont = pd.read_csv("edgeR-Genes/genelists/downDeet.csv", header=None)
+perm = pd.read_csv("edgeR-Genes/genelists/upPerm.csv", header=None)
+permcont = pd.read_csv("edgeR-Genes/genelists/downPerm.csv", header=None)
+genes = pd.read_csv("edgeR-Genes/genelists/listofgenes.csv", header=None)
 def compare(s1, s2):
     c = len(list(set(s1.iloc[:, 0]) & set(s2.iloc[:, 0])))
     return(c)
@@ -56,7 +57,7 @@ v2 = venn2_unweighted(subsets=(len(perm), len(permcont), len(genes)-len(permcont
 axes[0].set_title("Deet")
 axes[1].set_title("Perm")
 fig.tight_layout()
-#fig.savefig("VennDiagrams/RevisedDiagrams/DeetnPerm.png", bbox_inxhes="tight", dpi=250)
+fig.savefig("figures/EdgeR/DeetAndPermRegulation.png", bbox_inches="tight", dpi=250)
 plt.show()
 
 genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
@@ -77,64 +78,52 @@ fig.savefig("figures/figure2/Deseq-BodyvsLeg.pdf", bbox_inches="tight", dpi=250)
 
 plt.show()
 
-genes = pd.read_csv("Genes/listofgenes.csv", header=None)
-body = pd.read_csv("Genes/Body.csv")
-upDeetBody = pd.read_csv("Genes/Genelists/upDeetBody.csv")
-downDeetBody = pd.read_csv("Genes/Genelists/downDeetBody.csv")
-
+genes = pd.read_csv("edgeR-Genes/genelists/listofgenes.csv", header=None)
+body = pd.read_csv("edgeR-Genes/bodyExpr.csv")
+upDeetBody = pd.read_csv("edgeR-Genes/genelists/upDeetBody.csv")
+downDeetBody = pd.read_csv("edgeR-Genes/genelists/downDeetBody.csv")
 
 fig, axes = plt.subplots()
 
 v = venn2_unweighted(subsets=(len(upDeetBody), len(downDeetBody), len(body)- len(upDeetBody)-len(downDeetBody)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
 axes.set_title("Deet Expression in Body Genes")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/DeetBody.png")
+fig.savefig("figures/figure3/DeetBody.png")
 plt.show()
 
-leg = pd.read_csv("Genes/Leg.csv")
-upDeetLeg = pd.read_csv("Genes/Genelists/upDeetLeg.csv")
-downDeetLeg = pd.read_csv("Genes/Genelists/downDeetLeg.csv")
+leg = pd.read_csv("edgeR-Genes/legExpr.csv")
+upDeetLeg = pd.read_csv("edgeR-Genes/genelists/upDeetLeg.csv")
+downDeetLeg = pd.read_csv("edgeR-Genes/genelists/downDeetLeg.csv")
 
 fig, axes = plt.subplots()
 v = venn2_unweighted(subsets=(len(upDeetLeg), len(downDeetLeg), len(leg)-len(upDeetLeg)-len(downDeetLeg)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
 axes.set_title("Deet Expression in Leg Genes")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/DeetLeg.png")
+fig.savefig("figures/figure3/DeetLeg.png")
 
-leg = pd.read_csv("Genes/Leg.csv")
-upPermLeg = pd.read_csv("Genes/Genelists/upPermLeg.csv")
-downPermLeg = pd.read_csv("Genes/Genelists/downPermLeg.csv")
+leg = pd.read_csv("edgeR-Genes/legExpr.csv")
+upPermLeg = pd.read_csv("edgeR-Genes/genelists/upPermLeg.csv")
+downPermLeg = pd.read_csv("edgeR-Genes/genelists/downPermLeg.csv")
 
 fig, axes = plt.subplots()
 v = venn2_unweighted(subsets=(len(upPermLeg), len(downPermLeg), len(leg)-len(downPermLeg)-len(upPermLeg)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
 axes.set_title("Perm Expression in Leg Genes")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/PermLeg.png")
+fig.savefig("figures/EdgeR/PermLeg.png")
 
-body = pd.read_csv("Genes/Body.csv")
-upPermBody = pd.read_csv("Genes/Genelists/upPermBody.csv")
-downPermBody = pd.read_csv("Genes/Genelists/downPermLeg.csv")
+body = pd.read_csv("edgeR-Genes/bodyExpr.csv")
+upPermBody = pd.read_csv("edgeR-Genes/genelists/upPermBody.csv")
+downPermBody = pd.read_csv("edgeR-Genes/genelists/downPermLeg.csv")
 
 fig, axes = plt.subplots()
 v = venn2_unweighted(subsets=(len(upPermBody), len(downPermBody), len(body)-len(upPermBody)-len(downPermBody)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
 axes.set_title("Perm Expression in Body Genes")
 fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/PermBody.png")
-
-genes = pd.read_csv("Genes/listofgenes.csv")
-upPerm = pd.read_csv("Genes/Genelists/upPerm.csv")
-downPerm = pd.read_csv("Genes/Genelists/downPerm.csv")
-
-fig, axes = plt.subplots()
-v = venn2_unweighted(subsets=(len(upPerm), len(downPerm), len(genes)-len(upPerm)-len(downPerm)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
-axes.set_title("Perm Expression")
-fig.tight_layout()
-fig.savefig("VennDiagrams/RevisedDiagrams/Perm.png")
+fig.savefig("figures/EdgeR/PermBody.png")
 
 genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
 body = pd.read_csv("edgeR-Genes/bodyExpr.csv")
 leg = pd.read_csv("edgeR-Genes/legExpr.csv")
-
 fig, axes = plt.subplots()
 
 v = venn2_unweighted(subsets=(len(body), len(leg),len(genes)-len(leg) - len(body)), set_labels=("Body", "Leg"), ax=axes)
@@ -148,3 +137,13 @@ fig.savefig("figures/figure2/EdgeR-BodyvsLeg.png", bbox_inches="tight", dpi=250)
 fig.savefig("figures/figure2/EdgeR-BodyvsLeg.pdf", bbox_inches="tight", dpi=250)
 
 plt.show()
+
+genes = pd.read_csv("GeneReference/listofgenes.csv")
+upPerm = pd.read_csv("edgeR-Genes/genelists/upPerm.csv")
+downPerm = pd.read_csv("edgeR-Genes/genelists/downPerm.csv")
+
+fig, axes = plt.subplots()
+v = venn2_unweighted(subsets=(len(upPerm), len(downPerm), len(genes)-len(upPerm)-len(downPerm)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Perm Expression")
+fig.tight_layout()
+fig.savefig("figures/EdgeR/Perm.png")
