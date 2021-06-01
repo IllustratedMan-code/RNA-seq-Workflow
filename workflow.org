@@ -909,7 +909,7 @@ write.csv(truthTable, "./WGCNATruthTable.csv", row.names = FALSE)
 #+end_src
 * Fasta Manipulation
 ** Get Gene names
-This program just pulls the names of the genes out of the fasta file. There are probably less messy ways to do this. Online programs exist for this as well, but this is a fairly simple c++ program.
+This program just pulls the names of the genes out of the fasta file. There are probably less messy ways to do this. Online programs exist for this as well, but this is a simple c++ program that will do it.
 #+begin_src cpp :tangle scripts/geneextract.cpp
 #include <iostream>
 #include <fstream>

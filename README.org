@@ -1,1 +1,5 @@
+
+
 Go to the [[https://illustratedman-code.github.io/RNA-seq-Workflow/][website]]!
+* How to install
+Either [[https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository][clone]] this repository or download it as a zip. The scripts will not work immediately, you will need to change the paths in the scripts for it to work. I am working on making this more portable with a config file, but right now that is not working.
