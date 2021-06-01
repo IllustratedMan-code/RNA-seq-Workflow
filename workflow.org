@@ -20,7 +20,7 @@
 + Export the quant files for local analysis with R
 
 * Metadata
-The metadata for this project describes the treatment, body part, and trial for this project. This metadata is used to interface with the tximport library in R. Tximport uses the metadata to organize the quant data in a way that Deseq2 and EdgeR can understand. An arbitrary number of columns is allowed, but the name column is required. Keep the metadata.csv file in parent directory to the quant files.
+The metadata for this project describes the treatment, body part, and trial for this project. This metadata is used to interface with the tximport library in R. Tximport uses the metadata to organize the quant data in a way that Deseq2 and EdgeR can understand. An arbitrary number of columns is allowed, but the name column is required. Keep the metadata.csv file in parent directory to the quant files. The quant files should all be placed in the same directory. In this case, the data is placed in a folder called =CorrectedQuantData=. The Metadata is used by the various tools to figure out what each file means in the context of the experiment. It is very important that the metatdata is a correct representation of the data, or the tools will misinterpret the data.
 
 | name                | pesticides | part | trial |
 |---------------------+------------+------+-------|
@@ -46,6 +46,7 @@ The metadata for this project describes the treatment, body part, and trial for 
 :PROPERTIES:
 :header-args: :tangle scripts/functions.r
 :end:
+The script snippets in this section are contained within the =functions.r= file.
 ** txi function
 uses the tximport package to import the quant data. The tximport package is
 used in both deseq and edgeR for data import. It is optional, but saves a lot
@@ -140,7 +141,7 @@ EdgeR and Deseq2 are used to find lists of genes that are up-regulated and down-
 :PROPERTIES:
 :HEADER-ARGS: :tangle scripts/Deseq2-analysis.r
 :END:
-This needs to incorporate the function definitions. Much of it is restated in an unintuitive way
+The script snippets in this section are contained in the =Deseq2-analysis.r= file.
 *** Package imports
 #+begin_src jupyter-R :session R
 vignette(package="dplyr")
@@ -625,6 +626,7 @@ venn.diagram(
 :PROPERTIES:
 :header-args: :tangle scripts/edgeR-Analysis.r
 :end:
+The scripts in this section are contained in the =edgeR-Analysis.r= file.
 *** Initial settings
 Directory and function setup, configure this when running the script. This is an attempt at simplifying the analysis process in R to a point that is hopefully nonspecific to deseq2 or edgeR. Enter the directory where the RNA-seq data is located, the folder containing the quant data, and the type of quant tool used (fishtype). The script should take care of the rest.
 #+begin_src jupyter-R :session R
@@ -805,8 +807,9 @@ for (i in seq(length(genelist))){
 #+end_src
 ** WGCNA
 :PROPERTIES:
-:HEADER-ARGS: :tangle scripts/WGCNA-BodyVsLeg.r
+:HEADER-ARGS: :tangle scripts/WGCNA-Build-Data.r
 :END:
+The script snippets in this section are contained in the =WGCNA-Build-Data.r= file.
 *** Build data file for WGCNA from quant files
 #+begin_src jupyter-R :session R
 setwd("/home/david/Documents/BenoitLab/R/largeRNASEQ/CorrectedQuantData/")
@@ -1144,6 +1147,23 @@ fig.savefig("figures/EdgeR/PermBody.png")
 #+RESULTS:
 [[file:./.ob-jupyter/5fe93b3617ee9f3f4a883ff3abe5fea31b00da79.png]]
 
+*** REFACTOR Venn 8
+#+begin_src jupyter-python :session py
+genes = pd.read_csv("GeneReference/listofgenes.csv")
+upPerm = pd.read_csv("edgeR-Genes/genelists/upPerm.csv")
+downPerm = pd.read_csv("edgeR-Genes/genelists/downPerm.csv")
+
+fig, axes = plt.subplots()
+v = venn2_unweighted(subsets=(len(upPerm), len(downPerm), len(genes)-len(upPerm)-len(downPerm)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+
+axes.set_title("Perm Expression")
+fig.tight_layout()
+fig.savefig("figures/EdgeR/Perm.png")
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/6d2e3137346f0936f7c1edcd4c2a65671bed165a.png]]
+
 *** Venn 9
 Body vs leg EdgeR
 #+begin_src jupyter-python :session py
@@ -1167,22 +1187,6 @@ plt.show()
 
 #+RESULTS:
 [[file:./.ob-jupyter/38b67feca428f2217e85968601099bf697f1bfd5.png]]
-
-*** REFACTOR Venn 8
-#+begin_src jupyter-python :session py
-genes = pd.read_csv("GeneReference/listofgenes.csv")
-upPerm = pd.read_csv("edgeR-Genes/genelists/upPerm.csv")
-downPerm = pd.read_csv("edgeR-Genes/genelists/downPerm.csv")
-
-fig, axes = plt.subplots()
-v = venn2_unweighted(subsets=(len(upPerm), len(downPerm), len(genes)-len(upPerm)-len(downPerm)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
-axes.set_title("Perm Expression")
-fig.tight_layout()
-fig.savefig("figures/EdgeR/Perm.png")
-#+end_src
-
-#+RESULTS:
-[[file:./.ob-jupyter/6d2e3137346f0936f7c1edcd4c2a65671bed165a.png]]
 
 ** Pearson Correlation
 :PROPERTIES:
