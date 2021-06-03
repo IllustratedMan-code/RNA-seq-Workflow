@@ -4,9 +4,7 @@
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+EXPORT_FILE_NAME: index.html
 #+TODO: TODO(t) REFACTOR(r) DEBUG(d) | DONE
-:PROPERTIES:
-:header-args: :pandoc t
-:end:
+#+PROPERTIES header-args :pandoc t
 * Introduction
 + The Ticks are sprayed with Permethrin and DEET
 + The Legs are separated from the bodies of the ticks and analyzed separately
@@ -144,7 +142,6 @@ EdgeR and Deseq2 are used to find lists of genes that are up-regulated and down-
 The script snippets in this section are contained in the =Deseq2-analysis.r= file.
 *** Package imports
 #+begin_src jupyter-R :session R
-vignette(package="dplyr")
 
 rdata <- list.files(pattern="\\.Rdata")
 args <- commandArgs(trailingOnly = TRUE)
@@ -209,6 +206,107 @@ summarizing counts
 
 summarizing length
 
+Loading required package: S4Vectors
+
+Loading required package: stats4
+
+Loading required package: BiocGenerics
+
+Loading required package: parallel
+
+
+Attaching package: ‘BiocGenerics’
+
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which.max, which.min
+
+
+
+Attaching package: ‘S4Vectors’
+
+
+The following object is masked from ‘package:base’:
+
+    expand.grid
+
+
+Loading required package: IRanges
+
+Loading required package: GenomicRanges
+
+Loading required package: GenomeInfoDb
+
+Loading required package: SummarizedExperiment
+
+Loading required package: MatrixGenerics
+
+Loading required package: matrixStats
+
+
+Attaching package: ‘MatrixGenerics’
+
+
+The following objects are masked from ‘package:matrixStats’:
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars
+
+
+Loading required package: Biobase
+
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+
+
+Attaching package: ‘Biobase’
+
+
+The following object is masked from ‘package:MatrixGenerics’:
+
+    rowMedians
+
+
+The following objects are masked from ‘package:matrixStats’:
+
+    anyMissing, rowMedians
+
+
 Warning message in DESeqDataSet(se, design = design, ignoreRank):
 “some variables in design formula are characters, converting to factors”
 using counts and average transcript lengths from tximport
@@ -252,7 +350,7 @@ rld <- rlog(dds, blind=FALSE)
 ntd <- normTransform(dds)
 
 ddsMF <- dds
-design(ddsMF) <- formula(~pesticides)
+design(ddsMF) <- formula(~part + pesticides)
 ddsMF <- DESeq(ddsMF)
 Mres <- results(ddsMF)
 design(dds) <- formula(~part)
@@ -298,31 +396,16 @@ estimating dispersions
 
 fitting model and testing
 #+end_example
-*** Initial selection of the data
+*** Initial selection of the data based on body part
 + p value of less than 0.01
 + Leg is compared to body, therefore down-regulated are up-regulated in body
 #+begin_src jupyter-R :session R
-DR <- Mres[ which(Mres$padj < 0.01), ]
+DR <- res[ which(Mres$padj < 0.01), ]
 Body <- DR[which(DR$log2FoldChange < -2),]
 Leg <- DR[which(DR$log2FoldChange > 2), ]
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-#+begin_example
-log2 fold change (MLE): pesticides perm vs control
-Wald test p-value: pesticides perm vs control
-DataFrame with 6 rows and 6 columns
-            baseMean log2FoldChange     lfcSE       stat    pvalue      padj
-           <numeric>      <numeric> <numeric>  <numeric> <numeric> <numeric>
-dv.1      47203.3539       0.365233  0.488997  0.7469016  0.455123  0.999996
-dv.10       724.7318       0.116932  1.232421  0.0948798  0.924410  0.999996
-dv.100     1474.4296       0.116376  0.297011  0.3918226  0.695189  0.999996
-dv.1000     246.0981       1.380686  0.909599  1.5179057  0.129038  0.999996
-dv.10000     56.9568      -0.744815  1.389576 -0.5360020  0.591957  0.999996
-dv.100000    19.8319       0.319016  0.972153  0.3281536  0.742796  0.999996
-#+end_example
-:END:
 
 *** Save lists of the respective up-regulated genes
 #+begin_src jupyter-R :session R
@@ -332,6 +415,83 @@ write.table(res, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/total
 #+end_src
 
 #+RESULTS:
+*** Select the genes based on pesticide
+#+begin_src jupyter-R :session R
+pestdd <-dds
+design(pestdd) <- formula(~part + pesticides)
+pestdd <- DESeq(pestdd)
+permres <- results(pestdd, contrast = c("pesticides", "perm", "control"))
+deetres <- results(pestdd, contrast = c("pesticides", "deet", "control"))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+using pre-existing normalization factors
+
+estimating dispersions
+
+found already estimated dispersions, replacing these
+
+gene-wise dispersion estimates
+
+mean-dispersion relationship
+
+final dispersion estimates
+
+fitting model and testing
+#+end_example
+*** select the genes
+#+begin_src jupyter-R :session R :pandoc t
+permres <- permres[which(permres$padj < 0.01),]
+deetres <- deetres[which(deetres$padj < 0.01),]
+upPermvsControl <- permres[which(permres$log2FoldChange >2),]
+downPermvsControl <- permres[which(permres$log2FoldChange < -2),]
+upDeetvsControl <- deetres[which(deetres$log2FoldChange > 2), ]
+downDeetvsControl <- deetres[which(deetres$log2FoldChange < -2), ]
+write.table(upPermvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPerm.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downPermvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downPerm.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(upDeetvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeet.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downDeetvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downDeet.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+
+#+end_src
+
+#+RESULTS:
+*** Compare genes with body genes
+#+begin_src jupyter-R :session R
+commonPermBody = intersect(row.names(Body), row.names(upPermvsControl))
+upPermBody = upPermvsControl[commonPermBody,]
+commonPermLeg = intersect(row.names(Leg), row.names(upPermvsControl))
+upPermLeg = upPermvsControl[commonPermLeg, ]
+commonDeetBody = intersect(row.names(Body), row.names(upDeetvsControl))
+upDeetBody = upDeetvsControl[commonDeetBody]
+commonDeetLeg = intersect(row.names(Leg), row.names(upDeetvsControl))
+upDeetLeg = upDeetvsControl[commonDeetLeg]
+
+write.table(upPermBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(upPermLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(upDeetBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(upDeetLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+#+end_src
+
+#+RESULTS:
+#+begin_example
+log2 fold change (MLE): pesticides perm vs control
+Wald test p-value: pesticides perm vs control
+DataFrame with 569 rows and 6 columns
+           baseMean log2FoldChange     lfcSE      stat      pvalue        padj
+          <numeric>      <numeric> <numeric> <numeric>   <numeric>   <numeric>
+dv.100051   26.4801       -8.59803   2.10822  -4.07833 4.53604e-05 9.36807e-03
+dv.100053   35.8562       -8.40750   2.01843  -4.16537 3.10854e-05 6.99753e-03
+dv.100120   27.8850      -23.47911   3.71625  -6.31796 2.65040e-10 2.16315e-07
+dv.100137   49.6610       -8.24751   1.96677  -4.19343 2.74773e-05 6.36676e-03
+dv.100245   73.2211       -9.48773   2.15062  -4.41162 1.02602e-05 2.86800e-03
+...             ...            ...       ...       ...         ...         ...
+dv.99549    51.4506       -9.57591   2.13415  -4.48698 7.22391e-06 2.14500e-03
+dv.9968     75.4422      -24.81474   2.41460 -10.27697 8.94944e-25 1.31846e-20
+dv.9972     61.4156       -9.82561   2.21796  -4.43001 9.42274e-06 2.67806e-03
+dv.99920   113.3919      -25.36520   3.17868  -7.97978 1.46589e-15 3.38981e-12
+dv.9999     14.5395      -21.96533   2.46951  -8.89463 5.86157e-19 2.41785e-15
+#+end_example
 
 *** Create a new analysis design
 #+begin_src jupyter-R :session R
@@ -986,6 +1146,7 @@ plt.style.use("ggplot")
 os.chdir("/home/david/Documents/BenoitLab/RNA-seq")
 #+end_src
 
+
 #+RESULTS:
 
 
@@ -1055,7 +1216,7 @@ plt.show()
 #+RESULTS:
 [[file:./.ob-jupyter/e1032e4823ae652e92d618018b0a64b651fc0991.png]]
 
-*** Venn 3
+*** Venn 3 Leg vs Body total Deseq2
 This compares the expression of body and legs when compared to the total.
 #+begin_src jupyter-python :session py
 genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
@@ -1080,7 +1241,7 @@ plt.show()
 #+RESULTS:
 [[file:./.ob-jupyter/2a5270b9b5cd24647389aedd0601cb8de1d7b70d.png]]
 
-*** REFACTOR Venn 4
+*** REFACTOR Venn 4 Deet In Body edgeR
 #+begin_src jupyter-python :session py
 genes = pd.read_csv("edgeR-Genes/genelists/listofgenes.csv", header=None)
 body = pd.read_csv("edgeR-Genes/bodyExpr.csv")
@@ -1099,7 +1260,7 @@ plt.show()
 #+RESULTS:
 [[file:./.ob-jupyter/77222a96324bfe62705fac3385f0ce24170d7b73.png]]
 
-*** REFACTOR Venn 5
+*** REFACTOR Venn 5 Deet in Leg edgeR
 #+begin_src jupyter-python :session py
 leg = pd.read_csv("edgeR-Genes/legExpr.csv")
 upDeetLeg = pd.read_csv("edgeR-Genes/genelists/upDeetLeg.csv")
@@ -1115,7 +1276,7 @@ fig.savefig("figures/figure3/DeetLeg.png")
 #+RESULTS:
 [[file:./.ob-jupyter/8079451bcb486c2b61f068c6ce5a55d53b60e38f.png]]
 
-*** REFACTOR Venn 6
+*** REFACTOR Venn 6 Perm in Leg EdgeR
 #+begin_src jupyter-python :session py
 leg = pd.read_csv("edgeR-Genes/legExpr.csv")
 upPermLeg = pd.read_csv("edgeR-Genes/genelists/upPermLeg.csv")
@@ -1131,7 +1292,7 @@ fig.savefig("figures/EdgeR/PermLeg.png")
 #+RESULTS:
 [[file:./.ob-jupyter/e9101058ea8df9f3dc753df4a98fd1cc9e48d29f.png]]
 
-*** DEBUG Venn 7
+*** REFACTOR Venn 7 Perm in Body EdgeR
 #+begin_src jupyter-python :session py
 body = pd.read_csv("edgeR-Genes/bodyExpr.csv")
 upPermBody = pd.read_csv("edgeR-Genes/genelists/upPermBody.csv")
@@ -1164,7 +1325,7 @@ fig.savefig("figures/EdgeR/Perm.png")
 #+RESULTS:
 [[file:./.ob-jupyter/6d2e3137346f0936f7c1edcd4c2a65671bed165a.png]]
 
-*** Venn 9
+*** Venn 9 Body vs Leg total EdgeR
 Body vs leg EdgeR
 #+begin_src jupyter-python :session py
 genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
@@ -1187,6 +1348,121 @@ plt.show()
 
 #+RESULTS:
 [[file:./.ob-jupyter/38b67feca428f2217e85968601099bf697f1bfd5.png]]
+*** Venn 10 Perm vs Deet Deseq2
+#+begin_src jupyter-python :session py
+plt.style.use("ggplot")
+
+from matplotlib_venn import venn2, venn2_circles, venn2_unweighted
+from matplotlib_venn import venn3, venn3_circles
+
+
+deet = pd.read_csv("Deseq-Genes/upDeet.csv")
+deetcont = pd.read_csv("Deseq-Genes/downDeet.csv")
+perm = pd.read_csv("Deseq-Genes/upPerm.csv")
+permcont = pd.read_csv("Deseq-Genes/downPerm.csv")
+genes = pd.read_csv("GeneReference/listofgenes.csv")
+
+
+def compare(s1, s2):
+    c = len(list(set(s1.iloc[:, 0]) & set(s2.iloc[:, 0])))
+    return c
+
+
+diff = compare(deet, genes)
+len(deet)
+fig, axes = plt.subplots(2)
+v1 = venn2_unweighted(
+    subsets=(len(deet), len(deetcont), len(genes) - len(deetcont) - len(deet)),
+    set_labels=("Up Regulated", "Down Regulated"),
+    ax=axes[0],
+)
+v2 = venn2_unweighted(
+    subsets=(len(perm), len(permcont), len(genes) - len(permcont) - len(perm)),
+    set_labels=("Up Regulated", "Down Regulated"),
+    ax=axes[1],
+)
+axes[0].set_title("Deet")
+axes[1].set_title("Perm")
+fig.tight_layout()
+fig.savefig("figures/Deseq2/DeetAndPermRegulation.png", bbox_inches="tight", dpi=250)
+fig.savefig("figures/Deseq2/DeetAndPermRegulation.pdf", bbox_inches="tight", dpi=250)
+plt.show()
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/78eea3adbb3606af99f0c9f97846e03602eda99f.png]]
+*** Venn 11
+#+begin_src jupyter-python :session py
+genes = pd.read_csv("Deseq-Genes/listofgenes.csv", header=None)
+body = pd.read_csv("Deseq-Genes/bodyExpr.csv")
+upDeetBody = pd.read_csv("Deseq-Genes/upDeetBody.csv")
+downDeetBody = pd.read_csv("Deseq-Genes/downDeetBody.csv")
+
+fig, axes = plt.subplots()
+
+v = venn2_unweighted(subsets=(len(upDeetBody), len(downDeetBody), len(body)- len(upDeetBody)-len(downDeetBody)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Deet Expression in Body Genes")
+fig.tight_layout()
+fig.savefig("figures/figure3/DeetBodyDeseq.png")
+fig.savefig("figures/figure3/DeetBodyDeseq.pdf")
+plt.show()
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+# [goto error]
+#+begin_example
+
+FileNotFoundErrorTraceback (most recent call last)
+<ipython-input-7-73c5e5ff73a8> in <module>
+----> 1 genes = pd.read_csv("Deseq-Genes/listofgenes.csv", header=None)
+      2 body = pd.read_csv("Deseq-Genes/bodyExpr.csv")
+      3 upDeetBody = pd.read_csv("Deseq-Genes/upDeetBody.csv")
+      4 downDeetBody = pd.read_csv("Deseq-Genes/downDeetBody.csv")
+      5
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in read_csv(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, error_bad_lines, warn_bad_lines, delim_whitespace, low_memory, memory_map, float_precision)
+    684     )
+    685
+--> 686     return _read(filepath_or_buffer, kwds)
+    687
+    688
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in _read(filepath_or_buffer, kwds)
+    450
+    451     # Create the parser.
+--> 452     parser = TextFileReader(fp_or_buf, **kwds)
+    453
+    454     if chunksize or iterator:
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in __init__(self, f, engine, **kwds)
+    944             self.options["has_index_names"] = kwds["has_index_names"]
+    945
+--> 946         self._make_engine(self.engine)
+    947
+    948     def close(self):
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in _make_engine(self, engine)
+   1176     def _make_engine(self, engine="c"):
+   1177         if engine == "c":
+-> 1178             self._engine = CParserWrapper(self.f, **self.options)
+   1179         else:
+   1180             if engine == "python":
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in __init__(self, src, **kwds)
+   2006         kwds["usecols"] = self.usecols
+   2007
+-> 2008         self._reader = parsers.TextReader(src, **kwds)
+   2009         self.unnamed_cols = self._reader.unnamed_cols
+   2010
+
+pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader.__cinit__()
+
+pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader._setup_parser_source()
+
+FileNotFoundError: [Errno 2] No such file or directory: 'Deseq-Genes/listofgenes.csv'
+#+end_example
+:END:
 
 ** Pearson Correlation
 :PROPERTIES:
@@ -1203,14 +1479,24 @@ library("ggpubr")
 #+begin_example
 ── [1mAttaching packages[22m ─────────────────────────────────────── tidyverse 1.3.1 ──
 
-[32m✔[39m [34mggplot2[39m 3.3.3     [32m✔[39m [34mpurrr  [39m 0.3.4
-[32m✔[39m [34mtibble [39m 3.1.2     [32m✔[39m [34mdplyr  [39m 1.0.6
-[32m✔[39m [34mtidyr  [39m 1.1.3     [32m✔[39m [34mstringr[39m 1.4.0
-[32m✔[39m [34mreadr  [39m 1.4.0     [32m✔[39m [34mforcats[39m 0.5.1
+[32m✔[39m [34mggplot2[39m 3.3.3     [32m✔[39m [34mdplyr  [39m 1.0.6
+[32m✔[39m [34mtibble [39m 3.1.2     [32m✔[39m [34mstringr[39m 1.4.0
+[32m✔[39m [34mtidyr  [39m 1.1.3     [32m✔[39m [34mforcats[39m 0.5.1
+[32m✔[39m [34mpurrr  [39m 0.3.4
 
 ── [1mConflicts[22m ────────────────────────────────────────── tidyverse_conflicts() ──
-[31m✖[39m [34mdplyr[39m::[32mfilter()[39m masks [34mstats[39m::filter()
-[31m✖[39m [34mdplyr[39m::[32mlag()[39m    masks [34mstats[39m::lag()
+[31m✖[39m [34mdplyr[39m::[32mcollapse()[39m   masks [34mIRanges[39m::collapse()
+[31m✖[39m [34mdplyr[39m::[32mcombine()[39m    masks [34mBiobase[39m::combine(), [34mBiocGenerics[39m::combine()
+[31m✖[39m [34mdplyr[39m::[32mcount()[39m      masks [34mmatrixStats[39m::count()
+[31m✖[39m [34mdplyr[39m::[32mdesc()[39m       masks [34mIRanges[39m::desc()
+[31m✖[39m [34mtidyr[39m::[32mexpand()[39m     masks [34mS4Vectors[39m::expand()
+[31m✖[39m [34mdplyr[39m::[32mfilter()[39m     masks [34mstats[39m::filter()
+[31m✖[39m [34mdplyr[39m::[32mfirst()[39m      masks [34mS4Vectors[39m::first()
+[31m✖[39m [34mdplyr[39m::[32mlag()[39m        masks [34mstats[39m::lag()
+[31m✖[39m [34mggplot2[39m::[32mPosition()[39m masks [34mBiocGenerics[39m::Position(), [34mbase[39m::Position()
+[31m✖[39m [34mpurrr[39m::[32mreduce()[39m     masks [34mGenomicRanges[39m::reduce(), [34mIRanges[39m::reduce()
+[31m✖[39m [34mdplyr[39m::[32mrename()[39m     masks [34mS4Vectors[39m::rename()
+[31m✖[39m [34mdplyr[39m::[32mslice()[39m      masks [34mIRanges[39m::slice()
 #+end_example
 
 *** Import the data

@@ -9,16 +9,16 @@ cmap = matplotlib.colors.LinearSegmentedColormap.from_list(
     "", ["dodgerblue", "lightgrey"]
 )
 # pandas section
-dotplotdata = pd.read_csv("../GeneReference/dotplotdata.csv")  # infers header existance
-
+dotplotdata = pd.read_csv(
+    "../GX2C9-Z99E-7HeneReference/dotplotdata.csv"
+)  # infers header existance
+#
 # these are all pandas dataframes as well
 pesticide = dotplotdata.Category
 pathway = dotplotdata.Pathway
 enrichmentratio = dotplotdata.Enrichment
 pval = dotplotdata["P-Value"]
 # have to index it like this because of the dash in P-Value
-
-
 # matplotlib section
 # The reason you couldn't multiply the enrichment ratio here before is because you were using python lists
 # instead of a numpy array or pandas dataframe. Python lists will just replicate the elements [1 , 2] * 2 -> [1, 2, 1, 2]
@@ -28,7 +28,6 @@ p = ax.scatter(
 )
 plt.legend(loc="lower left", markerscale=2.0, scatterpoints=1, fontsize=10)
 plt.xticks(rotation="vertical")
-
 # Legend:
 handles, labels = p.legend_elements(
     prop="sizes",

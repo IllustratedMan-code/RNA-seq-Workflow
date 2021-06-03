@@ -1,5 +1,3 @@
-vignette(package="dplyr")
-
 rdata <- list.files(pattern="\\.Rdata")
 args <- commandArgs(trailingOnly = TRUE)
 if(length(args) > 0){
@@ -44,6 +42,37 @@ Leg <- DR[which(DR$log2FoldChange > 2), ]
 write.table(Body, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Body.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(Leg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Leg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(res, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/total.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+
+pestdd <-dds
+design(pestdd) <- formula(~pesticides)
+pestdd <- DESeq(pestdd)
+permres <- results(pestdd, contrast = c("pesticides", "perm", "control"))
+deetres <- results(pestdd, contrast = c("pesticides", "deet", "control"))
+
+permres <- permres[which(permres$padj < 0.01),]
+deetres <- deetres[which(deetres$padj < 0.01),]
+upPermvsControl <- permres[which(permres$log2FoldChange >2),]
+downPermvsControl <- permres[which(permres$log2FoldChange < -2),]
+upDeetvsControl <- deetres[which(deetres$log2FoldChange > 2), ]
+downDeetvsControl <- deetres[which(deetres$log2FoldChange < -2), ]
+write.table(upPermvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPerm.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downPermvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downPerm.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(upDeetvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeet.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downDeetvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downDeet.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+
+commonPermBody = intersect(row.names(Body), row.names(upPermvsControl))
+upPermBody = upPermvsControl[commonPermBody,]
+commonPermLeg = intersect(row.names(Leg), row.names(upPermvsControl))
+upPermLeg = upPermvsControl[commonPermLeg, ]
+commonDeetBody = intersect(row.names(Body), row.names(upDeetvsControl))
+upDeetBody = upDeetvsControl[commonDeetBody]
+commonDeetLeg = intersect(row.names(Leg), row.names(upDeetvsControl))
+upDeetLeg = upDeetvsControl[commonDeetLeg]
+
+write.table(upPermBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(upPermLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(upDeetBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(upDeetLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 
 newdd <- dds
 design(newdd) <- formula(~part + part:pesticides)

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-06-01 Tue 10:36 -->
+<!-- 2021-06-03 Thu 13:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>RNA-seq Leg Vs Body workflow</title>
@@ -229,113 +229,118 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgcc5e5a9">1. Introduction</a></li>
-<li><a href="#orgf4b6f56">2. Galaxy</a></li>
-<li><a href="#orgb9d2430">3. Metadata</a></li>
-<li><a href="#org2705c97">4. R functions</a>
+<li><a href="#org33149ca">1. Introduction</a></li>
+<li><a href="#org3537fab">2. Galaxy</a></li>
+<li><a href="#orgc01fdfc">3. Metadata</a></li>
+<li><a href="#org2a76a70">4. R functions</a>
 <ul>
-<li><a href="#org0b05ed6">4.1. txi function</a></li>
-<li><a href="#org0442496">4.2. Initial Deseq Function</a></li>
-<li><a href="#org589ea85">4.3. ReDeseq</a></li>
-<li><a href="#org5f8c182">4.4. initialEdgeR</a></li>
-<li><a href="#org38e169a">4.5. estEdgeR</a></li>
+<li><a href="#org2e0c7cc">4.1. txi function</a></li>
+<li><a href="#org46f15d6">4.2. Initial Deseq Function</a></li>
+<li><a href="#org2655c90">4.3. ReDeseq</a></li>
+<li><a href="#orge426b46">4.4. initialEdgeR</a></li>
+<li><a href="#org7ae54d0">4.5. estEdgeR</a></li>
 </ul>
 </li>
-<li><a href="#org844804e">5. Expression analyis with R</a>
+<li><a href="#org09e9e79">5. Expression analyis with R</a>
 <ul>
-<li><a href="#orgf45fd1d">5.1. <span class="todo REFACTOR">REFACTOR</span> Deseq</a>
+<li><a href="#org23fa03a">5.1. <span class="todo REFACTOR">REFACTOR</span> Deseq</a>
 <ul>
-<li><a href="#org1c3f372">5.1.1. Package imports</a></li>
-<li><a href="#orgb8b9a10">5.1.2. Initial Setting</a></li>
-<li><a href="#org70103b9">5.1.3. Run Initial Deseq Functions</a></li>
-<li><a href="#org5953a69">5.1.4. Do initial data manipulation</a></li>
-<li><a href="#org018f5c4">5.1.5. Initial selection of the data</a></li>
-<li><a href="#org96711a6">5.1.6. Save lists of the respective up-regulated genes</a></li>
-<li><a href="#org770801e">5.1.7. Create a new analysis design</a></li>
-<li><a href="#org59e05ca">5.1.8. Prepare the data for pheatmap plotting</a></li>
-<li><a href="#orgfad04ff">5.1.9. Integrity plots</a></li>
-<li><a href="#org2d77d52">5.1.10. Another Deseq Design</a></li>
-<li><a href="#org8955460">5.1.11. Altered Selection of genes</a></li>
-<li><a href="#org5284f48">5.1.12. Save new selection to file</a></li>
-<li><a href="#org75b7aeb">5.1.13. Extra integrity plot</a></li>
-<li><a href="#org8ca54b0">5.1.14. <span class="todo TODO">TODO</span> Extra EdgeR for venn diagrams</a></li>
+<li><a href="#org0a1fadb">5.1.1. Package imports</a></li>
+<li><a href="#orgee8edaf">5.1.2. Initial Setting</a></li>
+<li><a href="#org89f702c">5.1.3. Run Initial Deseq Functions</a></li>
+<li><a href="#org7238431">5.1.4. Do initial data manipulation</a></li>
+<li><a href="#org63020bc">5.1.5. Initial selection of the data based on body part</a></li>
+<li><a href="#org12a3905">5.1.6. Save lists of the respective up-regulated genes</a></li>
+<li><a href="#org8d525ae">5.1.7. Select the genes based on pesticide</a></li>
+<li><a href="#org6ebd93c">5.1.8. select the genes</a></li>
+<li><a href="#orgbe679c5">5.1.9. Compare genes with body genes</a></li>
+<li><a href="#org4ccba90">5.1.10. Create a new analysis design</a></li>
+<li><a href="#orgd70c96b">5.1.11. Prepare the data for pheatmap plotting</a></li>
+<li><a href="#orgb5769b1">5.1.12. Integrity plots</a></li>
+<li><a href="#org27cddf1">5.1.13. Another Deseq Design</a></li>
+<li><a href="#org6131254">5.1.14. Altered Selection of genes</a></li>
+<li><a href="#org571262a">5.1.15. Save new selection to file</a></li>
+<li><a href="#org0eca35a">5.1.16. Extra integrity plot</a></li>
+<li><a href="#org2e9903b">5.1.17. <span class="todo TODO">TODO</span> Extra EdgeR for venn diagrams</a></li>
 </ul>
 </li>
-<li><a href="#orgc9d4eab">5.2. EdgeR</a>
+<li><a href="#org41ea9bb">5.2. EdgeR</a>
 <ul>
-<li><a href="#orge9eba00">5.2.1. Initial settings</a></li>
-<li><a href="#orga42b440">5.2.2. Do the initial processing of the data</a></li>
-<li><a href="#org6f1b599">5.2.3. Partion the data into body and leg tables</a></li>
-<li><a href="#orgdb1752d">5.2.4. Save the data tables to a file</a></li>
-<li><a href="#org3cfbd0f">5.2.5. Find the relative expression values when compared to the control</a></li>
-<li><a href="#orgb6fc4e2">5.2.6. Selection of the data</a></li>
-<li><a href="#orgf9a10b0">5.2.7. Create a csv for bar plotting</a></li>
-<li><a href="#org242be97">5.2.8. Gets the row-names</a></li>
-<li><a href="#orgad58848">5.2.9. Create a list of dataframes corresponding to the total, leg, and body</a></li>
-<li><a href="#org2ce3ae3">5.2.10. Save the genelist to files</a></li>
+<li><a href="#org4600bb9">5.2.1. Initial settings</a></li>
+<li><a href="#org5053cad">5.2.2. Do the initial processing of the data</a></li>
+<li><a href="#org80c602e">5.2.3. Partion the data into body and leg tables</a></li>
+<li><a href="#org993fe90">5.2.4. Save the data tables to a file</a></li>
+<li><a href="#org8f047a6">5.2.5. Find the relative expression values when compared to the control</a></li>
+<li><a href="#orge3a7bba">5.2.6. Selection of the data</a></li>
+<li><a href="#org7382c14">5.2.7. Create a csv for bar plotting</a></li>
+<li><a href="#org75d2eaa">5.2.8. Gets the row-names</a></li>
+<li><a href="#org8d50cd3">5.2.9. Create a list of dataframes corresponding to the total, leg, and body</a></li>
+<li><a href="#org460896d">5.2.10. Save the genelist to files</a></li>
 </ul>
 </li>
-<li><a href="#orgfd57955">5.3. WGCNA</a>
+<li><a href="#org9a045ec">5.3. WGCNA</a>
 <ul>
-<li><a href="#org86c8fc5">5.3.1. Build data file for WGCNA from quant files</a></li>
-<li><a href="#orgacbac2b">5.3.2. Build metadata truth table for WGCNA</a></li>
+<li><a href="#org9c7eba8">5.3.1. Build data file for WGCNA from quant files</a></li>
+<li><a href="#org27b8cfd">5.3.2. Build metadata truth table for WGCNA</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgcb74561">6. Fasta Manipulation</a>
+<li><a href="#org2726cbb">6. Fasta Manipulation</a>
 <ul>
-<li><a href="#org2029f8d">6.1. Get Gene names</a></li>
+<li><a href="#orgccbced9">6.1. Get Gene names</a></li>
 </ul>
 </li>
-<li><a href="#orgd113f1d">7. Blast</a>
+<li><a href="#org0f47489">7. Blast</a>
 <ul>
-<li><a href="#orga7d887a">7.1. Fastblast</a></li>
+<li><a href="#org213369b">7.1. Fastblast</a></li>
 </ul>
 </li>
-<li><a href="#orga9ae80a">8. Gene Ontology analysis</a>
+<li><a href="#orga804c92">8. Gene Ontology analysis</a>
 <ul>
-<li><a href="#orgd5f9997">8.1. Tools</a></li>
-<li><a href="#org7c4c3ca">8.2. <span class="todo TODO">TODO</span> Automation</a></li>
+<li><a href="#org5ff72e5">8.1. Tools</a></li>
+<li><a href="#orgaefc3b5">8.2. <span class="todo TODO">TODO</span> Automation</a></li>
 </ul>
 </li>
-<li><a href="#org01e705b">9. Plotting</a>
+<li><a href="#org70aa912">9. Plotting</a>
 <ul>
-<li><a href="#org78473fc">9.1. Required Packages</a>
+<li><a href="#org78ee00a">9.1. Required Packages</a>
 <ul>
-<li><a href="#org4522ebd">9.1.1. R packages</a></li>
-<li><a href="#orgcee644f">9.1.2. Python packages</a></li>
+<li><a href="#org24cc132">9.1.1. R packages</a></li>
+<li><a href="#org27a5a80">9.1.2. Python packages</a></li>
 </ul>
 </li>
-<li><a href="#org8f37090">9.2. Venn Diagrams</a>
+<li><a href="#org2682e80">9.2. Venn Diagrams</a>
 <ul>
-<li><a href="#orge736b99">9.2.1. Imports</a></li>
-<li><a href="#orge1b1f98">9.2.2. <span class="todo REFACTOR">REFACTOR</span> Venn 1 (actually a bar plot)</a></li>
-<li><a href="#org34f61d7">9.2.3. <span class="todo REFACTOR">REFACTOR</span> Deet and Perm regulation Venn 2</a></li>
-<li><a href="#org92088d6">9.2.4. Venn 3</a></li>
-<li><a href="#org8e09a58">9.2.5. <span class="todo REFACTOR">REFACTOR</span> Venn 4</a></li>
-<li><a href="#orge5c4121">9.2.6. <span class="todo REFACTOR">REFACTOR</span> Venn 5</a></li>
-<li><a href="#orgf29219a">9.2.7. <span class="todo REFACTOR">REFACTOR</span> Venn 6</a></li>
-<li><a href="#orge719a11">9.2.8. <span class="todo DEBUG">DEBUG</span> Venn 7</a></li>
-<li><a href="#orgf0a4c5a">9.2.9. <span class="todo REFACTOR">REFACTOR</span> Venn 8</a></li>
-<li><a href="#orgcd55e64">9.2.10. Venn 9</a></li>
+<li><a href="#org23d954b">9.2.1. Imports</a></li>
+<li><a href="#org1b70f97">9.2.2. <span class="todo REFACTOR">REFACTOR</span> Venn 1 (actually a bar plot)</a></li>
+<li><a href="#org47baabb">9.2.3. <span class="todo REFACTOR">REFACTOR</span> Deet and Perm regulation Venn 2</a></li>
+<li><a href="#org37fbc2e">9.2.4. Venn 3 Leg vs Body total Deseq2</a></li>
+<li><a href="#org6d39be6">9.2.5. <span class="todo REFACTOR">REFACTOR</span> Venn 4 Deet In Body edgeR</a></li>
+<li><a href="#orgc4b9d72">9.2.6. <span class="todo REFACTOR">REFACTOR</span> Venn 5 Deet in Leg edgeR</a></li>
+<li><a href="#org658b0cd">9.2.7. <span class="todo REFACTOR">REFACTOR</span> Venn 6 Perm in Leg EdgeR</a></li>
+<li><a href="#orgd031f5c">9.2.8. <span class="todo REFACTOR">REFACTOR</span> Venn 7 Perm in Body EdgeR</a></li>
+<li><a href="#orge73092d">9.2.9. <span class="todo REFACTOR">REFACTOR</span> Venn 8</a></li>
+<li><a href="#orgff83c07">9.2.10. Venn 9 Body vs Leg total EdgeR</a></li>
+<li><a href="#org72ddb67">9.2.11. Venn 10 Perm vs Deet Deseq2</a></li>
+<li><a href="#org8cc5fc2">9.2.12. Venn 11</a></li>
 </ul>
 </li>
-<li><a href="#orgb43c37d">9.3. Pearson Correlation</a>
+<li><a href="#orgf428f11">9.3. Pearson Correlation</a>
 <ul>
-<li><a href="#org9142801">9.3.1. Libraries</a></li>
-<li><a href="#org105191a">9.3.2. Import the data</a></li>
-<li><a href="#org218b9bd">9.3.3. Plot the data</a></li>
-<li><a href="#org8fe577e">9.3.4. Venn Diagram</a></li>
+<li><a href="#orga87e329">9.3.1. Libraries</a></li>
+<li><a href="#orga00e410">9.3.2. Import the data</a></li>
+<li><a href="#orgf145823">9.3.3. Plot the data</a></li>
+<li><a href="#orgfd2c068">9.3.4. Venn Diagram</a></li>
 </ul>
 </li>
-<li><a href="#orgd6ec648">9.4. Dotplot</a>
+<li><a href="#org571d9e3">9.4. Dotplot</a>
 <ul>
-<li><a href="#org20224fd">9.4.1. imports</a></li>
-<li><a href="#org8f3069e">9.4.2. Theme settings</a></li>
-<li><a href="#org1e51f59">9.4.3. Import</a></li>
-<li><a href="#orgf9d0ca0">9.4.4. Plot the figure</a></li>
-<li><a href="#org5623f0a">9.4.5. Save the Figure</a></li>
+<li><a href="#org69d8a0b">9.4.1. imports</a></li>
+<li><a href="#org5bde456">9.4.2. Theme settings</a></li>
+<li><a href="#org858b5c8">9.4.3. Import</a></li>
+<li><a href="#org5985e57">9.4.4. Plot the figure</a></li>
+<li><a href="#org78327cb">9.4.5. Save the Figure</a></li>
 </ul>
 </li>
 </ul>
@@ -344,10 +349,10 @@
 </div>
 </div>
 <p>
-:header-args: :pandoc t
+#+PROPERTIES header-args :pandoc t
 </p>
-<div id="outline-container-orgcc5e5a9" class="outline-2">
-<h2 id="orgcc5e5a9"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org33149ca" class="outline-2">
+<h2 id="org33149ca"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>The Ticks are sprayed with Permethrin and DEET</li>
@@ -356,8 +361,8 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf4b6f56" class="outline-2">
-<h2 id="orgf4b6f56"><span class="section-number-2">2</span> Galaxy</h2>
+<div id="outline-container-org3537fab" class="outline-2">
+<h2 id="org3537fab"><span class="section-number-2">2</span> Galaxy</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Import the fasta files + assembly to Galaxy</li>
@@ -370,8 +375,8 @@ This requires the assembly as an input</li>
 </div>
 </div>
 
-<div id="outline-container-orgb9d2430" class="outline-2">
-<h2 id="orgb9d2430"><span class="section-number-2">3</span> Metadata</h2>
+<div id="outline-container-orgc01fdfc" class="outline-2">
+<h2 id="orgc01fdfc"><span class="section-number-2">3</span> Metadata</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The metadata for this project describes the treatment, body part, and trial for this project. This metadata is used to interface with the tximport library in R. Tximport uses the metadata to organize the quant data in a way that Deseq2 and EdgeR can understand. An arbitrary number of columns is allowed, but the name column is required. Keep the metadata.csv file in parent directory to the quant files. The quant files should all be placed in the same directory. In this case, the data is placed in a folder called <code>CorrectedQuantData</code>. The Metadata is used by the various tools to figure out what each file means in the context of the experiment. It is very important that the metatdata is a correct representation of the data, or the tools will misinterpret the data.
@@ -521,15 +526,15 @@ The metadata for this project describes the treatment, body part, and trial for 
 </div>
 </div>
 
-<div id="outline-container-org2705c97" class="outline-2">
-<h2 id="org2705c97"><span class="section-number-2">4</span> R functions</h2>
+<div id="outline-container-org2a76a70" class="outline-2">
+<h2 id="org2a76a70"><span class="section-number-2">4</span> R functions</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 The script snippets in this section are contained within the <code>functions.r</code> file.
 </p>
 </div>
-<div id="outline-container-org0b05ed6" class="outline-3">
-<h3 id="org0b05ed6"><span class="section-number-3">4.1</span> txi function</h3>
+<div id="outline-container-org2e0c7cc" class="outline-3">
+<h3 id="org2e0c7cc"><span class="section-number-3">4.1</span> txi function</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 uses the tximport package to import the quant data. The tximport package is
@@ -552,8 +557,8 @@ of time on initial data organization
 </div>
 </div>
 
-<div id="outline-container-org0442496" class="outline-3">
-<h3 id="org0442496"><span class="section-number-3">4.2</span> Initial Deseq Function</h3>
+<div id="outline-container-org46f15d6" class="outline-3">
+<h3 id="org46f15d6"><span class="section-number-3">4.2</span> Initial Deseq Function</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 Sets up the deseq data set object and returns it. Deseq uses a linear model to fit the data. Read more about it here <a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#theory-behind-deseq2">Deseq2</a>.
@@ -573,8 +578,8 @@ Sets up the deseq data set object and returns it. Deseq uses a linear model to f
 </div>
 </div>
 
-<div id="outline-container-org589ea85" class="outline-3">
-<h3 id="org589ea85"><span class="section-number-3">4.3</span> ReDeseq</h3>
+<div id="outline-container-org2655c90" class="outline-3">
+<h3 id="org2655c90"><span class="section-number-3">4.3</span> ReDeseq</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 sets up the deseq object with a different design criteria. The design changes how log2foldchange is expressed.
@@ -593,8 +598,8 @@ It is more difficult to get multifactorial analysis in a single deseq object tha
 </div>
 </div>
 
-<div id="outline-container-org5f8c182" class="outline-3">
-<h3 id="org5f8c182"><span class="section-number-3">4.4</span> initialEdgeR</h3>
+<div id="outline-container-orge426b46" class="outline-3">
+<h3 id="orge426b46"><span class="section-number-3">4.4</span> initialEdgeR</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 Sets up the EdgeR object and returns it. EdgeR uses a different linear model. Read more about it here <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf">edgeR</a>.
@@ -624,8 +629,8 @@ Sets up the EdgeR object and returns it. EdgeR uses a different linear model. Re
 </div>
 </div>
 </div>
-<div id="outline-container-org38e169a" class="outline-3">
-<h3 id="org38e169a"><span class="section-number-3">4.5</span> estEdgeR</h3>
+<div id="outline-container-org7ae54d0" class="outline-3">
+<h3 id="org7ae54d0"><span class="section-number-3">4.5</span> estEdgeR</h3>
 <div class="outline-text-3" id="text-4-5">
 <p>
 finds the fit of the data and returns it for further analysis. Uses the edgeR functions to estimate dispersion of
@@ -646,26 +651,25 @@ the genes. It is much faster than deseq2.
 </div>
 </div>
 </div>
-<div id="outline-container-org844804e" class="outline-2">
-<h2 id="org844804e"><span class="section-number-2">5</span> Expression analyis with R</h2>
+<div id="outline-container-org09e9e79" class="outline-2">
+<h2 id="org09e9e79"><span class="section-number-2">5</span> Expression analyis with R</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 EdgeR and Deseq2 are used to find lists of genes that are up-regulated and down-regulated when compared to design criteria. The design is used to curated the value of logfoldchange in Deseq2. They are compared using a pearson correlation in the plotting section.
 </p>
 </div>
-<div id="outline-container-orgf45fd1d" class="outline-3">
-<h3 id="orgf45fd1d"><span class="section-number-3">5.1</span> <span class="todo REFACTOR">REFACTOR</span> Deseq</h3>
+<div id="outline-container-org23fa03a" class="outline-3">
+<h3 id="org23fa03a"><span class="section-number-3">5.1</span> <span class="todo REFACTOR">REFACTOR</span> Deseq</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 The script snippets in this section are contained in the <code>Deseq2-analysis.r</code> file.
 </p>
 </div>
-<div id="outline-container-org1c3f372" class="outline-4">
-<h4 id="org1c3f372"><span class="section-number-4">5.1.1</span> Package imports</h4>
+<div id="outline-container-org0a1fadb" class="outline-4">
+<h4 id="org0a1fadb"><span class="section-number-4">5.1.1</span> Package imports</h4>
 <div class="outline-text-4" id="text-5-1-1">
 <div class="org-src-container">
-<pre class="src src-jupyter-R"><span style="color: #b8bb26;">vignette</span><span style="color: #d3869b;">(</span>package<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"dplyr"</span><span style="color: #d3869b;">)</span>
-
+<pre class="src src-jupyter-R">
 rdata <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">list.files</span><span style="color: #d3869b;">(</span>pattern<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"\\.Rdata"</span><span style="color: #d3869b;">)</span>
 args <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">commandArgs</span><span style="color: #d3869b;">(</span>trailingOnly <span style="color: #d3869b;">=</span> <span style="color: #fabd2f;">TRUE</span><span style="color: #d3869b;">)</span>
 <span style="color: #fb4934;">if</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">length</span><span style="color: #d3869b;">(</span>args<span style="color: #d3869b;">)</span> <span style="color: #d3869b;">&gt;</span> <span style="color: #d3869b; font-weight: bold;">0</span><span style="color: #d3869b;">){</span>
@@ -683,8 +687,8 @@ args <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">co
 </div>
 </div>
 
-<div id="outline-container-orgb8b9a10" class="outline-4">
-<h4 id="orgb8b9a10"><span class="section-number-4">5.1.2</span> Initial Setting</h4>
+<div id="outline-container-orgee8edaf" class="outline-4">
+<h4 id="orgee8edaf"><span class="section-number-4">5.1.2</span> Initial Setting</h4>
 <div class="outline-text-4" id="text-5-1-2">
 <p>
 These values determine what directory the deseq objects are taken from.
@@ -699,8 +703,8 @@ fishtype <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;
 </div>
 </div>
 
-<div id="outline-container-org70103b9" class="outline-4">
-<h4 id="org70103b9"><span class="section-number-4">5.1.3</span> Run Initial Deseq Functions</h4>
+<div id="outline-container-org89f702c" class="outline-4">
+<h4 id="org89f702c"><span class="section-number-4">5.1.3</span> Run Initial Deseq Functions</h4>
 <div class="outline-text-4" id="text-5-1-3">
 <div class="org-src-container">
 <pre class="src src-jupyter-R"><span style="color: #d3869b;">source</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/scripts/functions.r"</span><span style="color: #d3869b;">)</span>
@@ -709,7 +713,7 @@ Deseq <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">i
 </pre>
 </div>
 
-<pre class="example" id="org17558c7">
+<pre class="example" id="org8d5b272">
 reading in files with read_tsv
 
 1
@@ -736,6 +740,107 @@ summarizing abundance
 summarizing counts
 
 summarizing length
+
+Loading required package: S4Vectors
+
+Loading required package: stats4
+
+Loading required package: BiocGenerics
+
+Loading required package: parallel
+
+
+Attaching package: ‘BiocGenerics’
+
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which.max, which.min
+
+
+
+Attaching package: ‘S4Vectors’
+
+
+The following object is masked from ‘package:base’:
+
+    expand.grid
+
+
+Loading required package: IRanges
+
+Loading required package: GenomicRanges
+
+Loading required package: GenomeInfoDb
+
+Loading required package: SummarizedExperiment
+
+Loading required package: MatrixGenerics
+
+Loading required package: matrixStats
+
+
+Attaching package: ‘MatrixGenerics’
+
+
+The following objects are masked from ‘package:matrixStats’:
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars
+
+
+Loading required package: Biobase
+
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+
+
+Attaching package: ‘Biobase’
+
+
+The following object is masked from ‘package:MatrixGenerics’:
+
+    rowMedians
+
+
+The following objects are masked from ‘package:matrixStats’:
+
+    anyMissing, rowMedians
+
 
 Warning message in DESeqDataSet(se, design = design, ignoreRank):
 “some variables in design formula are characters, converting to factors”
@@ -771,8 +876,8 @@ NULL
 </div>
 </div>
 
-<div id="outline-container-org5953a69" class="outline-4">
-<h4 id="org5953a69"><span class="section-number-4">5.1.4</span> Do initial data manipulation</h4>
+<div id="outline-container-org7238431" class="outline-4">
+<h4 id="org7238431"><span class="section-number-4">5.1.4</span> Do initial data manipulation</h4>
 <div class="outline-text-4" id="text-5-1-4">
 <p>
 The part design is used to compare the leg to the body in total, disregarding pesticide. This is explained in detail in the pearson correlation section.
@@ -786,7 +891,7 @@ rld <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">rlo
 ntd <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">normTransform</span><span style="color: #d3869b;">(</span>dds<span style="color: #d3869b;">)</span>
 
 ddsMF <span style="color: #d3869b;">&lt;-</span> dds
-<span style="color: #b8bb26;">design</span><span style="color: #d3869b;">(</span>ddsMF<span style="color: #d3869b;">)</span> <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">formula</span><span style="color: #d3869b;">(</span>~pesticides<span style="color: #d3869b;">)</span>
+<span style="color: #b8bb26;">design</span><span style="color: #d3869b;">(</span>ddsMF<span style="color: #d3869b;">)</span> <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">formula</span><span style="color: #d3869b;">(</span>~part <span style="color: #d3869b;">+</span> pesticides<span style="color: #d3869b;">)</span>
 ddsMF <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">DESeq</span><span style="color: #d3869b;">(</span>ddsMF<span style="color: #d3869b;">)</span>
 Mres <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">results</span><span style="color: #d3869b;">(</span>ddsMF<span style="color: #d3869b;">)</span>
 <span style="color: #b8bb26;">design</span><span style="color: #d3869b;">(</span>dds<span style="color: #d3869b;">)</span> <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">formula</span><span style="color: #d3869b;">(</span>~part<span style="color: #d3869b;">)</span>
@@ -795,7 +900,7 @@ res <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">res
 </pre>
 </div>
 
-<pre class="example" id="org875e92e">
+<pre class="example" id="org72e6fc0">
 using pre-existing normalization factors
 
 estimating dispersions
@@ -834,38 +939,24 @@ fitting model and testing
 </pre>
 </div>
 </div>
-<div id="outline-container-org018f5c4" class="outline-4">
-<h4 id="org018f5c4"><span class="section-number-4">5.1.5</span> Initial selection of the data</h4>
+<div id="outline-container-org63020bc" class="outline-4">
+<h4 id="org63020bc"><span class="section-number-4">5.1.5</span> Initial selection of the data based on body part</h4>
 <div class="outline-text-4" id="text-5-1-5">
 <ul class="org-ul">
 <li>p value of less than 0.01</li>
 <li>Leg is compared to body, therefore down-regulated are up-regulated in body</li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-jupyter-R">DR <span style="color: #d3869b;">&lt;-</span> Mres<span style="color: #d3869b;">[</span> <span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>Mres$padj <span style="color: #d3869b;">&lt;</span> <span style="color: #d3869b; font-weight: bold;">0.01</span><span style="color: #d3869b;">)</span>, <span style="color: #d3869b;">]</span>
+<pre class="src src-jupyter-R">DR <span style="color: #d3869b;">&lt;-</span> res<span style="color: #d3869b;">[</span> <span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>Mres$padj <span style="color: #d3869b;">&lt;</span> <span style="color: #d3869b; font-weight: bold;">0.01</span><span style="color: #d3869b;">)</span>, <span style="color: #d3869b;">]</span>
 Body <span style="color: #d3869b;">&lt;-</span> DR<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>DR$log2FoldChange <span style="color: #d3869b;">&lt;</span> <span style="color: #d3869b;">-</span><span style="color: #d3869b; font-weight: bold;">2</span><span style="color: #d3869b;">)</span>,<span style="color: #d3869b;">]</span>
 Leg <span style="color: #d3869b;">&lt;-</span> DR<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>DR$log2FoldChange <span style="color: #d3869b;">&gt;</span> <span style="color: #d3869b; font-weight: bold;">2</span><span style="color: #d3869b;">)</span>, <span style="color: #d3869b;">]</span>
 </pre>
 </div>
-
-<pre class="example" id="org6a9e407">
-log2 fold change (MLE): pesticides perm vs control
-Wald test p-value: pesticides perm vs control
-DataFrame with 6 rows and 6 columns
-            baseMean log2FoldChange     lfcSE       stat    pvalue      padj
-           &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt;  &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;
-dv.1      47203.3539       0.365233  0.488997  0.7469016  0.455123  0.999996
-dv.10       724.7318       0.116932  1.232421  0.0948798  0.924410  0.999996
-dv.100     1474.4296       0.116376  0.297011  0.3918226  0.695189  0.999996
-dv.1000     246.0981       1.380686  0.909599  1.5179057  0.129038  0.999996
-dv.10000     56.9568      -0.744815  1.389576 -0.5360020  0.591957  0.999996
-dv.100000    19.8319       0.319016  0.972153  0.3281536  0.742796  0.999996
-</pre>
 </div>
 </div>
 
-<div id="outline-container-org96711a6" class="outline-4">
-<h4 id="org96711a6"><span class="section-number-4">5.1.6</span> Save lists of the respective up-regulated genes</h4>
+<div id="outline-container-org12a3905" class="outline-4">
+<h4 id="org12a3905"><span class="section-number-4">5.1.6</span> Save lists of the respective up-regulated genes</h4>
 <div class="outline-text-4" id="text-5-1-6">
 <div class="org-src-container">
 <pre class="src src-jupyter-R"><span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>Body, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Body.csv"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
@@ -875,10 +966,98 @@ dv.100000    19.8319       0.319016  0.972153  0.3281536  0.742796  0.999996
 </div>
 </div>
 </div>
-
-<div id="outline-container-org770801e" class="outline-4">
-<h4 id="org770801e"><span class="section-number-4">5.1.7</span> Create a new analysis design</h4>
+<div id="outline-container-org8d525ae" class="outline-4">
+<h4 id="org8d525ae"><span class="section-number-4">5.1.7</span> Select the genes based on pesticide</h4>
 <div class="outline-text-4" id="text-5-1-7">
+<div class="org-src-container">
+<pre class="src src-jupyter-R">pestdd <span style="color: #d3869b;">&lt;-</span>dds
+<span style="color: #b8bb26;">design</span><span style="color: #d3869b;">(</span>pestdd<span style="color: #d3869b;">)</span> <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">formula</span><span style="color: #d3869b;">(</span>~part <span style="color: #d3869b;">+</span> pesticides<span style="color: #d3869b;">)</span>
+pestdd <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">DESeq</span><span style="color: #d3869b;">(</span>pestdd<span style="color: #d3869b;">)</span>
+permres <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">results</span><span style="color: #d3869b;">(</span>pestdd, contrast <span style="color: #d3869b;">=</span> <span style="color: #b8bb26;">c</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">"pesticides"</span>, <span style="color: #b8bb26;">"perm"</span>, <span style="color: #b8bb26;">"control"</span><span style="color: #d3869b;">))</span>
+deetres <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">results</span><span style="color: #d3869b;">(</span>pestdd, contrast <span style="color: #d3869b;">=</span> <span style="color: #b8bb26;">c</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">"pesticides"</span>, <span style="color: #b8bb26;">"deet"</span>, <span style="color: #b8bb26;">"control"</span><span style="color: #d3869b;">))</span>
+</pre>
+</div>
+
+<pre class="example" id="org04b554e">
+using pre-existing normalization factors
+
+estimating dispersions
+
+found already estimated dispersions, replacing these
+
+gene-wise dispersion estimates
+
+mean-dispersion relationship
+
+final dispersion estimates
+
+fitting model and testing
+</pre>
+</div>
+</div>
+<div id="outline-container-org6ebd93c" class="outline-4">
+<h4 id="org6ebd93c"><span class="section-number-4">5.1.8</span> select the genes</h4>
+<div class="outline-text-4" id="text-5-1-8">
+<div class="org-src-container">
+<pre class="src src-jupyter-R">permres <span style="color: #d3869b;">&lt;-</span> permres<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>permres$padj <span style="color: #d3869b;">&lt;</span> <span style="color: #d3869b; font-weight: bold;">0.01</span><span style="color: #d3869b;">)</span>,<span style="color: #d3869b;">]</span>
+deetres <span style="color: #d3869b;">&lt;-</span> deetres<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>deetres$padj <span style="color: #d3869b;">&lt;</span> <span style="color: #d3869b; font-weight: bold;">0.01</span><span style="color: #d3869b;">)</span>,<span style="color: #d3869b;">]</span>
+upPermvsControl <span style="color: #d3869b;">&lt;-</span> permres<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>permres$log2FoldChange <span style="color: #d3869b;">&gt;</span><span style="color: #d3869b; font-weight: bold;">2</span><span style="color: #d3869b;">)</span>,<span style="color: #d3869b;">]</span>
+downPermvsControl <span style="color: #d3869b;">&lt;-</span> permres<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>permres$log2FoldChange <span style="color: #d3869b;">&lt;</span> <span style="color: #d3869b;">-</span><span style="color: #d3869b; font-weight: bold;">2</span><span style="color: #d3869b;">)</span>,<span style="color: #d3869b;">]</span>
+upDeetvsControl <span style="color: #d3869b;">&lt;-</span> deetres<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>deetres$log2FoldChange <span style="color: #d3869b;">&gt;</span> <span style="color: #d3869b; font-weight: bold;">2</span><span style="color: #d3869b;">)</span>, <span style="color: #d3869b;">]</span>
+downDeetvsControl <span style="color: #d3869b;">&lt;-</span> deetres<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>deetres$log2FoldChange <span style="color: #d3869b;">&lt;</span> <span style="color: #d3869b;">-</span><span style="color: #d3869b; font-weight: bold;">2</span><span style="color: #d3869b;">)</span>, <span style="color: #d3869b;">]</span>
+<span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>upPermvsControl, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPerm.csv"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
+<span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>downPermvsControl, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downPerm.csv"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
+<span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>upDeetvsControl, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeet.csv"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
+<span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>downDeetvsControl, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downDeet.csv"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbe679c5" class="outline-4">
+<h4 id="orgbe679c5"><span class="section-number-4">5.1.9</span> Compare genes with body genes</h4>
+<div class="outline-text-4" id="text-5-1-9">
+<div class="org-src-container">
+<pre class="src src-jupyter-R">commonPermBody <span style="color: #d3869b;">=</span> <span style="color: #b8bb26;">intersect</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">row.names</span><span style="color: #d3869b;">(</span>Body<span style="color: #d3869b;">)</span>, <span style="color: #b8bb26;">row.names</span><span style="color: #d3869b;">(</span>upPermvsControl<span style="color: #d3869b;">))</span>
+upPermBody <span style="color: #d3869b;">=</span> upPermvsControl<span style="color: #d3869b;">[</span>commonPermBody,<span style="color: #d3869b;">]</span>
+commonPermLeg <span style="color: #d3869b;">=</span> <span style="color: #b8bb26;">intersect</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">row.names</span><span style="color: #d3869b;">(</span>Leg<span style="color: #d3869b;">)</span>, <span style="color: #b8bb26;">row.names</span><span style="color: #d3869b;">(</span>upPermvsControl<span style="color: #d3869b;">))</span>
+upPermLeg <span style="color: #d3869b;">=</span> upPermvsControl<span style="color: #d3869b;">[</span>commonPermLeg, <span style="color: #d3869b;">]</span>
+commonDeetBody <span style="color: #d3869b;">=</span> <span style="color: #b8bb26;">intersect</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">row.names</span><span style="color: #d3869b;">(</span>Body<span style="color: #d3869b;">)</span>, <span style="color: #b8bb26;">row.names</span><span style="color: #d3869b;">(</span>upDeetvsControl<span style="color: #d3869b;">))</span>
+upDeetBody <span style="color: #d3869b;">=</span> upDeetvsControl<span style="color: #d3869b;">[</span>commonDeetBody<span style="color: #d3869b;">]</span>
+commonDeetLeg <span style="color: #d3869b;">=</span> <span style="color: #b8bb26;">intersect</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">row.names</span><span style="color: #d3869b;">(</span>Leg<span style="color: #d3869b;">)</span>, <span style="color: #b8bb26;">row.names</span><span style="color: #d3869b;">(</span>upDeetvsControl<span style="color: #d3869b;">))</span>
+upDeetLeg <span style="color: #d3869b;">=</span> upDeetvsControl<span style="color: #d3869b;">[</span>commonDeetLeg<span style="color: #d3869b;">]</span>
+
+<span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>upPermBody, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermBody.csv"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
+<span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>upPermLeg, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermLeg.csv"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
+<span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>upDeetBody, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetBody.csv"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
+<span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>upDeetLeg, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetLeg.csv"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
+</pre>
+</div>
+
+<pre class="example" id="org19b2c22">
+log2 fold change (MLE): pesticides perm vs control
+Wald test p-value: pesticides perm vs control
+DataFrame with 569 rows and 6 columns
+           baseMean log2FoldChange     lfcSE      stat      pvalue        padj
+          &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
+dv.100051   26.4801       -8.59803   2.10822  -4.07833 4.53604e-05 9.36807e-03
+dv.100053   35.8562       -8.40750   2.01843  -4.16537 3.10854e-05 6.99753e-03
+dv.100120   27.8850      -23.47911   3.71625  -6.31796 2.65040e-10 2.16315e-07
+dv.100137   49.6610       -8.24751   1.96677  -4.19343 2.74773e-05 6.36676e-03
+dv.100245   73.2211       -9.48773   2.15062  -4.41162 1.02602e-05 2.86800e-03
+...             ...            ...       ...       ...         ...         ...
+dv.99549    51.4506       -9.57591   2.13415  -4.48698 7.22391e-06 2.14500e-03
+dv.9968     75.4422      -24.81474   2.41460 -10.27697 8.94944e-25 1.31846e-20
+dv.9972     61.4156       -9.82561   2.21796  -4.43001 9.42274e-06 2.67806e-03
+dv.99920   113.3919      -25.36520   3.17868  -7.97978 1.46589e-15 3.38981e-12
+dv.9999     14.5395      -21.96533   2.46951  -8.89463 5.86157e-19 2.41785e-15
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org4ccba90" class="outline-4">
+<h4 id="org4ccba90"><span class="section-number-4">5.1.10</span> Create a new analysis design</h4>
+<div class="outline-text-4" id="text-5-1-10">
 <div class="org-src-container">
 <pre class="src src-jupyter-R">newdd <span style="color: #d3869b;">&lt;-</span> dds
 <span style="color: #b8bb26;">design</span><span style="color: #d3869b;">(</span>newdd<span style="color: #d3869b;">)</span> <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">formula</span><span style="color: #d3869b;">(</span>~part <span style="color: #d3869b;">+</span> part:pesticides<span style="color: #d3869b;">)</span>
@@ -888,9 +1067,9 @@ newres <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">
 </div>
 </div>
 </div>
-<div id="outline-container-org59e05ca" class="outline-4">
-<h4 id="org59e05ca"><span class="section-number-4">5.1.8</span> Prepare the data for pheatmap plotting</h4>
-<div class="outline-text-4" id="text-5-1-8">
+<div id="outline-container-orgd70c96b" class="outline-4">
+<h4 id="orgd70c96b"><span class="section-number-4">5.1.11</span> Prepare the data for pheatmap plotting</h4>
+<div class="outline-text-4" id="text-5-1-11">
 <div class="org-src-container">
 <pre class="src src-jupyter-R">select <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">order</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">rowMeans</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">counts</span><span style="color: #d3869b;">(</span>dds, normalized<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span><span style="color: #d3869b;">))</span>, decreasing <span style="color: #d3869b;">=</span> <span style="color: #fabd2f;">TRUE</span><span style="color: #d3869b;">)[</span><span style="color: #d3869b; font-weight: bold;">1</span>:<span style="color: #d3869b; font-weight: bold;">20</span><span style="color: #d3869b;">]</span>
 df <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">as.data.frame</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">colData</span><span style="color: #d3869b;">(</span>dds<span style="color: #d3869b;">)[</span>,<span style="color: #b8bb26;">c</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">"pesticides"</span>,<span style="color: #b8bb26;">"part"</span><span style="color: #d3869b;">)])</span>
@@ -898,9 +1077,9 @@ df <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">as.d
 </div>
 </div>
 </div>
-<div id="outline-container-orgfad04ff" class="outline-4">
-<h4 id="orgfad04ff"><span class="section-number-4">5.1.9</span> Integrity plots</h4>
-<div class="outline-text-4" id="text-5-1-9">
+<div id="outline-container-orgb5769b1" class="outline-4">
+<h4 id="orgb5769b1"><span class="section-number-4">5.1.12</span> Integrity plots</h4>
+<div class="outline-text-4" id="text-5-1-12">
 <div class="org-src-container">
 <pre class="src src-jupyter-R"><span style="color: #b8bb26;">jpeg</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">"generalfigures/plotMA_deseq.jpg"</span><span style="color: #d3869b;">)</span>
 <span style="color: #b8bb26;">plotMA</span><span style="color: #d3869b;">(</span>results<span style="color: #d3869b;">)</span>
@@ -941,9 +1120,9 @@ vsn::<span style="color: #b8bb26;">meanSdPlot</span><span style="color: #d3869b;
 </div>
 </div>
 </div>
-<div id="outline-container-org2d77d52" class="outline-4">
-<h4 id="org2d77d52"><span class="section-number-4">5.1.10</span> Another Deseq Design</h4>
-<div class="outline-text-4" id="text-5-1-10">
+<div id="outline-container-org27cddf1" class="outline-4">
+<h4 id="org27cddf1"><span class="section-number-4">5.1.13</span> Another Deseq Design</h4>
+<div class="outline-text-4" id="text-5-1-13">
 <div class="org-src-container">
 <pre class="src src-jupyter-R">
 <span style="color: #d3869b;">library</span><span style="color: #d3869b;">(</span>tidyverse<span style="color: #d3869b;">)</span>
@@ -971,9 +1150,9 @@ res <span style="color: #d3869b;">&lt;-</span> results
 </div>
 </div>
 </div>
-<div id="outline-container-org8955460" class="outline-4">
-<h4 id="org8955460"><span class="section-number-4">5.1.11</span> Altered Selection of genes</h4>
-<div class="outline-text-4" id="text-5-1-11">
+<div id="outline-container-org6131254" class="outline-4">
+<h4 id="org6131254"><span class="section-number-4">5.1.14</span> Altered Selection of genes</h4>
+<div class="outline-text-4" id="text-5-1-14">
 <div class="org-src-container">
 <pre class="src src-jupyter-R">
 Upregulated <span style="color: #d3869b;">&lt;-</span> res<span style="color: #d3869b;">[</span> <span style="color: #b8bb26;">which</span><span style="color: #d3869b;">(</span>res$padj <span style="color: #d3869b;">&lt;</span> <span style="color: #d3869b; font-weight: bold;">0.03</span> &amp; res$log2FoldChange <span style="color: #d3869b;">&gt;</span> <span style="color: #d3869b; font-weight: bold;">0</span><span style="color: #d3869b;">)</span>, <span style="color: #d3869b;">]</span>
@@ -988,9 +1167,9 @@ DR<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">order</spa
 </div>
 </div>
 </div>
-<div id="outline-container-org5284f48" class="outline-4">
-<h4 id="org5284f48"><span class="section-number-4">5.1.12</span> Save new selection to file</h4>
-<div class="outline-text-4" id="text-5-1-12">
+<div id="outline-container-org571262a" class="outline-4">
+<h4 id="org571262a"><span class="section-number-4">5.1.15</span> Save new selection to file</h4>
+<div class="outline-text-4" id="text-5-1-15">
 <div class="org-src-container">
 <pre class="src src-jupyter-R"><span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>D, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"Genes/DownRegulated.txt"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
 <span style="color: #b8bb26;">write.table</span><span style="color: #d3869b;">(</span>Up, file<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">"Genes/UpRegulated.txt"</span>, quote<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, col.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, row.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">FALSE</span>, sep<span style="color: #d3869b;">=</span><span style="color: #b8bb26;">","</span><span style="color: #d3869b;">)</span>
@@ -998,9 +1177,9 @@ DR<span style="color: #d3869b;">[</span><span style="color: #b8bb26;">order</spa
 </div>
 </div>
 </div>
-<div id="outline-container-org75b7aeb" class="outline-4">
-<h4 id="org75b7aeb"><span class="section-number-4">5.1.13</span> Extra integrity plot</h4>
-<div class="outline-text-4" id="text-5-1-13">
+<div id="outline-container-org0eca35a" class="outline-4">
+<h4 id="org0eca35a"><span class="section-number-4">5.1.16</span> Extra integrity plot</h4>
+<div class="outline-text-4" id="text-5-1-16">
 <div class="org-src-container">
 <pre class="src src-jupyter-R">d <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">mcols</span><span style="color: #d3869b;">(</span>Deseq,use.names<span style="color: #d3869b;">=</span><span style="color: #fabd2f;">TRUE</span><span style="color: #d3869b;">)</span>
 a <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">data.frame</span><span style="color: #d3869b;">(</span>rownumb <span style="color: #d3869b;">=</span> <span style="color: #b8bb26;">seq</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">nrow</span><span style="color: #d3869b;">(</span>d<span style="color: #d3869b;">))</span>, d<span style="color: #d3869b;">)</span>
@@ -1011,9 +1190,9 @@ a <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">data.
 </div>
 </div>
 </div>
-<div id="outline-container-org8ca54b0" class="outline-4">
-<h4 id="org8ca54b0"><span class="section-number-4">5.1.14</span> <span class="todo TODO">TODO</span> Extra EdgeR for venn diagrams</h4>
-<div class="outline-text-4" id="text-5-1-14">
+<div id="outline-container-org2e9903b" class="outline-4">
+<h4 id="org2e9903b"><span class="section-number-4">5.1.17</span> <span class="todo TODO">TODO</span> Extra EdgeR for venn diagrams</h4>
+<div class="outline-text-4" id="text-5-1-17">
 <p>
 This is mostly contained in the EdgeR section.
 </p>
@@ -1208,15 +1387,15 @@ futile.logger::<span style="color: #b8bb26;">flog.threshold</span><span style="c
 </div>
 </div>
 </div>
-<div id="outline-container-orgc9d4eab" class="outline-3">
-<h3 id="orgc9d4eab"><span class="section-number-3">5.2</span> EdgeR</h3>
+<div id="outline-container-org41ea9bb" class="outline-3">
+<h3 id="org41ea9bb"><span class="section-number-3">5.2</span> EdgeR</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 The scripts in this section are contained in the <code>edgeR-Analysis.r</code> file.
 </p>
 </div>
-<div id="outline-container-orge9eba00" class="outline-4">
-<h4 id="orge9eba00"><span class="section-number-4">5.2.1</span> Initial settings</h4>
+<div id="outline-container-org4600bb9" class="outline-4">
+<h4 id="org4600bb9"><span class="section-number-4">5.2.1</span> Initial settings</h4>
 <div class="outline-text-4" id="text-5-2-1">
 <p>
 Directory and function setup, configure this when running the script. This is an attempt at simplifying the analysis process in R to a point that is hopefully nonspecific to deseq2 or edgeR. Enter the directory where the RNA-seq data is located, the folder containing the quant data, and the type of quant tool used (fishtype). The script should take care of the rest.
@@ -1232,8 +1411,8 @@ fishtype <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;
 </div>
 </div>
 
-<div id="outline-container-orga42b440" class="outline-4">
-<h4 id="orga42b440"><span class="section-number-4">5.2.2</span> Do the initial processing of the data</h4>
+<div id="outline-container-org5053cad" class="outline-4">
+<h4 id="org5053cad"><span class="section-number-4">5.2.2</span> Do the initial processing of the data</h4>
 <div class="outline-text-4" id="text-5-2-2">
 <p>
 Imports the data and runs it through initial edgeR analysis using the functions created above. The functions do the initial manipulation of the data as detailed in the edgeR paper. This outputs the objects we will trim based on expression.
@@ -1247,7 +1426,7 @@ lrt <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">glm
 test <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">glmQLFTest</span><span style="color: #d3869b;">(</span>Eest, coef<span style="color: #d3869b;">=</span><span style="color: #d3869b; font-weight: bold;">1</span>:<span style="color: #d3869b; font-weight: bold;">4</span><span style="color: #d3869b;">)</span>
 </pre>
 </div>
-<pre class="example" id="org13d1e5b">
+<pre class="example" id="org0a801ca">
 reading in files with read_tsv
 
 1
@@ -1279,8 +1458,8 @@ Loading required package: limma
 </pre>
 </div>
 </div>
-<div id="outline-container-org6f1b599" class="outline-4">
-<h4 id="org6f1b599"><span class="section-number-4">5.2.3</span> Partion the data into body and leg tables</h4>
+<div id="outline-container-org80c602e" class="outline-4">
+<h4 id="org80c602e"><span class="section-number-4">5.2.3</span> Partion the data into body and leg tables</h4>
 <div class="outline-text-4" id="text-5-2-3">
 <p>
 The Table object from the test object is separated into a body and a leg section, where the genes in the leg section are down regulated in the body and vice versa.
@@ -1398,8 +1577,8 @@ A data.frame: 6 × 7
 </table>
 </div>
 </div>
-<div id="outline-container-orgdb1752d" class="outline-4">
-<h4 id="orgdb1752d"><span class="section-number-4">5.2.4</span> Save the data tables to a file</h4>
+<div id="outline-container-org993fe90" class="outline-4">
+<h4 id="org993fe90"><span class="section-number-4">5.2.4</span> Save the data tables to a file</h4>
 <div class="outline-text-4" id="text-5-2-4">
 <p>
 Configure this to fit your computer. This section saves csv files with the expression data from the tables in the previous section.
@@ -1415,8 +1594,8 @@ Configure this to fit your computer. This section saves csv files with the expre
 </div>
 </div>
 
-<div id="outline-container-org3cfbd0f" class="outline-4">
-<h4 id="org3cfbd0f"><span class="section-number-4">5.2.5</span> Find the relative expression values when compared to the control</h4>
+<div id="outline-container-org8f047a6" class="outline-4">
+<h4 id="org8f047a6"><span class="section-number-4">5.2.5</span> Find the relative expression values when compared to the control</h4>
 <div class="outline-text-4" id="text-5-2-5">
 <p>
 This is the main comparison with the pesticides done with the edgeR table. The control is subtracted from the pesticide expression to give a relative expression value. This is not necessary in Deseq and is instead done by manipulating the design.
@@ -1439,8 +1618,8 @@ leg$permvcontrol <span style="color: #d3869b;">&lt;-</span> permvcontrolvleg
 </div>
 </div>
 </div>
-<div id="outline-container-orgb6fc4e2" class="outline-4">
-<h4 id="orgb6fc4e2"><span class="section-number-4">5.2.6</span> Selection of the data</h4>
+<div id="outline-container-orge3a7bba" class="outline-4">
+<h4 id="orge3a7bba"><span class="section-number-4">5.2.6</span> Selection of the data</h4>
 <div class="outline-text-4" id="text-5-2-6">
 <p>
 Selects only the columns that have an expression value greater than 2(up-regulated) or less than -2(down-regulated). This is the same selection done earlier in the script with the body and leg.
@@ -1467,8 +1646,8 @@ downpermleg <span style="color: #d3869b;">&lt;-</span> leg<span style="color: #d
 </div>
 </div>
 </div>
-<div id="outline-container-orgf9a10b0" class="outline-4">
-<h4 id="orgf9a10b0"><span class="section-number-4">5.2.7</span> Create a csv for bar plotting</h4>
+<div id="outline-container-org7382c14" class="outline-4">
+<h4 id="org7382c14"><span class="section-number-4">5.2.7</span> Create a csv for bar plotting</h4>
 <div class="outline-text-4" id="text-5-2-7">
 <p>
 This is just a simple organization of the number of genes deferentially expressed for each comparison. The csv is saved using the write.table line, so change the path to fit your directory structure.
@@ -1483,8 +1662,8 @@ This is just a simple organization of the number of genes deferentially expresse
 </div>
 </div>
 </div>
-<div id="outline-container-org242be97" class="outline-4">
-<h4 id="org242be97"><span class="section-number-4">5.2.8</span> Gets the row-names</h4>
+<div id="outline-container-org75d2eaa" class="outline-4">
+<h4 id="org75d2eaa"><span class="section-number-4">5.2.8</span> Gets the row-names</h4>
 <div class="outline-text-4" id="text-5-2-8">
 <p>
 This separates the data into just the gene names for each comparison. This is helpful for venn diagrams and other comparison.
@@ -1515,8 +1694,8 @@ downdeetbodygenes <span style="color: #d3869b;">&lt;-</span> <span style="color:
 </div>
 </div>
 
-<div id="outline-container-orgad58848" class="outline-4">
-<h4 id="orgad58848"><span class="section-number-4">5.2.9</span> Create a list of dataframes corresponding to the total, leg, and body</h4>
+<div id="outline-container-org8d50cd3" class="outline-4">
+<h4 id="org8d50cd3"><span class="section-number-4">5.2.9</span> Create a list of dataframes corresponding to the total, leg, and body</h4>
 <div class="outline-text-4" id="text-5-2-9">
 <p>
 Consolidates the genes into a list of dataframes for easy saving
@@ -1532,8 +1711,8 @@ Consolidates the genes into a list of dataframes for easy saving
 </div>
 </div>
 </div>
-<div id="outline-container-org2ce3ae3" class="outline-4">
-<h4 id="org2ce3ae3"><span class="section-number-4">5.2.10</span> Save the genelist to files</h4>
+<div id="outline-container-org460896d" class="outline-4">
+<h4 id="org460896d"><span class="section-number-4">5.2.10</span> Save the genelist to files</h4>
 <div class="outline-text-4" id="text-5-2-10">
 <p>
 Saves all of the comparisons to file.
@@ -1548,15 +1727,15 @@ Saves all of the comparisons to file.
 </div>
 </div>
 </div>
-<div id="outline-container-orgfd57955" class="outline-3">
-<h3 id="orgfd57955"><span class="section-number-3">5.3</span> WGCNA</h3>
+<div id="outline-container-org9a045ec" class="outline-3">
+<h3 id="org9a045ec"><span class="section-number-3">5.3</span> WGCNA</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 The script snippets in this section are contained in the <code>WGCNA-Build-Data.r</code> file.
 </p>
 </div>
-<div id="outline-container-org86c8fc5" class="outline-4">
-<h4 id="org86c8fc5"><span class="section-number-4">5.3.1</span> Build data file for WGCNA from quant files</h4>
+<div id="outline-container-org9c7eba8" class="outline-4">
+<h4 id="org9c7eba8"><span class="section-number-4">5.3.1</span> Build data file for WGCNA from quant files</h4>
 <div class="outline-text-4" id="text-5-3-1">
 <div class="org-src-container">
 <pre class="src src-jupyter-R"><span style="color: #d3869b;">setwd</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/R/largeRNASEQ/CorrectedQuantData/"</span><span style="color: #d3869b;">)</span>
@@ -1588,8 +1767,8 @@ A data.frame: 6 &#215; 18
 </div>
 </div>
 
-<div id="outline-container-orgacbac2b" class="outline-4">
-<h4 id="orgacbac2b"><span class="section-number-4">5.3.2</span> Build metadata truth table for WGCNA</h4>
+<div id="outline-container-org27b8cfd" class="outline-4">
+<h4 id="org27b8cfd"><span class="section-number-4">5.3.2</span> Build metadata truth table for WGCNA</h4>
 <div class="outline-text-4" id="text-5-3-2">
 <p>
 This is the format for the WGCNA metadata. This can be generated from the metadata used in the edgeR and Deseq2 sections. It can also be written by hand.
@@ -1836,7 +2015,7 @@ This is the format for the WGCNA metadata. This can be generated from the metada
 </table>
 </div>
 <ol class="org-ol">
-<li><a id="org8f5b0d0"></a>From existing metadata file<br />
+<li><a id="org9e346c8"></a>From existing metadata file<br />
 <div class="outline-text-5" id="text-5-3-2-1">
 <p>
 This can be automated from existing metadata file in the deseq section.
@@ -1859,7 +2038,7 @@ truthTable
 </div>
 </div>
 </li>
-<li><a id="org4eec8b0"></a>From scratch<br />
+<li><a id="orgd144463"></a>From scratch<br />
 <div class="outline-text-5" id="text-5-3-2-2">
 <p>
 It can also be built from scratch (<code>not recommended</code>)
@@ -1901,12 +2080,12 @@ truthTable$Leg <span style="color: #d3869b;">&lt;-</span> <span style="color: #b
 </div>
 </div>
 </div>
-<div id="outline-container-orgcb74561" class="outline-2">
-<h2 id="orgcb74561"><span class="section-number-2">6</span> Fasta Manipulation</h2>
+<div id="outline-container-org2726cbb" class="outline-2">
+<h2 id="org2726cbb"><span class="section-number-2">6</span> Fasta Manipulation</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-org2029f8d" class="outline-3">
-<h3 id="org2029f8d"><span class="section-number-3">6.1</span> Get Gene names</h3>
+<div id="outline-container-orgccbced9" class="outline-3">
+<h3 id="orgccbced9"><span class="section-number-3">6.1</span> Get Gene names</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 This program just pulls the names of the genes out of the fasta file. There are probably less messy ways to do this. Online programs exist for this as well, but this is a simple c++ program that will do it.
@@ -1938,8 +2117,8 @@ This program just pulls the names of the genes out of the fasta file. There are 
 </div>
 </div>
 
-<div id="outline-container-orgd113f1d" class="outline-2">
-<h2 id="orgd113f1d"><span class="section-number-2">7</span> Blast</h2>
+<div id="outline-container-org0f47489" class="outline-2">
+<h2 id="org0f47489"><span class="section-number-2">7</span> Blast</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 You have 2 choices for this step.
@@ -1949,8 +2128,8 @@ You have 2 choices for this step.
 <li>The other option is to use <a href="https://github.com/IllustratedMan-code/FastBlast">This Repository</a> that I wrote called FastBlast.</li>
 </ul>
 </div>
-<div id="outline-container-orga7d887a" class="outline-3">
-<h3 id="orga7d887a"><span class="section-number-3">7.1</span> Fastblast</h3>
+<div id="outline-container-org213369b" class="outline-3">
+<h3 id="org213369b"><span class="section-number-3">7.1</span> Fastblast</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 The repository has a more detailed README but I will relate it to the rest of the code here
@@ -1966,12 +2145,12 @@ The repository has a more detailed README but I will relate it to the rest of th
 </div>
 </div>
 
-<div id="outline-container-orga9ae80a" class="outline-2">
-<h2 id="orga9ae80a"><span class="section-number-2">8</span> Gene Ontology analysis</h2>
+<div id="outline-container-orga804c92" class="outline-2">
+<h2 id="orga804c92"><span class="section-number-2">8</span> Gene Ontology analysis</h2>
 <div class="outline-text-2" id="text-8">
 </div>
-<div id="outline-container-orgd5f9997" class="outline-3">
-<h3 id="orgd5f9997"><span class="section-number-3">8.1</span> Tools</h3>
+<div id="outline-container-org5ff72e5" class="outline-3">
+<h3 id="org5ff72e5"><span class="section-number-3">8.1</span> Tools</h3>
 <div class="outline-text-3" id="text-8-1">
 <ul class="org-ul">
 <li><a href="http://revigo.irb.hr/">Revigo</a></li>
@@ -1980,8 +2159,8 @@ The repository has a more detailed README but I will relate it to the rest of th
 </ul>
 </div>
 </div>
-<div id="outline-container-org7c4c3ca" class="outline-3">
-<h3 id="org7c4c3ca"><span class="section-number-3">8.2</span> <span class="todo TODO">TODO</span> Automation</h3>
+<div id="outline-container-orgaefc3b5" class="outline-3">
+<h3 id="orgaefc3b5"><span class="section-number-3">8.2</span> <span class="todo TODO">TODO</span> Automation</h3>
 <div class="outline-text-3" id="text-8-2">
 <p>
 I wanted to automate these tools even though they are only available as websites (except for G:profiler) because I have a lot of different csv files to manage in this project, and doing it all by hand seemed like a recipe for disaster.
@@ -1995,22 +2174,22 @@ I wanted to automate these tools even though they are only available as websites
 </div>
 </div>
 
-<div id="outline-container-org01e705b" class="outline-2">
-<h2 id="org01e705b"><span class="section-number-2">9</span> Plotting</h2>
+<div id="outline-container-org70aa912" class="outline-2">
+<h2 id="org70aa912"><span class="section-number-2">9</span> Plotting</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 This uses R and python to plot data.
 </p>
 </div>
-<div id="outline-container-org78473fc" class="outline-3">
-<h3 id="org78473fc"><span class="section-number-3">9.1</span> Required Packages</h3>
+<div id="outline-container-org78ee00a" class="outline-3">
+<h3 id="org78ee00a"><span class="section-number-3">9.1</span> Required Packages</h3>
 <div class="outline-text-3" id="text-9-1">
 <p>
 These packages are only required for plotting the data
 </p>
 </div>
-<div id="outline-container-org4522ebd" class="outline-4">
-<h4 id="org4522ebd"><span class="section-number-4">9.1.1</span> R packages</h4>
+<div id="outline-container-org24cc132" class="outline-4">
+<h4 id="org24cc132"><span class="section-number-4">9.1.1</span> R packages</h4>
 <div class="outline-text-4" id="text-9-1-1">
 <ul class="org-ul">
 <li>tidyverse (ggplot)</li>
@@ -2018,8 +2197,8 @@ These packages are only required for plotting the data
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcee644f" class="outline-4">
-<h4 id="orgcee644f"><span class="section-number-4">9.1.2</span> Python packages</h4>
+<div id="outline-container-org27a5a80" class="outline-4">
+<h4 id="org27a5a80"><span class="section-number-4">9.1.2</span> Python packages</h4>
 <div class="outline-text-4" id="text-9-1-2">
 <ul class="org-ul">
 <li>Matplotlib</li>
@@ -2030,12 +2209,12 @@ These packages are only required for plotting the data
 </div>
 </div>
 </div>
-<div id="outline-container-org8f37090" class="outline-3">
-<h3 id="org8f37090"><span class="section-number-3">9.2</span> Venn Diagrams</h3>
+<div id="outline-container-org2682e80" class="outline-3">
+<h3 id="org2682e80"><span class="section-number-3">9.2</span> Venn Diagrams</h3>
 <div class="outline-text-3" id="text-9-2">
 </div>
-<div id="outline-container-orge736b99" class="outline-4">
-<h4 id="orge736b99"><span class="section-number-4">9.2.1</span> Imports</h4>
+<div id="outline-container-org23d954b" class="outline-4">
+<h4 id="org23d954b"><span class="section-number-4">9.2.1</span> Imports</h4>
 <div class="outline-text-4" id="text-9-2-1">
 <p>
 Change directory based on project
@@ -2054,8 +2233,8 @@ os.chdir(<span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq"
 </div>
 
 
-<div id="outline-container-orge1b1f98" class="outline-4">
-<h4 id="orge1b1f98"><span class="section-number-4">9.2.2</span> <span class="todo REFACTOR">REFACTOR</span> Venn 1 (actually a bar plot)</h4>
+<div id="outline-container-org1b70f97" class="outline-4">
+<h4 id="org1b70f97"><span class="section-number-4">9.2.2</span> <span class="todo REFACTOR">REFACTOR</span> Venn 1 (actually a bar plot)</h4>
 <div class="outline-text-4" id="text-9-2-2">
 <div class="org-src-container">
 <pre class="src src-jupyter-python"><span style="color: #83a598;">data</span> = pd.read_csv(<span style="color: #b8bb26;">"edgeR-Genes/venn-regulation.csv"</span>)
@@ -2089,15 +2268,15 @@ plt.show()
 </div>
 
 
-<div id="orgb7d9a55" class="figure">
+<div id="orgc032e24" class="figure">
 <p><img src="./.ob-jupyter/945c7a525c6170d2e34d77d706d31725275d2d3b.png" alt="945c7a525c6170d2e34d77d706d31725275d2d3b.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org34f61d7" class="outline-4">
-<h4 id="org34f61d7"><span class="section-number-4">9.2.3</span> <span class="todo REFACTOR">REFACTOR</span> Deet and Perm regulation Venn 2</h4>
+<div id="outline-container-org47baabb" class="outline-4">
+<h4 id="org47baabb"><span class="section-number-4">9.2.3</span> <span class="todo REFACTOR">REFACTOR</span> Deet and Perm regulation Venn 2</h4>
 <div class="outline-text-4" id="text-9-2-3">
 <div class="org-src-container">
 <pre class="src src-jupyter-python">plt.style.use(<span style="color: #b8bb26;">"ggplot"</span>)
@@ -2129,15 +2308,15 @@ plt.show()
 </div>
 
 
-<div id="org2cd4b19" class="figure">
+<div id="orgb4e5013" class="figure">
 <p><img src="./.ob-jupyter/e1032e4823ae652e92d618018b0a64b651fc0991.png" alt="e1032e4823ae652e92d618018b0a64b651fc0991.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org92088d6" class="outline-4">
-<h4 id="org92088d6"><span class="section-number-4">9.2.4</span> Venn 3</h4>
+<div id="outline-container-org37fbc2e" class="outline-4">
+<h4 id="org37fbc2e"><span class="section-number-4">9.2.4</span> Venn 3 Leg vs Body total Deseq2</h4>
 <div class="outline-text-4" id="text-9-2-4">
 <p>
 This compares the expression of body and legs when compared to the total.
@@ -2164,15 +2343,15 @@ plt.show()
 </div>
 
 
-<div id="orgaeee3fa" class="figure">
+<div id="orgda79227" class="figure">
 <p><img src="./.ob-jupyter/2a5270b9b5cd24647389aedd0601cb8de1d7b70d.png" alt="2a5270b9b5cd24647389aedd0601cb8de1d7b70d.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org8e09a58" class="outline-4">
-<h4 id="org8e09a58"><span class="section-number-4">9.2.5</span> <span class="todo REFACTOR">REFACTOR</span> Venn 4</h4>
+<div id="outline-container-org6d39be6" class="outline-4">
+<h4 id="org6d39be6"><span class="section-number-4">9.2.5</span> <span class="todo REFACTOR">REFACTOR</span> Venn 4 Deet In Body edgeR</h4>
 <div class="outline-text-4" id="text-9-2-5">
 <div class="org-src-container">
 <pre class="src src-jupyter-python"><span style="color: #83a598;">genes</span> = pd.read_csv(<span style="color: #b8bb26;">"edgeR-Genes/genelists/listofgenes.csv"</span>, header=<span style="color: #d3869b;">None</span>)
@@ -2191,15 +2370,15 @@ plt.show()
 </div>
 
 
-<div id="org891ab09" class="figure">
+<div id="org6a01816" class="figure">
 <p><img src="./.ob-jupyter/77222a96324bfe62705fac3385f0ce24170d7b73.png" alt="77222a96324bfe62705fac3385f0ce24170d7b73.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge5c4121" class="outline-4">
-<h4 id="orge5c4121"><span class="section-number-4">9.2.6</span> <span class="todo REFACTOR">REFACTOR</span> Venn 5</h4>
+<div id="outline-container-orgc4b9d72" class="outline-4">
+<h4 id="orgc4b9d72"><span class="section-number-4">9.2.6</span> <span class="todo REFACTOR">REFACTOR</span> Venn 5 Deet in Leg edgeR</h4>
 <div class="outline-text-4" id="text-9-2-6">
 <div class="org-src-container">
 <pre class="src src-jupyter-python"><span style="color: #83a598;">leg</span> = pd.read_csv(<span style="color: #b8bb26;">"edgeR-Genes/legExpr.csv"</span>)
@@ -2215,15 +2394,15 @@ fig.savefig(<span style="color: #b8bb26;">"figures/figure3/DeetLeg.png"</span>)
 </div>
 
 
-<div id="orga4a079c" class="figure">
+<div id="org2ff7874" class="figure">
 <p><img src="./.ob-jupyter/8079451bcb486c2b61f068c6ce5a55d53b60e38f.png" alt="8079451bcb486c2b61f068c6ce5a55d53b60e38f.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgf29219a" class="outline-4">
-<h4 id="orgf29219a"><span class="section-number-4">9.2.7</span> <span class="todo REFACTOR">REFACTOR</span> Venn 6</h4>
+<div id="outline-container-org658b0cd" class="outline-4">
+<h4 id="org658b0cd"><span class="section-number-4">9.2.7</span> <span class="todo REFACTOR">REFACTOR</span> Venn 6 Perm in Leg EdgeR</h4>
 <div class="outline-text-4" id="text-9-2-7">
 <div class="org-src-container">
 <pre class="src src-jupyter-python"><span style="color: #83a598;">leg</span> = pd.read_csv(<span style="color: #b8bb26;">"edgeR-Genes/legExpr.csv"</span>)
@@ -2239,15 +2418,15 @@ fig.savefig(<span style="color: #b8bb26;">"figures/EdgeR/PermLeg.png"</span>)
 </div>
 
 
-<div id="org8af0447" class="figure">
+<div id="org7220ddf" class="figure">
 <p><img src="./.ob-jupyter/e9101058ea8df9f3dc753df4a98fd1cc9e48d29f.png" alt="e9101058ea8df9f3dc753df4a98fd1cc9e48d29f.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge719a11" class="outline-4">
-<h4 id="orge719a11"><span class="section-number-4">9.2.8</span> <span class="todo DEBUG">DEBUG</span> Venn 7</h4>
+<div id="outline-container-orgd031f5c" class="outline-4">
+<h4 id="orgd031f5c"><span class="section-number-4">9.2.8</span> <span class="todo REFACTOR">REFACTOR</span> Venn 7 Perm in Body EdgeR</h4>
 <div class="outline-text-4" id="text-9-2-8">
 <div class="org-src-container">
 <pre class="src src-jupyter-python"><span style="color: #83a598;">body</span> = pd.read_csv(<span style="color: #b8bb26;">"edgeR-Genes/bodyExpr.csv"</span>)
@@ -2263,15 +2442,15 @@ fig.savefig(<span style="color: #b8bb26;">"figures/EdgeR/PermBody.png"</span>)
 </div>
 
 
-<div id="orga8a994b" class="figure">
+<div id="orga0a5c88" class="figure">
 <p><img src="./.ob-jupyter/5fe93b3617ee9f3f4a883ff3abe5fea31b00da79.png" alt="5fe93b3617ee9f3f4a883ff3abe5fea31b00da79.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgf0a4c5a" class="outline-4">
-<h4 id="orgf0a4c5a"><span class="section-number-4">9.2.9</span> <span class="todo REFACTOR">REFACTOR</span> Venn 8</h4>
+<div id="outline-container-orge73092d" class="outline-4">
+<h4 id="orge73092d"><span class="section-number-4">9.2.9</span> <span class="todo REFACTOR">REFACTOR</span> Venn 8</h4>
 <div class="outline-text-4" id="text-9-2-9">
 <div class="org-src-container">
 <pre class="src src-jupyter-python"><span style="color: #83a598;">genes</span> = pd.read_csv(<span style="color: #b8bb26;">"GeneReference/listofgenes.csv"</span>)
@@ -2288,15 +2467,15 @@ fig.savefig(<span style="color: #b8bb26;">"figures/EdgeR/Perm.png"</span>)
 </div>
 
 
-<div id="org903a2b8" class="figure">
+<div id="org2387fb1" class="figure">
 <p><img src="./.ob-jupyter/6d2e3137346f0936f7c1edcd4c2a65671bed165a.png" alt="6d2e3137346f0936f7c1edcd4c2a65671bed165a.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgcd55e64" class="outline-4">
-<h4 id="orgcd55e64"><span class="section-number-4">9.2.10</span> Venn 9</h4>
+<div id="outline-container-orgff83c07" class="outline-4">
+<h4 id="orgff83c07"><span class="section-number-4">9.2.10</span> Venn 9 Body vs Leg total EdgeR</h4>
 <div class="outline-text-4" id="text-9-2-10">
 <p>
 Body vs leg EdgeR
@@ -2322,23 +2501,147 @@ plt.show()
 </div>
 
 
-<div id="org6bfcf28" class="figure">
+<div id="orge26688b" class="figure">
 <p><img src="./.ob-jupyter/38b67feca428f2217e85968601099bf697f1bfd5.png" alt="38b67feca428f2217e85968601099bf697f1bfd5.png" />
 </p>
 </div>
 </div>
 </div>
+<div id="outline-container-org72ddb67" class="outline-4">
+<h4 id="org72ddb67"><span class="section-number-4">9.2.11</span> Venn 10 Perm vs Deet Deseq2</h4>
+<div class="outline-text-4" id="text-9-2-11">
+<div class="org-src-container">
+<pre class="src src-jupyter-python">plt.style.use(<span style="color: #b8bb26;">"ggplot"</span>)
+
+<span style="color: #fb4934;">from</span> matplotlib_venn <span style="color: #fb4934;">import</span> venn2, venn2_circles, venn2_unweighted
+<span style="color: #fb4934;">from</span> matplotlib_venn <span style="color: #fb4934;">import</span> venn3, venn3_circles
+
+
+<span style="color: #83a598;">deet</span> = pd.read_csv(<span style="color: #b8bb26;">"Deseq-Genes/upDeet.csv"</span>)
+<span style="color: #83a598;">deetcont</span> = pd.read_csv(<span style="color: #b8bb26;">"Deseq-Genes/downDeet.csv"</span>)
+<span style="color: #83a598;">perm</span> = pd.read_csv(<span style="color: #b8bb26;">"Deseq-Genes/upPerm.csv"</span>)
+<span style="color: #83a598;">permcont</span> = pd.read_csv(<span style="color: #b8bb26;">"Deseq-Genes/downPerm.csv"</span>)
+<span style="color: #83a598;">genes</span> = pd.read_csv(<span style="color: #b8bb26;">"GeneReference/listofgenes.csv"</span>)
+
+
+<span style="color: #fb4934;">def</span> <span style="color: #b8bb26;">compare</span>(s1, s2):
+    <span style="color: #83a598;">c</span> = <span style="color: #fe8019;">len</span>(<span style="color: #fe8019;">list</span>(<span style="color: #fe8019;">set</span>(s1.iloc[:, <span style="color: #d3869b; font-weight: bold;">0</span>]) &amp; <span style="color: #fe8019;">set</span>(s2.iloc[:, <span style="color: #d3869b; font-weight: bold;">0</span>])))
+    <span style="color: #fb4934;">return</span> c
+
+
+<span style="color: #83a598;">diff</span> = compare(deet, genes)
+<span style="color: #fe8019;">len</span>(deet)
+<span style="color: #83a598;">fig</span>, <span style="color: #83a598;">axes</span> = plt.subplots(<span style="color: #d3869b; font-weight: bold;">2</span>)
+<span style="color: #83a598;">v1</span> = venn2_unweighted(
+    subsets=(<span style="color: #fe8019;">len</span>(deet), <span style="color: #fe8019;">len</span>(deetcont), <span style="color: #fe8019;">len</span>(genes) - <span style="color: #fe8019;">len</span>(deetcont) - <span style="color: #fe8019;">len</span>(deet)),
+    set_labels=(<span style="color: #b8bb26;">"Up Regulated"</span>, <span style="color: #b8bb26;">"Down Regulated"</span>),
+    ax=axes[<span style="color: #d3869b; font-weight: bold;">0</span>],
+)
+v2 = venn2_unweighted(
+    subsets=(<span style="color: #fe8019;">len</span>(perm), <span style="color: #fe8019;">len</span>(permcont), <span style="color: #fe8019;">len</span>(genes) - <span style="color: #fe8019;">len</span>(permcont) - <span style="color: #fe8019;">len</span>(perm)),
+    set_labels=(<span style="color: #b8bb26;">"Up Regulated"</span>, <span style="color: #b8bb26;">"Down Regulated"</span>),
+    ax=axes[<span style="color: #d3869b; font-weight: bold;">1</span>],
+)
+axes[<span style="color: #d3869b; font-weight: bold;">0</span>].set_title(<span style="color: #b8bb26;">"Deet"</span>)
+axes[<span style="color: #d3869b; font-weight: bold;">1</span>].set_title(<span style="color: #b8bb26;">"Perm"</span>)
+fig.tight_layout()
+fig.savefig(<span style="color: #b8bb26;">"figures/Deseq2/DeetAndPermRegulation.png"</span>, bbox_inches=<span style="color: #b8bb26;">"tight"</span>, dpi=<span style="color: #d3869b; font-weight: bold;">250</span>)
+fig.savefig(<span style="color: #b8bb26;">"figures/Deseq2/DeetAndPermRegulation.pdf"</span>, bbox_inches=<span style="color: #b8bb26;">"tight"</span>, dpi=<span style="color: #d3869b; font-weight: bold;">250</span>)
+plt.show()
+</pre>
 </div>
 
-<div id="outline-container-orgb43c37d" class="outline-3">
-<h3 id="orgb43c37d"><span class="section-number-3">9.3</span> Pearson Correlation</h3>
+
+<div id="org6ff4ee9" class="figure">
+<p><img src="./.ob-jupyter/78eea3adbb3606af99f0c9f97846e03602eda99f.png" alt="78eea3adbb3606af99f0c9f97846e03602eda99f.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org8cc5fc2" class="outline-4">
+<h4 id="org8cc5fc2"><span class="section-number-4">9.2.12</span> Venn 11</h4>
+<div class="outline-text-4" id="text-9-2-12">
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #83a598;">genes</span> = pd.read_csv(<span style="color: #b8bb26;">"Deseq-Genes/listofgenes.csv"</span>, header=<span style="color: #d3869b;">None</span>)
+body = pd.read_csv(<span style="color: #b8bb26;">"Deseq-Genes/bodyExpr.csv"</span>)
+upDeetBody = pd.read_csv(<span style="color: #b8bb26;">"Deseq-Genes/upDeetBody.csv"</span>)
+downDeetBody = pd.read_csv(<span style="color: #b8bb26;">"Deseq-Genes/downDeetBody.csv"</span>)
+
+<span style="color: #83a598;">fig</span>, <span style="color: #83a598;">axes</span> = plt.subplots()
+
+v = venn2_unweighted(subsets=(<span style="color: #fe8019;">len</span>(upDeetBody), <span style="color: #fe8019;">len</span>(downDeetBody), <span style="color: #fe8019;">len</span>(body)- <span style="color: #fe8019;">len</span>(upDeetBody)-<span style="color: #fe8019;">len</span>(downDeetBody)), set_labels=(<span style="color: #b8bb26;">"Up Regulated"</span>, <span style="color: #b8bb26;">"Down Regulated"</span>), ax=axes)
+axes.set_title(<span style="color: #b8bb26;">"Deet Expression in Body Genes"</span>)
+fig.tight_layout()
+fig.savefig(<span style="color: #b8bb26;">"figures/figure3/DeetBodyDeseq.png"</span>)
+fig.savefig(<span style="color: #b8bb26;">"figures/figure3/DeetBodyDeseq.pdf"</span>)
+plt.show()
+</pre>
+</div>
+
+<pre class="example" id="org74c707d">
+
+FileNotFoundErrorTraceback (most recent call last)
+&lt;ipython-input-7-73c5e5ff73a8&gt; in &lt;module&gt;
+----&gt; 1 genes = pd.read_csv("Deseq-Genes/listofgenes.csv", header=None)
+      2 body = pd.read_csv("Deseq-Genes/bodyExpr.csv")
+      3 upDeetBody = pd.read_csv("Deseq-Genes/upDeetBody.csv")
+      4 downDeetBody = pd.read_csv("Deseq-Genes/downDeetBody.csv")
+      5
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in read_csv(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, error_bad_lines, warn_bad_lines, delim_whitespace, low_memory, memory_map, float_precision)
+    684     )
+    685
+--&gt; 686     return _read(filepath_or_buffer, kwds)
+    687
+    688
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in _read(filepath_or_buffer, kwds)
+    450
+    451     # Create the parser.
+--&gt; 452     parser = TextFileReader(fp_or_buf, **kwds)
+    453
+    454     if chunksize or iterator:
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in __init__(self, f, engine, **kwds)
+    944             self.options["has_index_names"] = kwds["has_index_names"]
+    945
+--&gt; 946         self._make_engine(self.engine)
+    947
+    948     def close(self):
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in _make_engine(self, engine)
+   1176     def _make_engine(self, engine="c"):
+   1177         if engine == "c":
+-&gt; 1178             self._engine = CParserWrapper(self.f, **self.options)
+   1179         else:
+   1180             if engine == "python":
+
+~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in __init__(self, src, **kwds)
+   2006         kwds["usecols"] = self.usecols
+   2007
+-&gt; 2008         self._reader = parsers.TextReader(src, **kwds)
+   2009         self.unnamed_cols = self._reader.unnamed_cols
+   2010
+
+pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader.__cinit__()
+
+pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader._setup_parser_source()
+
+FileNotFoundError: [Errno 2] No such file or directory: 'Deseq-Genes/listofgenes.csv'
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf428f11" class="outline-3">
+<h3 id="orgf428f11"><span class="section-number-3">9.3</span> Pearson Correlation</h3>
 <div class="outline-text-3" id="text-9-3">
 <p>
 This correlates the results from edgeR and Deseq2. Using this, the correlation can make the analysis tool interchangeable.
 </p>
 </div>
-<div id="outline-container-org9142801" class="outline-4">
-<h4 id="org9142801"><span class="section-number-4">9.3.1</span> Libraries</h4>
+<div id="outline-container-orga87e329" class="outline-4">
+<h4 id="orga87e329"><span class="section-number-4">9.3.1</span> Libraries</h4>
 <div class="outline-text-4" id="text-9-3-1">
 <div class="org-src-container">
 <pre class="src src-jupyter-R"><span style="color: #d3869b;">library</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">"tidyverse"</span><span style="color: #d3869b;">)</span>
@@ -2346,23 +2649,33 @@ This correlates the results from edgeR and Deseq2. Using this, the correlation c
 </pre>
 </div>
 
-<pre class="example" id="org5988c29">
+<pre class="example" id="orgacf05ca">
 ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
 
-✔ ggplot2 3.3.3     ✔ purrr   0.3.4
-✔ tibble  3.1.2     ✔ dplyr   1.0.6
-✔ tidyr   1.1.3     ✔ stringr 1.4.0
-✔ readr   1.4.0     ✔ forcats 0.5.1
+✔ ggplot2 3.3.3     ✔ dplyr   1.0.6
+✔ tibble  3.1.2     ✔ stringr 1.4.0
+✔ tidyr   1.1.3     ✔ forcats 0.5.1
+✔ purrr   0.3.4
 
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
+✖ dplyr::collapse()   masks IRanges::collapse()
+✖ dplyr::combine()    masks Biobase::combine(), BiocGenerics::combine()
+✖ dplyr::count()      masks matrixStats::count()
+✖ dplyr::desc()       masks IRanges::desc()
+✖ tidyr::expand()     masks S4Vectors::expand()
+✖ dplyr::filter()     masks stats::filter()
+✖ dplyr::first()      masks S4Vectors::first()
+✖ dplyr::lag()        masks stats::lag()
+✖ ggplot2::Position() masks BiocGenerics::Position(), base::Position()
+✖ purrr::reduce()     masks GenomicRanges::reduce(), IRanges::reduce()
+✖ dplyr::rename()     masks S4Vectors::rename()
+✖ dplyr::slice()      masks IRanges::slice()
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org105191a" class="outline-4">
-<h4 id="org105191a"><span class="section-number-4">9.3.2</span> Import the data</h4>
+<div id="outline-container-orga00e410" class="outline-4">
+<h4 id="orga00e410"><span class="section-number-4">9.3.2</span> Import the data</h4>
 <div class="outline-text-4" id="text-9-3-2">
 <div class="org-src-container">
 <pre class="src src-jupyter-R">EdgeR <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">read.csv</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">"/home/david/Documents/BenoitLab/RNA-seq/edgeR-Genes/bodyExpr.csv"</span><span style="color: #d3869b;">)</span>
@@ -2440,8 +2753,8 @@ A data.frame: 6 × 2
 </div>
 </div>
 
-<div id="outline-container-org218b9bd" class="outline-4">
-<h4 id="org218b9bd"><span class="section-number-4">9.3.3</span> Plot the data</h4>
+<div id="outline-container-orgf145823" class="outline-4">
+<h4 id="orgf145823"><span class="section-number-4">9.3.3</span> Plot the data</h4>
 <div class="outline-text-4" id="text-9-3-3">
 <div class="org-src-container">
 <pre class="src src-jupyter-R"><span style="color: #d3869b;">library</span><span style="color: #d3869b;">(</span><span style="color: #b8bb26;">"ggpubr"</span><span style="color: #d3869b;">)</span>
@@ -2470,14 +2783,14 @@ Saving 7 x 7 in image
 </pre>
 
 
-<div id="org6ffb357" class="figure">
+<div id="orgb664a1e" class="figure">
 <p><img src="./.ob-jupyter/f1067a6954fd040fbf8de1c030201143a06483aa.png" alt="f1067a6954fd040fbf8de1c030201143a06483aa.png" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org8fe577e" class="outline-4">
-<h4 id="org8fe577e"><span class="section-number-4">9.3.4</span> Venn Diagram</h4>
+<div id="outline-container-orgfd2c068" class="outline-4">
+<h4 id="orgfd2c068"><span class="section-number-4">9.3.4</span> Venn Diagram</h4>
 <div class="outline-text-4" id="text-9-3-4">
 <p>
 Doesn&rsquo;t do what I wanted
@@ -2497,15 +2810,15 @@ DCol <span style="color: #d3869b;">&lt;-</span> <span style="color: #b8bb26;">ro
 </div>
 </div>
 </div>
-<div id="outline-container-orgd6ec648" class="outline-3">
-<h3 id="orgd6ec648"><span class="section-number-3">9.4</span> Dotplot</h3>
+<div id="outline-container-org571d9e3" class="outline-3">
+<h3 id="org571d9e3"><span class="section-number-3">9.4</span> Dotplot</h3>
 <div class="outline-text-3" id="text-9-4">
 <p>
 This figure plots the enrichment of specific genes. Ideal for small amounts of genes.
 </p>
 </div>
-<div id="outline-container-org20224fd" class="outline-4">
-<h4 id="org20224fd"><span class="section-number-4">9.4.1</span> imports</h4>
+<div id="outline-container-org69d8a0b" class="outline-4">
+<h4 id="org69d8a0b"><span class="section-number-4">9.4.1</span> imports</h4>
 <div class="outline-text-4" id="text-9-4-1">
 <div class="org-src-container">
 <pre class="src src-jupyter-python"><span style="color: #fb4934;">import</span> numpy <span style="color: #fb4934;">as</span> np
@@ -2516,8 +2829,8 @@ This figure plots the enrichment of specific genes. Ideal for small amounts of g
 </div>
 </div>
 </div>
-<div id="outline-container-org8f3069e" class="outline-4">
-<h4 id="org8f3069e"><span class="section-number-4">9.4.2</span> Theme settings</h4>
+<div id="outline-container-org5bde456" class="outline-4">
+<h4 id="org5bde456"><span class="section-number-4">9.4.2</span> Theme settings</h4>
 <div class="outline-text-4" id="text-9-4-2">
 <div class="org-src-container">
 <pre class="src src-jupyter-python">plt.<span style="color: #83a598;">rcParams</span>[<span style="color: #b8bb26;">"font.family"</span>] = <span style="color: #b8bb26;">"Bahnschrift"</span>
@@ -2529,8 +2842,8 @@ This figure plots the enrichment of specific genes. Ideal for small amounts of g
 </div>
 </div>
 </div>
-<div id="outline-container-org1e51f59" class="outline-4">
-<h4 id="org1e51f59"><span class="section-number-4">9.4.3</span> Import</h4>
+<div id="outline-container-org858b5c8" class="outline-4">
+<h4 id="org858b5c8"><span class="section-number-4">9.4.3</span> Import</h4>
 <div class="outline-text-4" id="text-9-4-3">
 <p>
 Use the pandas package to import the csv file
@@ -2546,8 +2859,8 @@ Use the pandas package to import the csv file
 </div>
 </div>
 </div>
-<div id="outline-container-orgf9d0ca0" class="outline-4">
-<h4 id="orgf9d0ca0"><span class="section-number-4">9.4.4</span> Plot the figure</h4>
+<div id="outline-container-org5985e57" class="outline-4">
+<h4 id="org5985e57"><span class="section-number-4">9.4.4</span> Plot the figure</h4>
 <div class="outline-text-4" id="text-9-4-4">
 <div class="org-src-container">
 <pre class="src src-jupyter-python"><span style="color: #83a598;">fig</span>, <span style="color: #83a598;">ax</span> = plt.subplots(<span style="color: #d3869b; font-weight: bold;">1</span>)
@@ -2584,8 +2897,8 @@ plt.show()
 </div>
 </div>
 </div>
-<div id="outline-container-org5623f0a" class="outline-4">
-<h4 id="org5623f0a"><span class="section-number-4">9.4.5</span> Save the Figure</h4>
+<div id="outline-container-org78327cb" class="outline-4">
+<h4 id="org78327cb"><span class="section-number-4">9.4.5</span> Save the Figure</h4>
 <div class="outline-text-4" id="text-9-4-5">
 <div class="org-src-container">
 <pre class="src src-jupyter-python">plt.savefig(<span style="color: #b8bb26;">'dotplot.pdf'</span>, dpi=<span style="color: #d3869b; font-weight: bold;">300</span>, bbox_inches=<span style="color: #b8bb26;">'tight'</span>)
@@ -2599,7 +2912,7 @@ plt.savefig(<span style="color: #b8bb26;">'dotplot.jpg'</span>, dpi=<span style=
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: David Lewis</p>
-<p class="date">Created: 2021-06-01 Tue 10:36</p>
+<p class="date">Created: 2021-06-03 Thu 13:57</p>
 </div>
 </body>
 </html>

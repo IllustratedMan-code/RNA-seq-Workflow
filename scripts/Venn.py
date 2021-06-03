@@ -148,3 +148,55 @@ fig.savefig("figures/figure2/EdgeR-BodyvsLeg.png", bbox_inches="tight", dpi=250)
 fig.savefig("figures/figure2/EdgeR-BodyvsLeg.pdf", bbox_inches="tight", dpi=250)
 
 plt.show()
+
+plt.style.use("ggplot")
+
+from matplotlib_venn import venn2, venn2_circles, venn2_unweighted
+from matplotlib_venn import venn3, venn3_circles
+
+
+deet = pd.read_csv("Deseq-Genes/upDeet.csv")
+deetcont = pd.read_csv("Deseq-Genes/downDeet.csv")
+perm = pd.read_csv("Deseq-Genes/upPerm.csv")
+permcont = pd.read_csv("Deseq-Genes/downPerm.csv")
+genes = pd.read_csv("GeneReference/listofgenes.csv")
+
+
+def compare(s1, s2):
+    c = len(list(set(s1.iloc[:, 0]) & set(s2.iloc[:, 0])))
+    return c
+
+
+diff = compare(deet, genes)
+len(deet)
+fig, axes = plt.subplots(2)
+v1 = venn2_unweighted(
+    subsets=(len(deet), len(deetcont), len(genes) - len(deetcont) - len(deet)),
+    set_labels=("Up Regulated", "Down Regulated"),
+    ax=axes[0],
+)
+v2 = venn2_unweighted(
+    subsets=(len(perm), len(permcont), len(genes) - len(permcont) - len(perm)),
+    set_labels=("Up Regulated", "Down Regulated"),
+    ax=axes[1],
+)
+axes[0].set_title("Deet")
+axes[1].set_title("Perm")
+fig.tight_layout()
+fig.savefig("figures/Deseq2/DeetAndPermRegulation.png", bbox_inches="tight", dpi=250)
+fig.savefig("figures/Deseq2/DeetAndPermRegulation.pdf", bbox_inches="tight", dpi=250)
+plt.show()
+
+genes = pd.read_csv("Deseq-Genes/listofgenes.csv", header=None)
+body = pd.read_csv("Deseq-Genes/bodyExpr.csv")
+upDeetBody = pd.read_csv("Deseq-Genes/upDeetBody.csv")
+downDeetBody = pd.read_csv("Deseq-Genes/downDeetBody.csv")
+
+fig, axes = plt.subplots()
+
+v = venn2_unweighted(subsets=(len(upDeetBody), len(downDeetBody), len(body)- len(upDeetBody)-len(downDeetBody)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Deet Expression in Body Genes")
+fig.tight_layout()
+fig.savefig("figures/figure3/DeetBodyDeseq.png")
+fig.savefig("figures/figure3/DeetBodyDeseq.pdf")
+plt.show()
