@@ -28,14 +28,14 @@ rld <- rlog(dds, blind=FALSE)
 ntd <- normTransform(dds)
 
 ddsMF <- dds
-design(ddsMF) <- formula(~pesticides)
+design(ddsMF) <- formula(~part + pesticides)
 ddsMF <- DESeq(ddsMF)
 Mres <- results(ddsMF)
 design(dds) <- formula(~part)
 part <- DESeq(dds)
 res <- results(part)
 
-DR <- Mres[ which(Mres$padj < 0.01), ]
+DR <- res[ which(Mres$padj < 0.01), ]
 Body <- DR[which(DR$log2FoldChange < -2),]
 Leg <- DR[which(DR$log2FoldChange > 2), ]
 
@@ -44,7 +44,7 @@ write.table(Leg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/Leg.c
 write.table(res, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/total.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 
 pestdd <-dds
-design(pestdd) <- formula(~pesticides)
+design(pestdd) <- formula(~part + pesticides)
 pestdd <- DESeq(pestdd)
 permres <- results(pestdd, contrast = c("pesticides", "perm", "control"))
 deetres <- results(pestdd, contrast = c("pesticides", "deet", "control"))
@@ -60,19 +60,33 @@ write.table(downPermvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Des
 write.table(upDeetvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeet.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(downDeetvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downDeet.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 
-commonPermBody = intersect(row.names(Body), row.names(upPermvsControl))
-upPermBody = upPermvsControl[commonPermBody,]
-commonPermLeg = intersect(row.names(Leg), row.names(upPermvsControl))
-upPermLeg = upPermvsControl[commonPermLeg, ]
-commonDeetBody = intersect(row.names(Body), row.names(upDeetvsControl))
-upDeetBody = upDeetvsControl[commonDeetBody]
-commonDeetLeg = intersect(row.names(Leg), row.names(upDeetvsControl))
-upDeetLeg = upDeetvsControl[commonDeetLeg]
+commonUpPermBody = intersect(row.names(Body), row.names(upPermvsControl))
+upPermBody = upPermvsControl[commonUpPermBody,]
+commonUpPermLeg = intersect(row.names(Leg), row.names(upPermvsControl))
+upPermLeg = upPermvsControl[commonUpPermLeg, ]
+commonDownPermBody = intersect(row.names(Body), row.names(downPermvsControl))
+downPermBody = downPermvsControl[commonDownPermBody,]
+commonDownPermLeg = intersect(row.names(Leg), row.names(downPermvsControl))
+downPermLeg = downPermvsControl[commonDownPermLeg,]
+
+commonUpDeetBody = intersect(row.names(Body), row.names(upDeetvsControl))
+upDeetBody = upDeetvsControl[commonUpDeetBody,]
+commonUpDeetLeg = intersect(row.names(Leg), row.names(upDeetvsControl))
+upDeetLeg = upDeetvsControl[commonUpDeetLeg,]
+commonDownDeetBody = intersect(row.names(Body), row.names(downDeetvsControl))
+downDeetBody = downDeetvsControl[commonDownDeetBody,]
+commonDownDeetLeg = intersect(row.names(Leg), row.names(downDeetvsControl))
+downDeetLeg = downDeetvsControl[commonDownDeetLeg,]
+
 
 write.table(upPermBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(upPermLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(upDeetBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(upDeetLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downPermBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downPermBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downPermLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downPermLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downDeetBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downDeetBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downDeetLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downDeetLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 
 newdd <- dds
 design(newdd) <- formula(~part + part:pesticides)

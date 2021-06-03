@@ -458,40 +458,36 @@ write.table(downDeetvsControl, file="/home/david/Documents/BenoitLab/RNA-seq/Des
 #+RESULTS:
 *** Compare genes with body genes
 #+begin_src jupyter-R :session R
-commonPermBody = intersect(row.names(Body), row.names(upPermvsControl))
-upPermBody = upPermvsControl[commonPermBody,]
-commonPermLeg = intersect(row.names(Leg), row.names(upPermvsControl))
-upPermLeg = upPermvsControl[commonPermLeg, ]
-commonDeetBody = intersect(row.names(Body), row.names(upDeetvsControl))
-upDeetBody = upDeetvsControl[commonDeetBody]
-commonDeetLeg = intersect(row.names(Leg), row.names(upDeetvsControl))
-upDeetLeg = upDeetvsControl[commonDeetLeg]
+commonUpPermBody = intersect(row.names(Body), row.names(upPermvsControl))
+upPermBody = upPermvsControl[commonUpPermBody,]
+commonUpPermLeg = intersect(row.names(Leg), row.names(upPermvsControl))
+upPermLeg = upPermvsControl[commonUpPermLeg, ]
+commonDownPermBody = intersect(row.names(Body), row.names(downPermvsControl))
+downPermBody = downPermvsControl[commonDownPermBody,]
+commonDownPermLeg = intersect(row.names(Leg), row.names(downPermvsControl))
+downPermLeg = downPermvsControl[commonDownPermLeg,]
+
+commonUpDeetBody = intersect(row.names(Body), row.names(upDeetvsControl))
+upDeetBody = upDeetvsControl[commonUpDeetBody,]
+commonUpDeetLeg = intersect(row.names(Leg), row.names(upDeetvsControl))
+upDeetLeg = upDeetvsControl[commonUpDeetLeg,]
+commonDownDeetBody = intersect(row.names(Body), row.names(downDeetvsControl))
+downDeetBody = downDeetvsControl[commonDownDeetBody,]
+commonDownDeetLeg = intersect(row.names(Leg), row.names(downDeetvsControl))
+downDeetLeg = downDeetvsControl[commonDownDeetLeg,]
+
 
 write.table(upPermBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(upPermLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upPermLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(upDeetBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 write.table(upDeetLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/upDeetLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downPermBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downPermBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downPermLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downPermLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downDeetBody, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downDeetBody.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
+write.table(downDeetLeg, file="/home/david/Documents/BenoitLab/RNA-seq/Deseq-Genes/downDeetLeg.csv", quote=FALSE, col.names=TRUE, row.names=TRUE, sep=",")
 #+end_src
 
 #+RESULTS:
-#+begin_example
-log2 fold change (MLE): pesticides perm vs control
-Wald test p-value: pesticides perm vs control
-DataFrame with 569 rows and 6 columns
-           baseMean log2FoldChange     lfcSE      stat      pvalue        padj
-          <numeric>      <numeric> <numeric> <numeric>   <numeric>   <numeric>
-dv.100051   26.4801       -8.59803   2.10822  -4.07833 4.53604e-05 9.36807e-03
-dv.100053   35.8562       -8.40750   2.01843  -4.16537 3.10854e-05 6.99753e-03
-dv.100120   27.8850      -23.47911   3.71625  -6.31796 2.65040e-10 2.16315e-07
-dv.100137   49.6610       -8.24751   1.96677  -4.19343 2.74773e-05 6.36676e-03
-dv.100245   73.2211       -9.48773   2.15062  -4.41162 1.02602e-05 2.86800e-03
-...             ...            ...       ...       ...         ...         ...
-dv.99549    51.4506       -9.57591   2.13415  -4.48698 7.22391e-06 2.14500e-03
-dv.9968     75.4422      -24.81474   2.41460 -10.27697 8.94944e-25 1.31846e-20
-dv.9972     61.4156       -9.82561   2.21796  -4.43001 9.42274e-06 2.67806e-03
-dv.99920   113.3919      -25.36520   3.17868  -7.97978 1.46589e-15 3.38981e-12
-dv.9999     14.5395      -21.96533   2.46951  -8.89463 5.86157e-19 2.41785e-15
-#+end_example
 
 *** Create a new analysis design
 #+begin_src jupyter-R :session R
@@ -1391,10 +1387,10 @@ plt.show()
 
 #+RESULTS:
 [[file:./.ob-jupyter/78eea3adbb3606af99f0c9f97846e03602eda99f.png]]
-*** Venn 11
+*** Venn 11 Deet In Body
 #+begin_src jupyter-python :session py
-genes = pd.read_csv("Deseq-Genes/listofgenes.csv", header=None)
-body = pd.read_csv("Deseq-Genes/bodyExpr.csv")
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+body = pd.read_csv("Deseq-Genes/Body.csv")
 upDeetBody = pd.read_csv("Deseq-Genes/upDeetBody.csv")
 downDeetBody = pd.read_csv("Deseq-Genes/downDeetBody.csv")
 
@@ -1409,60 +1405,65 @@ plt.show()
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-# [goto error]
-#+begin_example
+[[file:./.ob-jupyter/fc4ec2680ab8a56efa3a0b283502c25b67bd45ad.png]]
+*** Venn 12 Perm In Body
+#+begin_src jupyter-python :session py
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+body = pd.read_csv("Deseq-Genes/Body.csv")
+upPermBody = pd.read_csv("Deseq-Genes/upPermBody.csv")
+downPermBody = pd.read_csv("Deseq-Genes/downPermBody.csv")
 
-FileNotFoundErrorTraceback (most recent call last)
-<ipython-input-7-73c5e5ff73a8> in <module>
-----> 1 genes = pd.read_csv("Deseq-Genes/listofgenes.csv", header=None)
-      2 body = pd.read_csv("Deseq-Genes/bodyExpr.csv")
-      3 upDeetBody = pd.read_csv("Deseq-Genes/upDeetBody.csv")
-      4 downDeetBody = pd.read_csv("Deseq-Genes/downDeetBody.csv")
-      5
+fig, axes = plt.subplots()
 
-~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in read_csv(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, error_bad_lines, warn_bad_lines, delim_whitespace, low_memory, memory_map, float_precision)
-    684     )
-    685
---> 686     return _read(filepath_or_buffer, kwds)
-    687
-    688
+v = venn2_unweighted(subsets=(len(upPermBody), len(downPermBody), len(body)- len(upPermBody)-len(downPermBody)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Perm Expression in Body Genes")
+fig.tight_layout()
+fig.savefig("figures/figure3/PermBodyDeseq.png")
+fig.savefig("figures/figure3/PermBodyDeseq.pdf")
+plt.show()
+#+end_src
 
-~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in _read(filepath_or_buffer, kwds)
-    450
-    451     # Create the parser.
---> 452     parser = TextFileReader(fp_or_buf, **kwds)
-    453
-    454     if chunksize or iterator:
+#+RESULTS:
+[[file:./.ob-jupyter/245e81c8898d0735878a5685eaf80700928a14be.png]]
+*** Deet In Leg
+#+begin_src jupyter-python :session py
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+Leg = pd.read_csv("Deseq-Genes/Leg.csv")
+upDeetLeg = pd.read_csv("Deseq-Genes/upDeetLeg.csv")
+downDeetLeg = pd.read_csv("Deseq-Genes/downDeetLeg.csv")
 
-~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in __init__(self, f, engine, **kwds)
-    944             self.options["has_index_names"] = kwds["has_index_names"]
-    945
---> 946         self._make_engine(self.engine)
-    947
-    948     def close(self):
+fig, axes = plt.subplots()
 
-~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in _make_engine(self, engine)
-   1176     def _make_engine(self, engine="c"):
-   1177         if engine == "c":
--> 1178             self._engine = CParserWrapper(self.f, **self.options)
-   1179         else:
-   1180             if engine == "python":
+v = venn2_unweighted(subsets=(len(upDeetLeg), len(downDeetLeg), len(Leg)- len(upDeetLeg)-len(downDeetLeg)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Deet Expression in Leg Genes")
+fig.tight_layout()
+fig.savefig("figures/figure3/DeetLegDeseq.png")
+fig.savefig("figures/figure3/DeetLegDeseq.pdf")
+plt.show()
+#+end_src
 
-~/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py in __init__(self, src, **kwds)
-   2006         kwds["usecols"] = self.usecols
-   2007
--> 2008         self._reader = parsers.TextReader(src, **kwds)
-   2009         self.unnamed_cols = self._reader.unnamed_cols
-   2010
+#+RESULTS:
+[[file:./.ob-jupyter/8518464d34f19e337a4f11bcfcb41350c91c3fc2.png]]
 
-pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader.__cinit__()
+*** Perm In Leg
+#+begin_src jupyter-python :session py
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+Leg = pd.read_csv("Deseq-Genes/Leg.csv")
+upPermLeg = pd.read_csv("Deseq-Genes/upPermLeg.csv")
+downPermLeg = pd.read_csv("Deseq-Genes/downPermLeg.csv")
 
-pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader._setup_parser_source()
+fig, axes = plt.subplots()
 
-FileNotFoundError: [Errno 2] No such file or directory: 'Deseq-Genes/listofgenes.csv'
-#+end_example
-:END:
+v = venn2_unweighted(subsets=(len(upPermLeg), len(downPermLeg), len(Leg)- len(upPermLeg)-len(downPermLeg)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Perm Expression in Leg Genes")
+fig.tight_layout()
+fig.savefig("figures/figure3/PermLegDeseq.png")
+fig.savefig("figures/figure3/PermLegDeseq.pdf")
+plt.show()
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/92fe4810bb83e30769b9e43e7bac89d308ef969e.png]]
 
 ** Pearson Correlation
 :PROPERTIES:

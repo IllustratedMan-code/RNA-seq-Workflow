@@ -187,8 +187,8 @@ fig.savefig("figures/Deseq2/DeetAndPermRegulation.png", bbox_inches="tight", dpi
 fig.savefig("figures/Deseq2/DeetAndPermRegulation.pdf", bbox_inches="tight", dpi=250)
 plt.show()
 
-genes = pd.read_csv("Deseq-Genes/listofgenes.csv", header=None)
-body = pd.read_csv("Deseq-Genes/bodyExpr.csv")
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+body = pd.read_csv("Deseq-Genes/Body.csv")
 upDeetBody = pd.read_csv("Deseq-Genes/upDeetBody.csv")
 downDeetBody = pd.read_csv("Deseq-Genes/downDeetBody.csv")
 
@@ -199,4 +199,46 @@ axes.set_title("Deet Expression in Body Genes")
 fig.tight_layout()
 fig.savefig("figures/figure3/DeetBodyDeseq.png")
 fig.savefig("figures/figure3/DeetBodyDeseq.pdf")
+plt.show()
+
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+body = pd.read_csv("Deseq-Genes/Body.csv")
+upPermBody = pd.read_csv("Deseq-Genes/upPermBody.csv")
+downPermBody = pd.read_csv("Deseq-Genes/downPermBody.csv")
+
+fig, axes = plt.subplots()
+
+v = venn2_unweighted(subsets=(len(upPermBody), len(downPermBody), len(body)- len(upPermBody)-len(downPermBody)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Perm Expression in Body Genes")
+fig.tight_layout()
+fig.savefig("figures/figure3/PermBodyDeseq.png")
+fig.savefig("figures/figure3/PermBodyDeseq.pdf")
+plt.show()
+
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+Leg = pd.read_csv("Deseq-Genes/Leg.csv")
+upDeetLeg = pd.read_csv("Deseq-Genes/upDeetLeg.csv")
+downDeetLeg = pd.read_csv("Deseq-Genes/downDeetLeg.csv")
+
+fig, axes = plt.subplots()
+
+v = venn2_unweighted(subsets=(len(upDeetLeg), len(downDeetLeg), len(Leg)- len(upDeetLeg)-len(downDeetLeg)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Deet Expression in Leg Genes")
+fig.tight_layout()
+fig.savefig("figures/figure3/DeetLegDeseq.png")
+fig.savefig("figures/figure3/DeetLegDeseq.pdf")
+plt.show()
+
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+Leg = pd.read_csv("Deseq-Genes/Leg.csv")
+upPermLeg = pd.read_csv("Deseq-Genes/upPermLeg.csv")
+downPermLeg = pd.read_csv("Deseq-Genes/downPermLeg.csv")
+
+fig, axes = plt.subplots()
+
+v = venn2_unweighted(subsets=(len(upPermLeg), len(downPermLeg), len(Leg)- len(upPermLeg)-len(downPermLeg)), set_labels=("Up Regulated", "Down Regulated"), ax=axes)
+axes.set_title("Perm Expression in Leg Genes")
+fig.tight_layout()
+fig.savefig("figures/figure3/PermLegDeseq.png")
+fig.savefig("figures/figure3/PermLegDeseq.pdf")
 plt.show()
