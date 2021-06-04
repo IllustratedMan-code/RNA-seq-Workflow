@@ -9,6 +9,8 @@
 + The Ticks are sprayed with Permethrin and DEET
 + The Legs are separated from the bodies of the ticks and analyzed separately
 + The Fasta files + assembly are sent to Galaxy
+* Workflow overview
+[[file:Images/Workflow.png]]
 * Galaxy
 + Import the fasta files + assembly to Galaxy
 + Run FastQC to determine data integrity and quality on each fasta
