@@ -4,13 +4,31 @@
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+EXPORT_FILE_NAME: index.html
 #+TODO: TODO(t) REFACTOR(r) DEBUG(d) | DONE
-#+PROPERTIES header-args :pandoc t
+#+PROPERTY: header-args :pandoc t
+
 * Introduction
 + The Ticks are sprayed with Permethrin and DEET
 + The Legs are separated from the bodies of the ticks and analyzed separately
 + The Fasta files + assembly are sent to Galaxy
 * Workflow overview
+The hardest part about this project is keeping everything straight. There are many steps with many different tools, so make sure everything is documented.
 [[file:Images/Workflow.png]]
+* Directory Structure
+#+begin_example
+>RNA-seq
+|
++->Deseq-Genes
+|
++->edgeR-Genes
+| |
+| +->genelists
+|
++->figures
+|
++->GeneReference
+|
++->Scripts
+#+end_example
 * Galaxy
 + Import the fasta files + assembly to Galaxy
 + Run FastQC to determine data integrity and quality on each fasta
