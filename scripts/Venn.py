@@ -41,6 +41,8 @@ from matplotlib_venn import venn3, venn3_circles
 
 
 deet = pd.read_csv("edgeR-Genes/genelists/upDeet.csv", header=None)
+revigo_treemap.pdf
+revigo_treemap.pdf
 deetcont = pd.read_csv("edgeR-Genes/genelists/downDeet.csv", header=None)
 perm = pd.read_csv("edgeR-Genes/genelists/upPerm.csv", header=None)
 permcont = pd.read_csv("edgeR-Genes/genelists/downPerm.csv", header=None)
@@ -241,4 +243,63 @@ axes.set_title("Perm Expression in Leg Genes")
 fig.tight_layout()
 fig.savefig("figures/figure3/PermLegDeseq.png")
 fig.savefig("figures/figure3/PermLegDeseq.pdf")
+plt.show()
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib_venn import venn2, venn2_circles, venn2_unweighted
+import numpy as np
+
+genes = pd.read_csv("GeneReference/listofgenes.csv", header=None)
+
+UpPermLeg = pd.read_csv("Deseq-Genes/upPermLeg.csv")
+UpPermLegrownames = UpPermLeg.index.values
+UP2 = pd.read_csv("Deseq-Genes/timeSeriesGenes/UP2.csv")
+UP2rownames = UP2.index.values
+UP6 = pd.read_csv("Deseq-Genes/timeSeriesGenes/UP6.csv")
+UP6rownames = UP6.index.values
+UP24 = pd.read_csv("Deseq-Genes/timeSeriesGenes/UP24.csv")
+UP24rownames = UP24.index.values
+
+fig, axes = plt.subplots()
+v = venn2_unweighted(
+    subsets=(
+        len(UP2),
+        len(UpPermLeg),
+        len(np.intersect1d(UpPermLegrownames, UP2rownames)),
+    ),
+    set_labels=("Up Regulated", "Down Regulated"),
+    ax=axes,
+)
+plt.show()
+fig.tight_layout()
+fig.savefig("figures/timeSeries/UP2.pdf")
+fig, axes = plt.subplots()
+v = venn2_unweighted(
+    subsets=(
+        len(UP6),
+        len(UpPermLeg),
+        len(np.intersect1d(UpPermLegrownames, UP6rownames)),
+    ),
+    set_labels=("Up Regulated", "Down Regulated"),
+    ax=axes,
+)
+plt.show()
+fig.tight_layout()
+fig.savefig("figures/timeSeries/UP6.pdf")
+fig, axes = plt.subplots()
+v = venn2_unweighted(
+    subsets=(
+        len(UP24),
+        len(UpPermLeg),
+        len(np.intersect1d(UpPermLegrownames, UP24rownames)),
+    ),
+    set_labels=("Up Regulated", "Down Regulated"),
+    ax=axes,
+)
+plt.show()
+axes.set_title("Perm Expression in Leg Genes")
+fig.tight_layout()
+fig.savefig("figures/timeSeries/UP24.pdf")
+
 plt.show()
