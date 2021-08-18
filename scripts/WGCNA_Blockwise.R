@@ -1,4 +1,4 @@
-setwd("/home/david/Documents/BenoitLab/R/largeRNASEQ")
+setwd("/home/david/Documents/BenoitLab/RNA-seq/")
 # Packages to install
 # install.packages(c("dynamicTreeCut", "cluster", "flashClust", "Hmisc", "reshape", "foreach", "doParallel") )
 # source("http://bioconductor.org/biocLite.R")
@@ -13,8 +13,8 @@ options(stringsAsFactors = FALSE)
 # enableWGCNAThreads()
 allowWGCNAThreads()
 # ^Allows WGCNA to run multiple processes at once if you want
-exprData <- read.csv("WGCNACorrectedQuant.csv", row.names = 1, header = TRUE)
-# gene.names=rownames(exprData)
+exprData <- read.csv("WGCNA/WGCNACorrectedQuant.csv", row.names = 1, header = TRUE)
+exprData$Cont_Leg_2 <- NULL
 # ^Input data should be nothing but expression values labelled by sample and gene id
 trans.exprData <- t(exprData)
 # ^WGCNA expects gene ids to be in columns, this line transposes the data
@@ -36,10 +36,12 @@ if (!gsg$allOK) {
 gene.names <- colnames(trans.exprData)
 
 # Loading in trait data
-datTraits <- read.csv("WGCNATruthTable.csv")
+datTraits <- read.csv("WGCNA/WGCNATruthTable.csv")
 # form a data frame analogous to expression data that will hold the clinical traits.
 rownames(datTraits) <- datTraits$sample
 datTraits$sample <- NULL
+datTraits <- datTraits[order(match(rownames(datTraits), rownames(trans.exprData))), , drop = FALSE]
+trans.exprData <- trans.exprData[order(match(rownames(datTraits), rownames(trans.exprData))), , drop = FALSE]
 table(rownames(datTraits) == rownames(trans.exprData))
 # ^should return TRUE if datasets align correctly, otherwise your names are out of order
 
@@ -64,7 +66,7 @@ dev.off()
 
 # Generating adjacency and TOM similarity matrices based on the selected softpower
 # Choose softpower based on the lowest number that reaches the red line from the Scale independence plot
-softPower <- 8
+softPower <- 12
 # calclute the adjacency matrix
 # adj= adjacency(trans.exprData,type = "signed", power = softPower);
 
