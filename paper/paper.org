@@ -1,3 +1,4 @@
+
 * Abstract
 * Introduction
 * Methods
@@ -16,43 +17,55 @@ FastQC was run on the trimmed files to confirm its quality.
 
 After the data was trimmed, transcript abundance quantifiaction was performed by the Galaxy's 'Sailfish quant' tool using the default settings (=description=).
 ** Differential expression analysis
-DESeq2(=Reference=) and EdgeR(=Reference=) were used to test for differential expression between the legs, body, and pesticide treatment (Deet and Perm).
+DESeq2(=Reference=) and EdgeR(=Reference=) were used to test for differential expression between the legs, body, and pesticide treatment (Deet and Perm). The transcript-level counts were quantified using the TPM (transcripts per million) generated from the 'Sailfish quant' tool. The differentially expressed genes were estimated using an adjusted p value cutoff of less than 0.05 for multiple testing using a false discover rate FDR)   (Benjamini   and   Hochberg,  1995),   and   a   log 2 -fold   change   ≥   |2|.
 The differential analysis becomes more reliable when the results of the similar tools are compared.
-
-
 ** WGCNA
 ** GO analysis
 *** Blast
-
+The significantly differentially expressed contigs were searched (BLASTx) against the NCBI /Ixodies scapularis/ SwissProt protein database with an expectation value (e-value) of 0.001.
+The highest scoring blast hits were assigned a gene ID for each contig.
+Fore each search, a positive BLAST hit was functionally profiled using g:Profiler and the PANTHER Classification System.
 *** GProfiler
-functional enrichment analysis. The output from Blast is sent to GProfiler. The GProfiler output is sent to revigo.
+Functional profiling of overrepresented gene sets were statistically listed with enriched terms in gProfiler.
+g:GOSt was the g-profiler tool used for functional enrichment analysis.
+The GProfiler output is sent to Revigo.
 *** Revigo
-The R script output of Revigo generates tree-maps of the genes.
+The R script output of REVIGO (Rudjer Boskovic Institute) generates tree-maps of the genes. These maps show the function of the enriched genes.
 *** Geneontolyg.org
-The ouptut of blast is sent to Geneontology.org
+The ouptut of blast is sent to Geneontology.org (not sure if this section is needed (didn't use the data at all))
 * Results
 ** Figure 1: methods comparison between EdgeR and Deseq2
-This figure compares the expression data that is present in both EdgeR and Deseq2. The P value is small, indicating that EdgeR and Deseq2 have similar results.
+This figure compares the differential expression data from both EdgeR and Deseq2. The P value is small, indicating that EdgeR and Deseq2 have similar results.
+
 #+CAPTION: The quantification files were run through both EdgeR and Deseq2. Each axis plots the expression values as given by its respective title.
 #+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure1/pearson.png]]
 ** Figure 2: Perm and Deet repellency and survival
 ** Figure 3: Leg vs Body general (control)
-This figure compares the genes up-regulated in the body and leg compared to the total number of genes from the sample.
+#+CAPTION: Comparison of up-regulated genes in the body and leg compared to the total number of genes from the sample.
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure3/Deseq-BodyvsLeg.png]]
 *** TODO supplemental tables
 ** Figure 4: Leg vs Body Specifics overlap with Ixodies
 Refer to paper in google drive. Discussion.
 ** Figure 5:Response to DEET In Leg and Body
 *** Body
+#+CAPTION: Differentially expressed genes with respect to the body are further compared based on differential expression with respect to the Deet comparison.
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure5/DeetBodyDeseq.png]]
 *** Leg
+#+CAPTION: Differentially expressed genes with respect to the leg are further compared based on differential expression with respect to the Deet comparison.
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure5/DeetLegDeseq.png]]
 *** TODO supplemental tables
 ** Figure 6: Response to PERM in Leg and Body
 *** Body
+#+CAPTION: Differentially expressed genes with respect to the body are further compared based on differential expression with respect to the Perm comparison.
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure6/PermBodyDeseq.png]]
 *** Leg
+#+CAPTION: Differentially expressed genes with respect to the leg are further compared based on differential expression with respect to the Perm comparison.
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure6/PermLegDeseq.png]]
 *** TODO supplemental tables
 ** Figure 7: WGCNA
@@ -60,22 +73,30 @@ Refer to paper in google drive. Discussion.
 Don't think we need it now.
 ** Figure 9: Time Course Legs
 *** DEET
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure9/DEET/Legbox.png]]
 **** Supplemental Tables
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure9/DEET/Legbox]]
 *** PERM
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure9/PERM/Legbox.png]]
 **** Supplemental Tables
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure9/PERM/Legbox]]
 ** Figure 10: Time Course Body
 *** DEET
+#+CAPTION: K-mean clusters of differential expression data
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure10/DEET/Bodybox.png]]
 **** Supplemental Tables
 [[file:figure10/DEET/Bodybox/]]
 *** PERM
+#+ATTR_LATEX: :float :width 0.6\textwidth :placement {h}{0.4\textwidth}
 [[file:figure10/PERM/Bodybox.png]]
 **** Supplemental Tables
 [[file:figure10/PERM/Bodybox/]]
+** Figure 11: GO analysis (treemaps)
 
 * Discussion
 
